@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Planner — Amsterdam · Grecia · Turquía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F8F5EF;
+    --warm-white: #FDFBF7;
+    --ink: #1A1814;
+    --ink-soft: #4A4540;
+    --ink-muted: #8A857E;
+    --border: rgba(26,24,20,0.1);
+    --border-soft: rgba(26,24,20,0.06);
+    --amsterdam: #2D5A8E;
+    --amsterdam-bg: #EBF1F8;
+    --grecia: #1A7A5E;
+    --grecia-bg: #E8F4F0;
+    --turquia: #8E3A2D;
+    --turquia-bg: #F5EAE8;
+    --transito: #6B6460;
+    --transito-bg: #F0EDEA;
+    --accent: #C4925A;
+    --accent-soft: #F5EDE3;
+    --success: #2D7A4A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(196,146,90,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(45,90,142,0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 800px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em { font-style: italic; color: rgba(248,245,239,0.7); }
+  .hero-sub {
+    font-size: 13px;
+    color: rgba(248,245,239,0.55);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .travelers {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .traveler {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(248,245,239,0.08);
+    border: 0.5px solid rgba(248,245,239,0.15);
+    border-radius: 20px;
+    padding: 5px 12px 5px 5px;
+  }
+  .avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 500;
+  }
+  .av1 { background: #2D5A8E; color: #EBF1F8; }
+  .av2 { background: #1A7A5E; color: #E8F4F0; }
+  .av3 { background: #8E3A2D; color: #F5EAE8; }
+  .av4 { background: #C4925A; color: #FBF3EA; }
+  .traveler span { font-size: 12px; color: rgba(248,245,239,0.8); }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid rgba(248,245,239,0.1);
+    flex-wrap: wrap;
+  }
+  .hero-stat p:first-child { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(248,245,239,0.4); margin-bottom: 2px; }
+  .hero-stat p:last-child { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: rgba(248,245,239,0.9); }
+
+  /* NAV */
+  .nav-wrap {
+    background: var(--warm-white);
+    border-bottom: 0.5px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-item {
+    padding: 1rem 1.2rem;
+    font-size: 13px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    font-weight: 400;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-item:hover { color: var(--ink); }
+  .nav-item.active { color: var(--ink); border-color: var(--accent); font-weight: 500; }
+
+  /* MAIN */
+  .main { max-width: 800px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ITINERARIO */
+  .day-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 2px 12px rgba(26,24,20,0.06); }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .city-pill {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pill-amsterdam { background: var(--amsterdam-bg); color: var(--amsterdam); }
+  .pill-grecia { background: var(--grecia-bg); color: var(--grecia); }
+  .pill-turquia { background: var(--turquia-bg); color: var(--turquia); }
+  .pill-transito { background: var(--transito-bg); color: var(--transito); }
+  .day-info { flex: 1; min-width: 0; }
+  .day-info strong { font-size: 14px; font-weight: 500; display: block; }
+  .day-info span { font-size: 12px; color: var(--ink-muted); }
+  .day-toggle { font-size: 11px; color: var(--ink-muted); transition: transform 0.25s; }
+  .day-toggle.open { transform: rotate(90deg); }
+  .day-body { display: none; border-top: 0.5px solid var(--border-soft); }
+  .day-body.open { display: block; }
+  .event-list { padding: 0.5rem 1.25rem; }
+  .event {
+    display: flex;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 0.5px solid var(--border-soft);
+  }
+  .event:last-child { border-bottom: none; }
+  .event-time { font-size: 11px; color: var(--ink-muted); min-width: 38px; padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .event-ico { font-size: 14px; width: 20px; text-align: center; padding-top: 1px; }
+  .event-info { flex: 1; }
+  .event-info strong { font-size: 13px; font-weight: 500; display: block; }
+  .event-info p { font-size: 12px; color: var(--ink-muted); margin-top: 1px; }
+  .event-tags { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+  .etag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 400;
+  }
+  .etag-vuelo { background: #E8F0FA; color: #1E4F8C; }
+  .etag-hotel { background: #E8F4ED; color: #1A5C30; }
+  .etag-actividad { background: #FAF0E3; color: #7A4E12; }
+  .etag-traslado { background: #F0EDEA; color: #5C5450; }
+  .etag-comida { background: #FAE8EF; color: #8C2048; }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-card p:first-child { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 4px; }
+  .stat-card p:last-child { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--ink); }
+
+  /* HOTELES */
+  .hotel-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 10px;
+  }
+  .hotel-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+  .hotel-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; }
+  .hotel-city-tag { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .hotel-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .hfield {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .hfield label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); display: block; margin-bottom: 3px; }
+  .hfield input, .hfield p {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hfield input:focus { border-bottom: 1px solid var(--accent); }
+  .hotel-obs {
+    font-size: 12px;
+    color: var(--ink-muted);
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* CHECKLIST */
+  .progress-wrap { margin-bottom: 1.5rem; }
+  .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .progress-label span { font-size: 12px; color: var(--ink-muted); }
+  .progress-label strong { font-size: 12px; color: var(--ink); }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--success); border-radius: 2px; transition: width 0.4s ease; }
+  .check-group { margin-bottom: 1.75rem; }
+  .check-group-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    border-bottom: 0.5px solid var(--border-soft);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--success);
+    flex-shrink: 0;
+  }
+  .check-item label { font-size: 13px; color: var(--ink); cursor: pointer; flex: 1; line-height: 1.5; }
+  .check-item.done label { text-decoration: line-through; color: var(--ink-muted); }
+
+  /* NOTAS */
+  .note-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .note-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .note-header strong { font-size: 13px; font-weight: 500; }
+  .note-header time { font-size: 11px; color: var(--ink-muted); margin-left: auto; }
+  .note-text { font-size: 13px; color: var(--ink-soft); line-height: 1.65; }
+  .compose {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 4px;
+  }
+  .compose textarea {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: none;
+    line-height: 1.65;
+  }
+  .compose-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--border-soft);
+  }
+  .person-btns { display: flex; gap: 6px; }
+  .pbtn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.15s;
+  }
+  .pbtn.active { border-color: var(--ink); }
+  .post-btn {
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 6px 16px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 400;
+    transition: opacity 0.15s;
+  }
+  .post-btn:hover { opacity: 0.8; }
+
+  /* ADD BTN */
+  .add-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border: 0.5px dashed var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 4px;
+    transition: background 0.15s;
+  }
+  .add-row:hover { background: var(--warm-white); color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 2rem 1.25rem 1.75rem; }
+    .main { padding: 1.25rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Trip Planner · Verano 2025</p>
+    <h1>Amsterdam · Grecia<br><em>& Turquía</em></h1>
+    <p class="hero-sub">Itinerario compartido · 4 viajeros · 18 días</p>
+    <div class="travelers">
+      <div class="traveler"><div class="avatar av1">EU</div><span>Euge</span></div>
+      <div class="traveler"><div class="avatar av2">JU</div><span>Juan</span></div>
+      <div class="traveler"><div class="avatar av3">V3</div><span>Viajero 3</span></div>
+      <div class="traveler"><div class="avatar av4">V4</div><span>Viajero 4</span></div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><p>Días</p><p>18</p></div>
+      <div class="hero-stat"><p>Vuelos</p><p>4</p></div>
+      <div class="hero-stat"><p>Ciudades</p><p>6</p></div>
+      <div class="hero-stat"><p>Hoteles</p><p>4</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <div class="nav-item active" onclick="showTab('itinerario', this)">📅 Itinerario</div>
+    <div class="nav-item" onclick="showTab('hoteles', this)">🏨 Hoteles</div>
+    <div class="nav-item" onclick="showTab('checklist', this)">✓ Checklist</div>
+    <div class="nav-item" onclick="showTab('notas', this)">💬 Notas del grupo</div>
+  </nav>
+</div>
+
+<main class="main">
+
+  <!-- ITINERARIO -->
+  <section id="tab-itinerario" class="section active">
+    <div class="stats-grid">
+      <div class="stat-card"><p>Días</p><p>18</p></div>
+      <div class="stat-card"><p>Vuelos</p><p>4</p></div>
+      <div class="stat-card"><p>Ciudades</p><p>6</p></div>
+      <div class="stat-card"><p>Actividades</p><p id="act-count">12</p></div>
+    </div>
+    <div id="days-container"></div>
+    <div class="add-row" onclick="alert('Editá el archivo HTML para agregar más días 🗺')">+ Agregar día o actividad</div>
+  </section>
+
+  <!-- HOTELES -->
+  <section id="tab-hoteles" class="section">
+    <div id="hotels-container"></div>
+    <div class="add-row" onclick="alert('Editá el archivo HTML para agregar más hoteles 🏨')">+ Agregar alojamiento</div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="tab-checklist" class="section">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="progress-text">0 de 18 tareas</span>
+        <strong id="progress-pct">0%</strong>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="checklist-container"></div>
+  </section>
+
+  <!-- NOTAS -->
+  <section id="tab-notas" class="section">
+    <div id="notes-container"></div>
+    <div class="compose">
+      <textarea id="note-input" rows="3" placeholder="Escribí una nota para el grupo..."></textarea>
+      <div class="compose-footer">
+        <div class="person-btns">
+          <div class="avatar av1 pbtn active" id="pb1" onclick="selectPerson('pb1','EU','av1')">EU</div>
+          <div class="avatar av2 pbtn" id="pb2" onclick="selectPerson('pb2','JU','av2')">JU</div>
+          <div class="avatar av3 pbtn" id="pb3" onclick="selectPerson('pb3','V3','av3')">V3</div>
+          <div class="avatar av4 pbtn" id="pb4" onclick="selectPerson('pb4','V4','av4')">V4</div>
+        </div>
+        <button class="post-btn" onclick="addNote()">Publicar</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const DAYS = [
+  { date: "Día 1", label: "Buenos Aires → Amsterdam", city: "transito", events: [
+    { time: "08:00", ico: "✈", title: "Vuelo EZE → AMS", detail: "Confirmar check-in online 24hs antes", tags: ["vuelo"] },
+    { time: "23:55", ico: "🛬", title: "Llegada Amsterdam Schiphol", detail: "Terminal 3 · Recoger equipaje · Hotel o AirBnB", tags: ["transito"] }
+  ]},
+  { date: "Día 2", label: "Amsterdam — llegada y primer recorrido", city: "amsterdam", events: [
+    { time: "09:00", ico: "🏨", title: "Check-in hotel", detail: "Early check-in a confirmar", tags: ["hotel"] },
+    { time: "11:00", ico: "🚲", title: "Recorrido en bicicleta", detail: "Canales centro histórico · 3 hs aprox", tags: ["actividad"] },
+    { time: "19:00", ico: "🍽", title: "Cena barrio Jordaan", detail: "Reserva pendiente", tags: ["comida"] }
+  ]},
+  { date: "Día 3", label: "Amsterdam — museos y cultura", city: "amsterdam", events: [
+    { time: "09:30", ico: "🎨", title: "Rijksmuseum", detail: "Entradas reservadas online · Llevar código QR", tags: ["actividad"] },
+    { time: "14:00", ico: "🌷", title: "Vondelpark / Keukenhof", detail: "Según temporada de tulipanes", tags: ["actividad"] },
+    { time: "20:00", ico: "🍺", title: "Cena barrio De Pijp", detail: "Cerca del Mercado Albert Cuyp", tags: ["comida"] }
+  ]},
+  { date: "Día 4", label: "Amsterdam → Atenas", city: "transito", events: [
+    { time: "06:00", ico: "🚕", title: "Traslado aeropuerto Schiphol", detail: "Taxi o tren desde Amsterdam Centraal", tags: ["traslado"] },
+    { time: "08:45", ico: "✈", title: "Vuelo AMS → ATH", detail: "3h 30min · Confirmar aerolínea", tags: ["vuelo"] },
+    { time: "13:30", ico: "🛬", title: "Llegada Atenas El. Venizelos", detail: "Metro Línea 3 → Syntagma (40 min)", tags: ["transito"] },
+    { time: "15:30", ico: "🏨", title: "Check-in hotel Atenas", detail: "Zona Monastiraki o Syntagma recomendado", tags: ["hotel"] }
+  ]},
+  { date: "Día 5", label: "Atenas — Acrópolis y Plaka", city: "grecia", events: [
+    { time: "08:00", ico: "🏛", title: "Acrópolis (entrada mañana)", detail: "Entradas compradas · Llevar agua y sombrero", tags: ["actividad"] },
+    { time: "12:00", ico: "🍋", title: "Almuerzo en Plaka", detail: "Barrio histórico al pie de la Acrópolis", tags: ["comida"] },
+    { time: "16:00", ico: "🏺", title: "Museo Arqueológico Nacional", detail: "Opcional · Tesoros de la Grecia antigua", tags: ["actividad"] }
+  ]},
+  { date: "Día 6", label: "Atenas → Santorini", city: "grecia", events: [
+    { time: "07:30", ico: "⛴", title: "Ferry desde el Pireo", detail: "5h · Blue Star o Hellenic · Reservar con anticipación", tags: ["traslado"] },
+    { time: "14:00", ico: "🏨", title: "Check-in Santorini", detail: "Oia o Fira · Confirmar nombre del hotel", tags: ["hotel"] },
+    { time: "19:30", ico: "🌅", title: "Atardecer en Oia", detail: "Llegar 30 min antes — muy concurrido", tags: ["actividad"] }
+  ]},
+  { date: "Días 7–8", label: "Santorini — playas y caldera", city: "grecia", events: [
+    { time: "10:00", ico: "🏖", title: "Playa Perissa o Kamari", detail: "Arena volcánica negra · Traslado en ATV", tags: ["actividad"] },
+    { time: "15:00", ico: "🚤", title: "Tour en barco por la caldera", detail: "Aguas termales + volcán activo · Reservar grupalmente", tags: ["actividad"] },
+    { time: "20:00", ico: "🍷", title: "Cena con vista al mar", detail: "Reservar mesa con anticipación — alta temporada", tags: ["comida"] }
+  ]},
+  { date: "Día 9", label: "Santorini → Estambul", city: "transito", events: [
+    { time: "10:00", ico: "✈", title: "Vuelo hacia Estambul", detail: "Vía Atenas o directo según ruta confirmada", tags: ["vuelo"] },
+    { time: "14:00", ico: "🛬", title: "Llegada aeropuerto IST", detail: "El nuevo aeropuerto es muy grande — prever tiempo", tags: ["transito"] },
+    { time: "16:30", ico: "🏨", title: "Check-in Estambul", detail: "Zona Sultanahmet recomendada para historia", tags: ["hotel"] }
+  ]},
+  { date: "Días 10–11", label: "Estambul — entre dos continentes", city: "turquia", events: [
+    { time: "09:00", ico: "🕌", title: "Mezquita Azul + Hagia Sophia", detail: "Hagia Sophia paga · Cubrir hombros y cabeza", tags: ["actividad"] },
+    { time: "12:00", ico: "🌶", title: "Almuerzo Bazar Egipcio", detail: "Especias, lokum y frutos secos", tags: ["comida"] },
+    { time: "15:00", ico: "🛍", title: "Gran Bazar", detail: "El más grande del mundo · Negociar precio", tags: ["actividad"] },
+    { time: "19:00", ico: "🚢", title: "Crucero al atardecer por el Bósforo", detail: "Entre Europa y Asia · Reservar con anticipación", tags: ["actividad"] },
+    { time: "21:00", ico: "🍽", title: "Cena en Karaköy", detail: "Barrio gastronómico · Mariscos y meze", tags: ["comida"] }
+  ]},
+  { date: "Día 12", label: "Estambul → Buenos Aires", city: "transito", events: [
+    { time: "09:00", ico: "🌿", title: "Mañana libre — Bazar Egipcio", detail: "Últimas compras de especias y souvenirs", tags: ["actividad"] },
+    { time: "13:00", ico: "🚕", title: "Traslado aeropuerto IST", detail: "90 min desde Sultanahmet · Salir con tiempo", tags: ["traslado"] },
+    { time: "17:30", ico: "✈", title: "Vuelo IST → EZE", detail: "Con escala o directo según ruta contratada", tags: ["vuelo"] }
+  ]}
+];
+
+const HOTELS = [
+  { name: "Hotel Amsterdam", city: "Amsterdam", cityClass: "pill-amsterdam", checkin: "Día 2", checkout: "Día 4", confirm: "", noches: "2 noches", obs: "Solicitar habitaciones contiguas. Early check-in a confirmar." },
+  { name: "Hotel Atenas", city: "Atenas · Monastiraki / Syntagma", cityClass: "pill-grecia", checkin: "Día 4", checkout: "Día 6", confirm: "", noches: "2 noches", obs: "Cerca del metro y de Plaka. Confirmar vistas." },
+  { name: "Villa / Hotel Santorini", city: "Santorini · Oia o Fira", cityClass: "pill-grecia", checkin: "Día 6", checkout: "Día 9", confirm: "", noches: "3 noches", obs: "Alta temporada — reservar ya. Vista caldera si es posible." },
+  { name: "Hotel Estambul", city: "Estambul · Sultanahmet", cityClass: "pill-turquia", checkin: "Día 9", checkout: "Día 12", confirm: "", noches: "3 noches", obs: "Zona histórica, todo a pie. Confirmar desayuno incluido." }
+];
+
+const CHECKLIST = {
+  "Documentos y visados": [
+    { id: "c1", text: "Pasaportes vigentes (mín. 6 meses de validez tras el regreso)" },
+    { id: "c2", text: "e-Visa de Turquía tramitada online (sitio oficial — USD 65/persona)" },
+    { id: "c3", text: "Confirmaciones de vuelo en PDF offline" },
+    { id: "c4", text: "Seguro de viaje contratado para los 4 (Europa + Turquía)" }
+  ],
+  "Reservas y entradas": [
+    { id: "c5", text: "Hoteles confirmados en los 4 destinos" },
+    { id: "c6", text: "Entradas Acrópolis compradas online" },
+    { id: "c7", text: "Entradas Rijksmuseum compradas online" },
+    { id: "c8", text: "Ferry Pireo → Santorini reservado (alta temporada!)" },
+    { id: "c9", text: "Tour barco caldera Santorini reservado (grupal)" },
+    { id: "c10", text: "Crucero atardecer Bósforo reservado" }
+  ],
+  "Antes de salir": [
+    { id: "c11", text: "Check-in online vuelo EZE → AMS (24hs antes)" },
+    { id: "c12", text: "Mapas offline descargados (Google Maps / Maps.me)" },
+    { id: "c13", text: "SIM internacional o eSIM activada" },
+    { id: "c14", text: "Euros y liras turcas (algo en efectivo)" },
+    { id: "c15", text: "Adaptadores de enchufe (tipo C para Europa)" }
+  ],
+  "Alojamiento": [
+    { id: "c16", text: "Solicitar early check-in Amsterdam" },
+    { id: "c17", text: "Confirmar habitaciones contiguas en todos los hoteles" },
+    { id: "c18", text: "Cena con vista caldera Santorini — reserva de mesa" }
+  ]
+};
+
+const INITIAL_NOTES = [
+  { initials: "EU", av: "av1", text: "Para Santorini: conviene reservar la villa con mucha anticipación, julio/agosto es altísima temporada. Vi opciones en Booking con desayuno y vista caldera ✨", date: "hace 2 días" },
+  { initials: "JU", av: "av2", text: "La e-Visa de Turquía la saqué en 5 minutos en el sitio oficial (evisa.gov.tr). Son USD 65 por persona. ¡Háganla antes de viajar!", date: "ayer" },
+  { initials: "V3", av: "av3", text: "Para el ferry a Santorini: Blue Star es más cómodo aunque tarda 5–6h. Hellenic Seaways es más rápido (4h). ¿Votamos cuál tomamos?", date: "hoy" }
+];
+
+let checks = {};
+let notes = [...INITIAL_NOTES];
+let activePerson = { id: 'pb1', initials: 'EU', av: 'av1' };
+
+function showTab(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleDay(i) {
+  const body = document.getElementById('db' + i);
+  const tog = document.getElementById('dt' + i);
+  body.classList.toggle('open');
+  tog.classList.toggle('open');
+}
+
+function tagHtml(tags) {
+  return tags.map(t => `<span class="etag etag-${t}">${t}</span>`).join('');
+}
+
+function renderDays() {
+  const c = document.getElementById('days-container');
+  c.innerHTML = DAYS.map((d, i) => `
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(${i})">
+        <span class="city-pill pill-${d.city}">${{amsterdam:'Amsterdam',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'}[d.city]}</span>
+        <div class="day-info">
+          <strong>${d.label}</strong>
+          <span>${d.date} &middot; ${d.events.length} eventos</span>
+        </div>
+        <span class="day-toggle" id="dt${i}">▶</span>
+      </div>
+      <div class="day-body" id="db${i}">
+        <div class="event-list">
+          ${d.events.map(ev => `
+            <div class="event">
+              <div class="event-time">${ev.time}</div>
+              <div class="event-ico">${ev.ico}</div>
+              <div class="event-info">
+                <strong>${ev.title}</strong>
+                <p>${ev.detail}</p>
+                <div class="event-tags">${tagHtml(ev.tags)}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHotels() {
+  const c = document.getElementById('hotels-container');
+  c.innerHTML = HOTELS.map(h => `
+    <div class="hotel-card">
+      <div class="hotel-head">
+        <div class="hotel-name">${h.name}</div>
+        <span class="city-pill ${h.cityClass}">${h.city.split('·')[0].trim()}</span>
+      </div>
+      <div class="hotel-fields">
+        <div class="hfield"><label>Check-in</label><p>${h.checkin}</p></div>
+        <div class="hfield"><label>Check-out</label><p>${h.checkout}</p></div>
+        <div class="hfield"><label>Duración</label><p>${h.noches}</p></div>
+        <div class="hfield"><label>N° confirmación</label><input type="text" placeholder="Pendiente" value="${h.confirm}" /></div>
+      </div>
+      <div class="hotel-obs">📌 ${h.obs}</div>
+    </div>
+  `).join('');
+}
+
+function renderChecklist() {
+  const c = document.getElementById('checklist-container');
+  c.innerHTML = Object.entries(CHECKLIST).map(([group, items]) => `
+    <div class="check-group">
+      <div class="check-group-title">${group}</div>
+      ${items.map(item => `
+        <div class="check-item${checks[item.id] ? ' done' : ''}" id="ci${item.id}" onclick="toggleCheck('${item.id}')">
+          <input type="checkbox" ${checks[item.id] ? 'checked' : ''} />
+          <label>${item.text}</label>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  updateProgress();
+}
+
+function toggleCheck(id) {
+  checks[id] = !checks[id];
+  try { localStorage.setItem('trip_checks', JSON.stringify(checks)); } catch(e) {}
+  renderChecklist();
+}
+
+function updateProgress() {
+  const all = Object.values(CHECKLIST).flat();
+  const done = all.filter(i => checks[i.id]).length;
+  const pct = Math.round(done / all.length * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${done} de ${all.length} tareas completadas`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function renderNotes() {
+  const c = document.getElementById('notes-container');
+  c.innerHTML = notes.map(n => `
+    <div class="note-card">
+      <div class="note-header">
+        <div class="avatar ${n.av}">${n.initials}</div>
+        <strong>${{EU:'Euge',JU:'Juan',V3:'Viajero 3',V4:'Viajero 4'}[n.initials] || n.initials}</strong>
+        <time>${n.date}</time>
+      </div>
+      <p class="note-text">${n.text}</p>
+    </div>
+  `).join('');
+}
+
+function selectPerson(id, initials, av) {
+  document.querySelectorAll('.pbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  activePerson = { id, initials, av };
+}
+
+function addNote() {
+  const input = document.getElementById('note-input');
+  const text = input.value.trim();
+  if (!text) return;
+  notes.unshift({ initials: activePerson.initials, av: activePerson.av, text, date: 'ahora' });
+  input.value = '';
+  renderNotes();
+}
+
+// Load saved checks
+try {
+  const saved = localStorage.getItem('trip_checks');
+  if (saved) checks = JSON.parse(saved);
+} catch(e) {}
+
+renderDays();
+renderHotels();
+renderChecklist();
+renderNotes();
+</script>
+</body>
+</html>
