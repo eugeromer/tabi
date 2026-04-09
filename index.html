@@ -275,6 +275,30 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .gasto-person-items{font-size:13px;color:var(--muted)}
 .gasto-refresh{width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9px;background:var(--accent-light);color:var(--accent);font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:1.25rem}
 .badge-moneda{font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--sand);color:var(--muted);border:1px solid var(--border-s);margin-left:4px}
+
+/* SUBTIPO */
+.subtipo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}
+.subtipo-btn{border:2px solid var(--border);border-radius:9px;padding:8px 4px;cursor:pointer;text-align:center;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;color:var(--muted);background:var(--sand);transition:all .15s}
+.subtipo-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+.subtipo-btn.sel{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+.subtipo-btn span{display:block;font-size:18px;margin-bottom:3px}
+
+/* RESUMEN / TRAVEL BOOK */
+.resumen-hero{background:var(--nav-bg);color:#fff;border-radius:16px;padding:2rem;margin-bottom:1.25rem;text-align:center;position:relative;overflow:hidden}
+.resumen-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--hero-s1),var(--hero-s2),var(--hero-s3))}
+.resumen-hero h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.resumen-hero p{font-size:14px;color:rgba(255,255,255,.6)}
+.counter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+.counter-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem;text-align:center}
+.counter-card .ico{font-size:28px;margin-bottom:6px}
+.counter-card .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--stat);display:block}
+.counter-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.map-container{background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;height:320px}
+.export-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.export-btn{padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--ink2)}
+.export-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.export-btn.primary{background:var(--nav-bg);color:#fff;border-color:var(--nav-bg)}
+.export-btn.primary:hover{opacity:.85}
 </style>
 </head>
 <body data-theme="amsterdam">
@@ -365,8 +389,22 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
   <!-- ACTIVIDAD -->
   <div id="campos-actividad" style="display:none">
-    <div class="sep">Datos de la actividad</div>
-    <div class="frow"><label>Lugar / dirección</label><input id="a-lugar" placeholder="Ej: Acrópolis, Atenas"></div>
+    <div class="sep">Tipo de actividad</div>
+    <div class="frow">
+      <label>Subtipo</label>
+      <div class="subtipo-grid" id="subtipo-grid">
+        <button class="subtipo-btn" data-s="actividad" onclick="selSubtipo('actividad',this)"><span>🎯</span>Actividad</button>
+        <button class="subtipo-btn" data-s="playa" onclick="selSubtipo('playa',this)"><span>🏖</span>Playa</button>
+        <button class="subtipo-btn" data-s="pueblo" onclick="selSubtipo('pueblo',this)"><span>🏘</span>Pueblo</button>
+        <button class="subtipo-btn" data-s="mirador" onclick="selSubtipo('mirador',this)"><span>🗺</span>Mirador</button>
+        <button class="subtipo-btn" data-s="monumento" onclick="selSubtipo('monumento',this)"><span>🏛</span>Monumento</button>
+        <button class="subtipo-btn" data-s="naturaleza" onclick="selSubtipo('naturaleza',this)"><span>🌿</span>Naturaleza</button>
+        <button class="subtipo-btn" data-s="museo" onclick="selSubtipo('museo',this)"><span>🏺</span>Museo</button>
+        <button class="subtipo-btn" data-s="restaurante_bar" onclick="selSubtipo('restaurante_bar',this)"><span>🍷</span>Bar / café</button>
+      </div>
+    </div>
+    <div class="sep">Datos</div>
+    <div class="frow"><label>Nombre del lugar</label><input id="a-lugar" placeholder="Ej: Playa Sarakiniko, Milos"></div>
     <div class="frow"><label>Link Google Maps</label><input id="a-maps" placeholder="https://maps.google.com/..."></div>
     <div class="f2">
       <div class="frow"><label>Hora fin</label><input type="time" id="a-horafin"></div>
@@ -587,6 +625,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
     <div class="ntab" onclick="showTab('ft',this)">📸 Fotos</div>
     <div class="ntab" onclick="showTab('pr',this)">👤 Perfiles</div>
     <div class="ntab" onclick="showTab('gs',this)">💰 Gastos</div>
+    <div class="ntab" onclick="showTab('rs',this);initResumen()">🗺 Resumen</div>
     <div class="ntab ntab-edit" id="etab" onclick="toggleEdit(this)">✏ Editar</div>
   </nav>
 </div>
@@ -647,6 +686,21 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   <section id="tab-gs" class="section">
     <button class="gasto-refresh" onclick="calcGastos()">🔄 Actualizar resumen de gastos</button>
     <div id="gastos-wrap"><div class="loading">Tocá "Actualizar" para calcular los gastos del viaje.</div></div>
+  </section>
+
+  <section id="tab-rs" class="section">
+    <div class="resumen-hero">
+      <h2 id="rs-titulo">El Gran Viaje Mediterráneo</h2>
+      <p id="rs-sub">Verano 2026 · ER · JN · VS · GG</p>
+    </div>
+    <div class="counter-grid" id="rs-counters"></div>
+    <div style="font-size:14px;font-weight:700;color:var(--stat);margin-bottom:8px">📍 Mapa del viaje</div>
+    <div class="map-container" id="rs-map"></div>
+    <div class="export-btns">
+      <button class="export-btn primary" onclick="exportTravelBook()">📖 Exportar Travel Book (HTML)</button>
+      <button class="export-btn" onclick="exportPDF()">📄 Exportar PDF</button>
+    </div>
+    <div id="rs-lugares" style="margin-top:1rem"></div>
   </section>
 
 </main>
@@ -1809,6 +1863,348 @@ window.calcGastos = async () => {
 
 // Add precio display to renderEventCard - patch
 const _origRenderEventCard = renderEventCard;
+
+// ── SUBTIPO ACTIVIDAD ─────────────────────────────────────
+let EVSUBTIPO = 'actividad';
+const SUBTIPO_ICO = {
+  actividad:'🎯',playa:'🏖',pueblo:'🏘',mirador:'🗺',
+  monumento:'🏛',naturaleza:'🌿',museo:'🏺',restaurante_bar:'🍷'
+};
+const SUBTIPO_LABEL = {
+  actividad:'Actividad',playa:'Playa',pueblo:'Pueblo',mirador:'Mirador',
+  monumento:'Monumento',naturaleza:'Naturaleza',museo:'Museo',restaurante_bar:'Bar / café'
+};
+
+window.selSubtipo = (s, el) => {
+  EVSUBTIPO = s;
+  document.querySelectorAll('.subtipo-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+};
+
+function resetSubtipo(){
+  EVSUBTIPO = 'actividad';
+  document.querySelectorAll('.subtipo-btn').forEach(b => {
+    b.classList.toggle('sel', b.dataset.s === 'actividad');
+  });
+}
+
+function setSubtipo(s){
+  EVSUBTIPO = s || 'actividad';
+  document.querySelectorAll('.subtipo-btn').forEach(b => {
+    b.classList.toggle('sel', b.dataset.s === EVSUBTIPO);
+  });
+}
+
+// Patch openNewEv to reset subtipo
+const _origOpenNewEv2 = window.openNewEv;
+window.openNewEv = dayId => {
+  _origOpenNewEv2(dayId);
+  resetSubtipo();
+};
+
+// Patch openEditEv to restore subtipo
+const _origOpenEditEv2 = window.openEditEv;
+window.openEditEv = (dayId, ei) => {
+  _origOpenEditEv2(dayId, ei);
+  const d = DAYS.find(x=>x._id===dayId); if(!d) return;
+  const ev = d.events[ei];
+  if(ev.tipo === 'actividad') setSubtipo(ev.extras?.subtipo || 'actividad');
+};
+
+// Patch savEv to include subtipo
+const _origSavEv2 = window.savEv;
+window.savEv = async () => {
+  // Add subtipo to extras before saving
+  const tipo = EVTIPO;
+  await _origSavEv2();
+  // Already saved — but we need subtipo in extras
+  // Re-patch: intercept collectExtras for actividad
+};
+
+// Actually override collectExtras to include subtipo
+const _origCollectExtras = collectExtras;
+window._patchedCollectExtras = () => {
+  const x = collectExtras();
+  if(EVTIPO === 'actividad') x.subtipo = EVSUBTIPO;
+  return x;
+};
+
+// Override savEv completely to use patched collectExtras
+window.savEv = async () => {
+  const di = document.getElementById('ev-di').value;
+  const ei = document.getElementById('ev-ei').value;
+  const monto = parseFloat(document.getElementById('ev-monto').value) || 0;
+  const moneda = document.getElementById('ev-moneda').value;
+  const participantes = getParticipantes();
+  const extras = window._patchedCollectExtras();
+  const o = {
+    tipo: EVTIPO,
+    hora: document.getElementById('ev-hora').value||'',
+    fecha: document.getElementById('ev-fecha').value||'',
+    titulo: document.getElementById('ev-titulo').value||'Sin título',
+    pago: PAGADO,
+    extras, monto, moneda, participantes
+  };
+  const d = DAYS.find(x=>x._id===di); if(!d) return;
+  const evs = [...(d.events||[])];
+  if(ei!=='') evs[parseInt(ei)] = o; else evs.push(o);
+  const sorted = sortEvents(evs);
+  await updateDoc(doc(db,'days',di), {events:sorted});
+  cm('m-ev');
+};
+
+// Update renderEventCard to show subtipo icon
+const _origRenderEC = renderEventCard;
+window.renderEventCard = (ev, dayId, j) => {
+  // Override tipo icon for actividad with subtipo
+  if(ev.tipo === 'actividad' && ev.extras?.subtipo && ev.extras.subtipo !== 'actividad'){
+    const origTipo = ev.tipo;
+    const patchedEv = {...ev, _subtipoIco: SUBTIPO_ICO[ev.extras.subtipo]||'🎯'};
+    // We'll use the original but swap icon in the result
+    const html = _origRenderEC(ev, dayId, j);
+    return html.replace('class="etype-icon etype-actividad">🎯', `class="etype-icon etype-actividad">${SUBTIPO_ICO[ev.extras.subtipo]||'🎯'}`);
+  }
+  return _origRenderEC(ev, dayId, j);
+};
+
+// ── RESUMEN / TRAVEL BOOK ─────────────────────────────────
+let mapInstance = null;
+
+window.initResumen = () => {
+  renderResumen();
+  setTimeout(initMap, 100);
+};
+
+function getAllEvents(){
+  return DAYS.flatMap(d => (d.events||[]).map(e=>({...e,_city:d.city,_dayLabel:d.label,_dayFecha:d.fecha})));
+}
+
+function renderResumen(){
+  const evs = getAllEvents();
+  const actividades = evs.filter(e=>e.tipo==='actividad');
+
+  // Count by subtipo
+  const counts = {};
+  actividades.forEach(e => {
+    const s = e.extras?.subtipo || 'actividad';
+    counts[s] = (counts[s]||0) + 1;
+  });
+
+  // Unique cities from hotels
+  const citySet = new Set();
+  HOTELS.forEach(h => { if(h.city) citySet.add(h.city.split('·')[0].trim()); });
+  evs.filter(e=>e.tipo==='hotel'&&e.extras?.ciudad).forEach(e=>citySet.add(e.extras.ciudad.trim()));
+
+  const counters = [
+    {ico:'🌍',num:3,lbl:'Países'},
+    {ico:'🏙',num:citySet.size||10,lbl:'Ciudades'},
+    {ico:'🏨',num:HOTELS.length,lbl:'Hoteles'},
+    {ico:'🏖',num:counts.playa||0,lbl:'Playas'},
+    {ico:'🏘',num:counts.pueblo||0,lbl:'Pueblos'},
+    {ico:'🗺',num:counts.mirador||0,lbl:'Miradores'},
+    {ico:'🏛',num:(counts.monumento||0)+(counts.museo||0),lbl:'Monumentos'},
+    {ico:'✈',num:evs.filter(e=>e.tipo==='vuelo').length,lbl:'Vuelos'},
+    {ico:'🍽',num:evs.filter(e=>e.tipo==='restaurante').length+(counts.restaurante_bar||0),lbl:'Restaurantes'},
+    {ico:'🚕',num:evs.filter(e=>e.tipo==='traslado').length,lbl:'Traslados'},
+    {ico:'📍',num:actividades.length,lbl:'Lugares visitados'},
+    {ico:'📅',num:DAYS.length,lbl:'Días de viaje'},
+  ];
+
+  document.getElementById('rs-counters').innerHTML = counters.map(c=>`
+    <div class="counter-card">
+      <div class="ico">${c.ico}</div>
+      <span class="num">${c.num}</span>
+      <span class="lbl">${c.lbl}</span>
+    </div>`).join('');
+
+  // List lugares by subtipo
+  const subtipos = ['playa','pueblo','mirador','monumento','museo','naturaleza','restaurante_bar','actividad'];
+  let lugaresHtml = '';
+  subtipos.forEach(s => {
+    const items = actividades.filter(e=>(e.extras?.subtipo||'actividad')===s);
+    if(!items.length) return;
+    lugaresHtml += `<div style="margin-bottom:1.25rem">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--stat);font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border)">${SUBTIPO_ICO[s]} ${SUBTIPO_LABEL[s]}s visitad${s==='playa'||s==='naturaleza'?'a':'o'}s (${items.length})</div>
+      ${items.map(e=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border-s)">
+          <span style="font-size:13px;flex:1;font-weight:700;color:var(--ink)">${e.titulo||'Sin nombre'}</span>
+          ${e.fecha?`<span style="font-size:11px;color:var(--muted);font-weight:700">${fmtDateDisplay(e.fecha)}</span>`:''}
+          ${e.extras?.maps&&e.extras.maps.startsWith('http')?`<a href="${e.extras.maps}" target="_blank" style="font-size:11px;font-weight:700;color:var(--accent);text-decoration:none">📍</a>`:''}
+        </div>`).join('')}
+    </div>`;
+  });
+  document.getElementById('rs-lugares').innerHTML = lugaresHtml;
+}
+
+function initMap(){
+  const mapEl = document.getElementById('rs-map');
+  if(!mapEl) return;
+  // Load Leaflet
+  if(!window.L){
+    const link = document.createElement('link');
+    link.rel='stylesheet';link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+    const script = document.createElement('script');
+    script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => buildMap(mapEl);
+    document.head.appendChild(script);
+  } else {
+    buildMap(mapEl);
+  }
+}
+
+const CITY_LATLNG = {
+  amsterdam:[52.37,4.89],atenas:[37.97,23.73],mykonos:[37.44,25.35],
+  naxos:[37.10,25.38],koufonisia:[36.93,25.60],paros:[37.08,25.15],
+  milos:[36.72,24.43],santorini:[36.39,25.46],estambul:[41.01,28.97],
+  capadocia:[38.64,34.83],antiparos:[36.98,25.08]
+};
+
+function buildMap(el){
+  if(mapInstance){ mapInstance.remove(); mapInstance=null; }
+  mapInstance = L.map(el).setView([39,22],5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:18
+  }).addTo(mapInstance);
+
+  const evs = getAllEvents();
+  const points = [];
+
+  // Add markers from hotel cities
+  HOTELS.forEach(h => {
+    const cityName = h.city.split('·')[0].trim().toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g,'')
+      .replace(/\s+/g,'');
+    const ll = CITY_LATLNG[cityName];
+    if(ll){
+      L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'var(--accent,#2874A6)',fillOpacity:1})
+        .addTo(mapInstance)
+        .bindPopup(`<strong>${h.name}</strong><br>${h.city}`);
+      points.push(ll);
+    }
+  });
+
+  // Add markers for activities with maps links (extract coords)
+  evs.filter(e=>e.tipo==='actividad'&&e.extras?.maps).forEach(e=>{
+    const url = e.extras.maps;
+    const m = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if(m){
+      const ll = [parseFloat(m[1]),parseFloat(m[2])];
+      const ico = SUBTIPO_ICO[e.extras?.subtipo||'actividad']||'📍';
+      L.marker(ll, {icon: L.divIcon({className:'',html:`<div style="font-size:20px;line-height:1">${ico}</div>`,iconSize:[24,24],iconAnchor:[12,12]})})
+        .addTo(mapInstance)
+        .bindPopup(`<strong>${e.titulo}</strong>`);
+      points.push(ll);
+    }
+  });
+
+  // Draw route line between hotel cities
+  const routePoints = Object.values(CITY_LATLNG).filter(ll=>points.some(p=>Math.abs(p[0]-ll[0])<0.5&&Math.abs(p[1]-ll[1])<0.5));
+  if(points.length > 1){
+    L.polyline(points.slice(0,20),{color:'#2874A6',weight:2,opacity:0.5,dashArray:'6,6'}).addTo(mapInstance);
+    mapInstance.fitBounds(points.map(p=>L.latLng(p[0],p[1])));
+  }
+}
+
+// ── EXPORT TRAVEL BOOK ────────────────────────────────────
+window.exportTravelBook = () => {
+  const evs = getAllEvents();
+  const actividades = evs.filter(e=>e.tipo==='actividad');
+  const counts = {};
+  actividades.forEach(e=>{ const s=e.extras?.subtipo||'actividad'; counts[s]=(counts[s]||0)+1; });
+  const photos = PHOTOS.slice(0,20); // first 20 photos
+
+  const html = `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Travel Book — Amsterdam · Grecia · Turquía 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',sans-serif;background:#F5EFE0;color:#0A1628;font-size:16px}
+.cover{background:linear-gradient(160deg,#0A3D62,#0D2B4E);color:#fff;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 2rem;position:relative}
+.cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#C0522A,#1B6CA8,#2ECC71)}
+.cover h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,4rem);font-weight:700;margin-bottom:.5rem}
+.cover h1 em{font-style:italic;font-weight:400;color:rgba(255,255,255,.7)}
+.cover p{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:.3rem}
+.section{max-width:860px;margin:0 auto;padding:2rem}
+.section h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;margin-bottom:1.5rem;color:#0A3D62;border-bottom:3px solid #1B6CA8;padding-bottom:.5rem}
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.counter{background:#fff;border-radius:12px;padding:1rem;text-align:center;border:1.5px solid #B8CCE0}
+.counter .ico{font-size:2rem;margin-bottom:6px}
+.counter .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#0A3D62;display:block}
+.counter .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#4A5F72;font-weight:700}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:2rem}
+.photo-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+.lugar-group{margin-bottom:1.5rem}
+.lugar-group h3{font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:#1B6CA8;font-weight:700;margin-bottom:8px}
+.lugar-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #DDE8F2;font-size:14px}
+.footer{background:#0D2B4E;color:rgba(255,255,255,.6);text-align:center;padding:2rem;font-size:13px}
+@media print{.cover{min-height:40vh}}
+</style></head><body>
+<div class="cover">
+  <p style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1rem">Travel Book · Verano 2026</p>
+  <h1>Amsterdam · Grecia<br><em>& Turquía</em></h1>
+  <p>Eugenia · Juan José · Valeria · Gustavo</p>
+  <p>${DAYS.length} días · ${new Date().toLocaleDateString('es-AR')}</p>
+</div>
+
+<div class="section">
+  <h2>El viaje en números</h2>
+  <div class="counters">
+    <div class="counter"><div class="ico">🌍</div><span class="num">3</span><span class="lbl">Países</span></div>
+    <div class="counter"><div class="ico">🏙</div><span class="num">${document.getElementById('rs-counters')?.querySelectorAll('.num')[1]?.textContent||'—'}</span><span class="lbl">Ciudades</span></div>
+    <div class="counter"><div class="ico">📅</div><span class="num">${DAYS.length}</span><span class="lbl">Días</span></div>
+    <div class="counter"><div class="ico">✈</div><span class="num">${evs.filter(e=>e.tipo==='vuelo').length}</span><span class="lbl">Vuelos</span></div>
+    <div class="counter"><div class="ico">🏨</div><span class="num">${HOTELS.length}</span><span class="lbl">Hoteles</span></div>
+    <div class="counter"><div class="ico">🏖</div><span class="num">${counts.playa||0}</span><span class="lbl">Playas</span></div>
+    <div class="counter"><div class="ico">🏘</div><span class="num">${counts.pueblo||0}</span><span class="lbl">Pueblos</span></div>
+    <div class="counter"><div class="ico">🍽</div><span class="num">${evs.filter(e=>e.tipo==='restaurante').length}</span><span class="lbl">Restaurantes</span></div>
+    <div class="counter"><div class="ico">📍</div><span class="num">${actividades.length}</span><span class="lbl">Lugares</span></div>
+  </div>
+</div>
+
+${photos.length>0?`<div class="section"><h2>Fotos del viaje</h2><div class="photo-grid">${photos.map(p=>`<img src="${p.data}" alt="${p.caption||''}">`).join('')}</div></div>`:''}
+
+<div class="section">
+  <h2>Lugares visitados</h2>
+  ${['playa','pueblo','mirador','monumento','museo','naturaleza','actividad'].map(s=>{
+    const items = actividades.filter(e=>(e.extras?.subtipo||'actividad')===s);
+    if(!items.length) return '';
+    return `<div class="lugar-group"><h3>${SUBTIPO_ICO[s]} ${SUBTIPO_LABEL[s]}s (${items.length})</h3>
+      ${items.map(e=>`<div class="lugar-item"><span>${e.titulo||'Sin nombre'}</span><span style="color:#4A5F72">${e.fecha?fmtDateDisplay(e.fecha):''}</span></div>`).join('')}
+    </div>`;
+  }).join('')}
+</div>
+
+<div class="section">
+  <h2>Itinerario completo</h2>
+  ${DAYS.map(d=>`<div style="margin-bottom:1rem;padding:1rem;background:#fff;border-radius:10px;border:1px solid #B8CCE0">
+    <div style="font-weight:700;color:#0A3D62;margin-bottom:.5rem">${d.fecha?fmtDateDisplay(d.fecha):d.date} — ${d.label}</div>
+    ${(d.events||[]).map(e=>`<div style="font-size:13px;padding:3px 0;color:#2C3E50">${TIPO_ICO[e.tipo]||'📌'} ${e.hora?e.hora+' · ':''}<strong>${e.titulo||''}</strong></div>`).join('')}
+  </div>`).join('')}
+</div>
+
+<div class="footer">
+  <p>Travel Book generado el ${new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})}</p>
+  <p style="margin-top:4px">Amsterdam · Grecia · Turquía · Verano 2026</p>
+</div>
+</body></html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='travel-book-2026.html';
+  a.click(); URL.revokeObjectURL(url);
+};
+
+window.exportPDF = () => {
+  // Generate HTML and open print dialog
+  window.exportTravelBook();
+  setTimeout(()=>{
+    alert('El archivo HTML se descargó. Abrilo en el navegador y usá Archivo → Imprimir → Guardar como PDF para obtener el PDF.');
+  }, 500);
+};
 
 renderTvl();
 </script>
