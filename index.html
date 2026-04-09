@@ -7,180 +7,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
-/* ═══════════════════════════════════════════
-   TEMAS POR DESTINO
-   ═══════════════════════════════════════════ */
-
-/* DEFAULT / INICIO */
-:root {
-  --hero-bg:#0D2B4E;
-  --hero-bg2:#1A3F6B;
-  --hero-accent:#C4925A;
-  --hero-stripe1:#C0522A;
-  --hero-stripe2:#1B6CA8;
-  --hero-stripe3:#2ECC71;
-  --nav-bg:#0D2B4E;
-  --nav-border:#1B6CA8;
-  --nav-active:#F5C842;
-  --page-bg:#F5EFE0;
-  --card-bg:#FFFFFF;
-  --sand:#F5EFE0;
-  --sand2:#EDE5CF;
-  --ink:#0A1628;
-  --ink2:#2C3E50;
-  --muted:#5A6A7A;
-  --border:#C5D5E8;
-  --border-s:#DDE8F2;
-  --pill-bg:#EBF4FC;
-  --pill-color:#0D4A7A;
-  --pill-border:#B0CCEA;
-  --accent:#1B6CA8;
-  --accent-light:#EBF4FC;
-  --success:#1A6B3A;
-  --warn:#A0410D;
-  --terra:#C0522A;
-  --terra-light:#FAEEE9;
-  --stat-color:#0D2B4E;
-  --transition-speed: 0.8s;
+:root{
+  --hero-bg:#0D2B4E;--hero-bg2:#1A3F6B;--hero-accent:#C4925A;
+  --hero-s1:#C0522A;--hero-s2:#1B6CA8;--hero-s3:#2ECC71;
+  --nav-bg:#0D2B4E;--nav-border:#1B6CA8;--nav-active:#F5C842;
+  --page-bg:#EEF3F8;--card:#FFFFFF;--sand:#E8EFF5;--sand2:#D5E2EE;
+  --ink:#0A1628;--ink2:#1C2E40;--muted:#4A5F72;
+  --border:#B8CCE0;--border-s:#D0DFE8;
+  --accent:#2874A6;--accent-light:#D5E8F5;
+  --success:#1A6B3A;--success-bg:#E5F4EB;
+  --warn:#A0410D;--warn-bg:#FAEEE9;
+  --stat:#1A2F4A;--terra:#C0522A;--terra-light:#FAEEE9;
+  --tr:0.7s;
 }
-
-/* AMSTERDAM 🇳🇱 — canal azul, ladrillo, gris bruma */
-[data-theme="amsterdam"] {
-  --hero-bg:#1A2F4A;
-  --hero-bg2:#243D5C;
-  --hero-accent:#E8943A;
-  --hero-stripe1:#B5451A;
-  --hero-stripe2:#2874A6;
-  --hero-stripe3:#D4AC0D;
-  --nav-bg:#1A2F4A;
-  --nav-border:#2874A6;
-  --nav-active:#E8943A;
-  --page-bg:#EEF3F8;
-  --card-bg:#FFFFFF;
-  --sand:#E8EFF5;
-  --sand2:#D5E2EE;
-  --ink:#0A1828;
-  --ink2:#1C2E40;
-  --muted:#4A5F72;
-  --border:#B8CCE0;
-  --border-s:#D0DFE8;
-  --pill-bg:#D5E8F5;
-  --pill-color:#0D3A60;
-  --pill-border:#90BCDA;
-  --accent:#2874A6;
-  --accent-light:#D5E8F5;
-  --stat-color:#1A2F4A;
+[data-theme="grecia"]{
+  --hero-bg:#0A3D62;--hero-bg2:#1A5276;--hero-accent:#F0C040;
+  --hero-s1:#D4AC0D;--hero-s2:#1A8FCA;--hero-s3:#27AE60;
+  --nav-bg:#0A3D62;--nav-border:#1A8FCA;--nav-active:#F0C040;
+  --page-bg:#F0F7FF;--sand:#E8F2FA;--sand2:#D0E5F5;
+  --ink:#051525;--ink2:#0D2B42;--muted:#3A5570;
+  --border:#90C0E0;--border-s:#C0DCF0;
+  --accent:#1A8FCA;--accent-light:#D0EAF8;--stat:#0A3D62;
 }
-
-/* GRECIA 🇬🇷 — azul egeo, blanco cal, dorado */
-[data-theme="grecia"] {
-  --hero-bg:#0A3D62;
-  --hero-bg2:#1A5276;
-  --hero-accent:#F0C040;
-  --hero-stripe1:#D4AC0D;
-  --hero-stripe2:#1A8FCA;
-  --hero-stripe3:#27AE60;
-  --nav-bg:#0A3D62;
-  --nav-border:#1A8FCA;
-  --nav-active:#F0C040;
-  --page-bg:#F0F7FF;
-  --card-bg:#FFFFFF;
-  --sand:#E8F2FA;
-  --sand2:#D0E5F5;
-  --ink:#051525;
-  --ink2:#0D2B42;
-  --muted:#3A5570;
-  --border:#90C0E0;
-  --border-s:#C0DCF0;
-  --pill-bg:#D0EAF8;
-  --pill-color:#083050;
-  --pill-border:#80B8E0;
-  --accent:#1A8FCA;
-  --accent-light:#D0EAF8;
-  --stat-color:#0A3D62;
+[data-theme="turquia"]{
+  --hero-bg:#2C1654;--hero-bg2:#3D2070;--hero-accent:#00BCD4;
+  --hero-s1:#8B0000;--hero-s2:#00838F;--hero-s3:#E65100;
+  --nav-bg:#2C1654;--nav-border:#00838F;--nav-active:#00BCD4;
+  --page-bg:#F5F0FF;--sand:#EDE8F8;--sand2:#DDD5F0;
+  --ink:#1A0A30;--ink2:#2D1A48;--muted:#5A4878;
+  --border:#C0A8E0;--border-s:#D8C8F0;
+  --accent:#00838F;--accent-light:#E0F5F8;--stat:#2C1654;
 }
-
-/* TURQUÍA 🇹🇷 — púrpura Bósforo, turquesa, granate */
-[data-theme="turquia"] {
-  --hero-bg:#2C1654;
-  --hero-bg2:#3D2070;
-  --hero-accent:#00BCD4;
-  --hero-stripe1:#8B0000;
-  --hero-stripe2:#00838F;
-  --hero-stripe3:#E65100;
-  --nav-bg:#2C1654;
-  --nav-border:#00838F;
-  --nav-active:#00BCD4;
-  --page-bg:#F5F0FF;
-  --card-bg:#FFFFFF;
-  --sand:#EDE8F8;
-  --sand2:#DDD5F0;
-  --ink:#1A0A30;
-  --ink2:#2D1A48;
-  --muted:#5A4878;
-  --border:#C0A8E0;
-  --border-s:#D8C8F0;
-  --pill-bg:#E8D8F8;
-  --pill-color:#3A0870;
-  --pill-border:#A888D0;
-  --accent:#00838F;
-  --accent-light:#E0F5F8;
-  --stat-color:#2C1654;
-}
-
-/* ═══════════════════════════════════════════
-   TRANSICIÓN GLOBAL
-   ═══════════════════════════════════════════ */
-body, .hero, .nav-wrap, .day-card, .hotel-card, .note-card,
-.compose, .scard, .profile-card, .cgroup, .hfield, .pf,
-.cpill, .etag, .ibtn, .add-row, .mbg .mbox {
-  transition:
-    background-color var(--transition-speed) ease,
-    border-color var(--transition-speed) ease,
-    color var(--transition-speed) ease;
-}
-
+body,div,button,input,select,textarea,span,p{transition:background-color var(--tr) ease,border-color var(--tr) ease,color var(--tr) ease;}
 html{scroll-behavior:smooth}
 body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);font-size:16px;line-height:1.6}
 
-/* THEME SWITCHER */
-.theme-bar{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;background:rgba(0,0,0,.25);backdrop-filter:blur(4px)}
-.theme-btn{border:2px solid transparent;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;letter-spacing:.06em;transition:all .3s;opacity:.7}
-.theme-btn:hover{opacity:1}
-.theme-btn.active{opacity:1;border-color:rgba(255,255,255,.8);color:#fff}
-.theme-btn[data-t="amsterdam"]{background:rgba(40,116,166,.6);color:#A8D4F5}
-.theme-btn[data-t="grecia"]{background:rgba(26,143,202,.6);color:#AADDF5}
-.theme-btn[data-t="turquia"]{background:rgba(0,131,143,.6);color:#A0EEF5}
-
-.sync-bar{background:var(--hero-bg2);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;padding:6px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background-color var(--transition-speed)}
-.sdot{width:9px;height:9px;border-radius:50%;background:#4CAF50;flex-shrink:0}
+/* SYNC */
+.sync-bar{background:var(--hero-bg2);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;padding:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sdot{width:9px;height:9px;border-radius:50%;background:#4CAF50;flex-shrink:0;transition:background .3s}
 .sdot.warn{background:#FF9800}.sdot.err{background:#F44336}
 
 /* HERO */
 .hero{background:var(--hero-bg);color:#fff;padding:2.5rem 2rem 2rem;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--hero-stripe1),var(--hero-stripe2),var(--hero-stripe3),var(--hero-stripe1));transition:background var(--transition-speed)}
-.hero-inner{max-width:860px;margin:0 auto;position:relative}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--hero-s1),var(--hero-s2),var(--hero-s3),var(--hero-s1))}
+.hi{max-width:860px;margin:0 auto;position:relative}
 .hero-dest{font-family:'Playfair Display',serif;font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.5rem}
-.hero h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin-bottom:.3rem}
+.hero h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.08;margin-bottom:.3rem}
 .hero h1 em{font-style:italic;font-weight:400;color:rgba(255,255,255,.65)}
 .hero-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:1.75rem}
 .travelers{display:flex;gap:10px;flex-wrap:wrap}
-.traveler{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:40px;padding:4px 14px 4px 4px;transition:background .3s}
-.traveler:hover{background:rgba(255,255,255,.16)}
-
-/* AVATARES CON FOTO */
+.traveler{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:40px;padding:4px 14px 4px 4px}
 .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:2px solid rgba(255,255,255,.35);overflow:hidden;cursor:pointer;position:relative}
 .av img{width:100%;height:100%;object-fit:cover;display:block}
-.av.no-photo{background:var(--av-bg,#1B6CA8);color:#fff}
-.av1{--av-bg:#1B5E8E}.av2{--av-bg:#A03020}.av3{--av-bg:#155A30}.av4{--av-bg:#5E2E8E}
-.av-upload{position:absolute;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
-.av:hover .av-upload{display:flex}
-
+.av.np{background:var(--avbg,#1B5E8E);color:#fff}
+.av1{--avbg:#1B5E8E}.av2{--avbg:#A03020}.av3{--avbg:#155A30}.av4{--avbg:#5E2E8E}
+.av-up{position:absolute;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;font-size:15px}
+.av:hover .av-up{display:flex}
 .traveler span{font-size:13px;color:rgba(255,255,255,.88);font-weight:700}
-.hero-stats{display:flex;gap:2rem;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
+.theme-row{display:flex;align-items:center;gap:6px;margin-top:1.25rem;background:rgba(0,0,0,.2);border-radius:10px;padding:7px 12px;flex-wrap:wrap}
+.theme-row span{font-size:11px;color:rgba(255,255,255,.45);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.tbtn{border:2px solid transparent;border-radius:16px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;opacity:.7;transition:all .3s}
+.tbtn:hover{opacity:1}
+.tbtn.on{opacity:1;border-color:rgba(255,255,255,.7);color:#fff}
+.tbtn[data-t="amsterdam"]{background:rgba(40,116,166,.6);color:#A8D4F5}
+.tbtn[data-t="grecia"]{background:rgba(26,143,202,.6);color:#AADDF5}
+.tbtn[data-t="turquia"]{background:rgba(0,131,143,.6);color:#A0EEF5}
+.hero-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
 .hstat p:first-child{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:2px;font-weight:700}
-.hstat p:last-child{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700}
+.hstat p:last-child{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700}
 
 .ebanner{background:#FFF8E7;border-bottom:2px solid #E8A020;padding:.6rem 2rem;font-size:14px;font-weight:700;color:#7A4A00;text-align:center;display:none}
 .ebanner.show{display:block}
@@ -190,62 +84,70 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .nav{max-width:860px;margin:0 auto;display:flex;padding:0 1rem;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .ntab{padding:.85rem .9rem;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;margin-bottom:-3px}
-.ntab:hover{color:rgba(255,255,255,.9)}
-.ntab.active{color:#fff;border-color:var(--nav-active)}
+.ntab:hover{color:rgba(255,255,255,.9)}.ntab.active{color:#fff;border-color:var(--nav-active)}
 .ntab-edit{color:var(--hero-accent) !important}
 
-/* MAIN */
 .main{max-width:860px;margin:0 auto;padding:1.75rem 2rem}
 .section{display:none}.section.active{display:block}
 
 /* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.75rem}
-.scard{background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.scard{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center}
 .scard p:first-child{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px;font-weight:700}
-.scard p:last-child{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--stat-color)}
-
-/* SECTION HEADER with theme indicator */
-.section-dest-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:1rem;background:var(--accent-light);color:var(--accent);border:1px solid var(--border)}
+.scard p:last-child{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--stat)}
 
 /* DAY CARDS */
-.day-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden}
-.day-header{display:flex;align-items:center;gap:10px;padding:.9rem 1.25rem}
+.day-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.day-hd{display:flex;align-items:center;gap:10px;padding:.9rem 1.25rem}
 .cpill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-
-/* Pills — colores fijos para legibilidad */
 .p-amsterdam{background:#D5E8F5;color:#0D3A60;border:1px solid #90BCDA}
 .p-grecia{background:#D5EEE0;color:#0D4020;border:1px solid #90C8A8}
 .p-turquia{background:#EAD8F5;color:#3A0870;border:1px solid #B888D8}
 .p-transito{background:#EEF0F3;color:#3A4A5A;border:1px solid #C5CEDA}
-
 .day-info{flex:1;min-width:0;cursor:pointer}
 .day-info strong{font-size:15px;font-weight:700;display:block;color:var(--ink)}
 .day-info span{font-size:13px;color:var(--muted)}
+.day-meta{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap}
+.day-meta-chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--sand);color:var(--muted);border:1px solid var(--border-s)}
 .day-actions{display:flex;gap:6px;align-items:center}
-.ibtn{background:var(--card-bg);border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.ibtn{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);white-space:nowrap}
 .ibtn:hover{background:var(--accent-light);border-color:var(--accent)}
 .chev{font-size:13px;color:var(--muted);transition:transform .2s;cursor:pointer;flex-shrink:0;font-weight:700}
 .chev.open{transform:rotate(90deg)}
 .day-body{display:none;border-top:1.5px solid var(--border-s)}.day-body.open{display:block}
-.elist{padding:.4rem 1.25rem}
-.ev{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border-s)}.ev:last-child{border-bottom:none}
-.etime{font-size:13px;color:var(--muted);min-width:40px;padding-top:3px;font-weight:700}
-.eico{font-size:16px;width:22px;text-align:center;padding-top:1px;flex-shrink:0}
-.einfo{flex:1}
-.einfo strong{font-size:14px;font-weight:700;display:block;color:var(--ink)}
-.einfo p{font-size:13px;color:var(--ink2);margin-top:2px;line-height:1.5}
-.etags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
-.etag{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700}
-.etag-vuelo{background:#DDEEFF;color:#0D3A70;border:1px solid #B5CCEE}
-.etag-hotel{background:#DDEEE5;color:#0D4020;border:1px solid #A5CCB5}
-.etag-actividad{background:#FFF0D8;color:#6A3500;border:1px solid #E0C090}
-.etag-traslado{background:#EDEEF0;color:#2A3A4A;border:1px solid #BCCADA}
-.etag-comida{background:#FDDEE8;color:#6A0A30;border:1px solid #EAACCB}
+.elist{padding:.25rem 1rem}
+
+/* EVENT CARDS — rico */
+.ecard{background:var(--card);border:1.5px solid var(--border-s);border-radius:12px;margin:.5rem 0;overflow:hidden}
+.ecard-hd{display:flex;gap:10px;align-items:flex-start;padding:.75rem 1rem}
+.etype-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.etype-vuelo{background:#DDEEFF}.etype-hotel{background:#DDEEE5}.etype-actividad{background:#FFF0D8}
+.etype-restaurante{background:#FDDEE8}.etype-traslado{background:#EDEEF0}.etype-otro{background:#F0EDF8}
+.ecard-main{flex:1;min-width:0}
+.ecard-title{font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ecard-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.ecard-time{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:2px 8px;border-radius:8px;white-space:nowrap}
+.ecard-actions{display:flex;gap:4px;align-items:flex-start}
+
+/* PAGO BADGE */
+.badge-pago{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;white-space:nowrap}
+.badge-pago.si{background:#E5F4EB;color:#1A6B3A;border:1px solid #A0CCB0}
+.badge-pago.no{background:#FFF3E0;color:#8B4500;border:1px solid #E0B870}
+.badge-pago.na{background:var(--sand);color:var(--muted);border:1px solid var(--border-s)}
+
+/* EVENT DETAIL GRID */
+.edetails{padding:0 1rem .75rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.edetail{background:var(--sand);border-radius:8px;padding:7px 10px;border:1px solid var(--border-s)}
+.edetail label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-bottom:2px;font-weight:700}
+.edetail p{font-size:13px;font-weight:700;color:var(--ink);word-break:break-word}
+.edetail.full{grid-column:1/-1}
+.edetail a{color:var(--accent);text-decoration:none;font-weight:700}
+.edetail a:hover{text-decoration:underline}
 
 /* HOTELS */
-.hotel-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:14px;padding:1.35rem;margin-bottom:10px}
+.hotel-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1.35rem;margin-bottom:10px}
 .hotel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px}
-.hotel-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--stat-color)}
+.hotel-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--stat)}
 .hfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:12px}
 .hfield{background:var(--sand);border:1px solid var(--sand2);border-radius:8px;padding:9px 11px}
 .hfield label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:3px;font-weight:700}
@@ -260,7 +162,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .pbar{height:8px;background:var(--border-s);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
 .pfill{height:100%;background:var(--success);border-radius:4px;transition:width .4s ease}
 .cgroup{margin-bottom:1.75rem}
-.cg-title{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--stat-color);font-weight:700;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.cg-title{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--stat);font-weight:700;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .citem{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border-s)}
 .citem:last-child{border-bottom:none}
 .citem input[type=checkbox]{width:20px;height:20px;margin-top:1px;cursor:pointer;accent-color:var(--success);flex-shrink:0}
@@ -268,22 +170,20 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .citem.done label{text-decoration:line-through;color:var(--muted)}
 
 /* NOTAS */
-.note-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.35rem;margin-bottom:10px}
+.note-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.35rem;margin-bottom:10px}
 .note-hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .note-hd strong{font-size:14px;font-weight:700;color:var(--ink)}
 .note-hd time{font-size:12px;color:var(--muted);margin-left:auto;font-weight:700}
 .xbtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:0 3px;line-height:1}
 .xbtn:hover{color:#c0392b}
 .note-text{font-size:15px;color:var(--ink2);line-height:1.65}
-.compose{background:var(--card-bg);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.35rem;margin-top:6px}
+.compose{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem 1.35rem;margin-top:6px}
 .compose textarea{width:100%;background:none;border:none;outline:none;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);resize:none;line-height:1.65}
 .compose-ft{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-s);flex-wrap:wrap;gap:8px}
 .pbtns{display:flex;gap:7px;flex-wrap:wrap}
 .pbtn{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pbtn.sel{border-color:var(--ink)}
-.pbtn img{width:100%;height:100%;object-fit:cover}
-.post-btn{font-size:14px;font-family:'Lato',sans-serif;padding:8px 20px;background:var(--nav-bg);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;transition:background var(--transition-speed)}
-.post-btn:hover{opacity:.85}
+.post-btn{font-size:14px;font-family:'Lato',sans-serif;padding:8px 20px;background:var(--nav-bg);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700}
 
 /* FOTOS */
 .photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:10px}
@@ -292,8 +192,8 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .photo-owner{position:absolute;bottom:0;left:0;right:0;background:rgba(13,43,78,.82);padding:4px 6px;font-size:11px;font-weight:700;color:#fff;text-align:center}
 .photo-del{position:absolute;top:4px;right:4px;background:rgba(170,20,20,.88);border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px;color:#fff;display:none;align-items:center;justify-content:center;font-weight:700;line-height:1}
 .photo-thumb:hover .photo-del{display:flex}
-.add-photo-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;color:var(--accent);background:var(--accent-light);transition:background .2s;margin-top:4px}
-.upload-prog{background:var(--accent-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--stat-color);margin-top:8px;display:none}
+.add-photo-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;color:var(--accent);background:var(--accent-light);margin-top:4px}
+.upload-prog{background:var(--accent-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--stat);margin-top:8px;display:none}
 
 /* VISOR */
 .vbg{display:none;position:fixed;inset:0;background:rgba(10,22,40,.93);z-index:300;align-items:center;justify-content:center;flex-direction:column;padding:1rem}
@@ -303,13 +203,13 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .vclose{position:absolute;top:18px;right:22px;background:rgba(255,255,255,.18);border:none;border-radius:50%;width:44px;height:44px;cursor:pointer;font-size:24px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
 
 /* PERFILES */
-.profile-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:12px}
+.profile-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:12px}
 .profile-hd{display:flex;align-items:center;gap:14px;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1.5px solid var(--border-s)}
 .profile-av{width:56px;height:56px;border-radius:50%;font-size:16px;font-weight:700;flex-shrink:0;border:3px solid var(--border);overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
 .profile-av img{width:100%;height:100%;object-fit:cover}
-.profile-av .av-upload{position:absolute;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;font-size:18px}
-.profile-av:hover .av-upload{display:flex}
-.profile-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--stat-color)}
+.profile-av .av-up{position:absolute;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;font-size:18px}
+.profile-av:hover .av-up{display:flex}
+.profile-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--stat)}
 .profile-sub{font-size:13px;color:var(--muted);font-weight:700}
 .profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .pf{background:var(--sand);border-radius:10px;padding:10px 12px;border:1px solid var(--sand2)}
@@ -317,37 +217,53 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .pf-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:5px}
 .pf-val{font-size:14px;color:var(--ink);line-height:1.55}
 .pf-empty{color:var(--muted);font-style:italic;font-size:13px}
-.edit-prof-btn{margin-top:12px;width:100%;padding:9px;border:1.5px solid var(--border);border-radius:9px;background:none;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--accent);cursor:pointer;transition:background .2s}
+.edit-prof-btn{margin-top:12px;width:100%;padding:9px;border:1.5px solid var(--border);border-radius:9px;background:none;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--accent);cursor:pointer}
 .edit-prof-btn:hover{background:var(--accent-light)}
 
-.add-row{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:var(--accent);margin-top:6px;transition:background .2s;background:rgba(0,0,0,.02)}
+.add-row{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:var(--accent);margin-top:6px;background:rgba(0,0,0,.02)}
 .add-row:hover{background:var(--accent-light)}
 .loading{text-align:center;padding:2rem;color:var(--muted);font-size:15px;font-weight:700}
+
+/* EVENT TYPE SELECTOR */
+.etype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+.etype-btn{border:2px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;color:var(--ink2);background:var(--sand);transition:all .15s}
+.etype-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+.etype-btn.sel{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+.etype-btn span{display:block;font-size:22px;margin-bottom:4px}
 
 /* MODAL */
 .mbg{display:none;position:fixed;inset:0;background:rgba(10,22,40,.65);z-index:200;align-items:center;justify-content:center;padding:1rem}
 .mbg.open{display:flex}
-.mbox{background:var(--card-bg);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:1.75rem;border:2px solid var(--border)}
-.mbox h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;color:var(--stat-color)}
+.mbox{background:var(--card);border-radius:16px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;padding:1.75rem;border:2px solid var(--border)}
+.mbox h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;color:var(--stat)}
 .mbox h3 button{background:none;border:none;cursor:pointer;font-size:24px;color:var(--muted);line-height:1}
-.frow{margin-bottom:14px}
-.frow label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:5px;font-weight:700}
+.frow{margin-bottom:12px}
+.frow label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:4px;font-weight:700}
 .frow input,.frow select,.frow textarea{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);background:var(--sand);outline:none}
 .frow input:focus,.frow select:focus,.frow textarea:focus{border-color:var(--accent)}
-.frow textarea{resize:vertical;min-height:80px}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mft{display:flex;gap:8px;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1.5px solid var(--border-s);flex-wrap:wrap}
+.frow textarea{resize:vertical;min-height:70px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mft{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:1.5px solid var(--border-s);flex-wrap:wrap}
 .bcnl{padding:9px 18px;border:2px solid var(--border);border-radius:9px;background:none;font-family:'Lato',sans-serif;font-size:14px;cursor:pointer;color:var(--muted);font-weight:700}
-.bsav{padding:9px 18px;border:none;border-radius:9px;background:var(--nav-bg);color:#fff;font-family:'Lato',sans-serif;font-size:14px;cursor:pointer;font-weight:700;transition:background var(--transition-speed)}
+.bsav{padding:9px 18px;border:none;border-radius:9px;background:var(--nav-bg);color:#fff;font-family:'Lato',sans-serif;font-size:14px;cursor:pointer;font-weight:700}
 .bdel{padding:9px 18px;border:none;border-radius:9px;background:#B02020;color:#fff;font-family:'Lato',sans-serif;font-size:14px;cursor:pointer;font-weight:700}
+.sep{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;padding:.5rem 0 .25rem;border-top:1px solid var(--border-s);margin-top:4px}
 .tchk{display:flex;gap:12px;flex-wrap:wrap}
 .tchk label{display:flex;align-items:center;gap:5px;font-size:14px;cursor:pointer;font-weight:700;color:var(--ink2)}
 .tchk input{cursor:pointer;accent-color:var(--accent);width:18px;height:18px}
+.pago-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--sand);border-radius:9px;border:2px solid var(--border)}
+.pago-row label{font-size:14px;font-weight:700;color:var(--ink2);flex:1}
+.pago-toggle{display:flex;gap:6px}
+.ptbtn{padding:5px 14px;border-radius:8px;font-size:13px;font-weight:700;border:2px solid var(--border);cursor:pointer;font-family:'Lato',sans-serif;background:var(--card);color:var(--muted)}
+.ptbtn.si{background:#E5F4EB;color:#1A6B3A;border-color:#A0CCB0}
+.ptbtn.no{background:#FFF3E0;color:#8B4500;border-color:#E0B870}
 
 @media(max-width:600px){
   .hero{padding:2rem 1.25rem 1.75rem}.main{padding:1.25rem}
   .stats-grid{grid-template-columns:repeat(2,1fr)}.hero-stats{gap:1.25rem}.nav{padding:0 .5rem}
-  .f2{grid-template-columns:1fr}.profile-fields{grid-template-columns:1fr}.pf.full{grid-column:1}
+  .f2,.f3{grid-template-columns:1fr}.profile-fields{grid-template-columns:1fr}.pf.full{grid-column:1}
+  .edetails{padding-left:1rem;grid-template-columns:1fr}.etype-grid{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
@@ -360,15 +276,171 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   <div class="vcap" id="vcap"></div>
 </div>
 
-<!-- MODALS -->
+<!-- MODAL EVENTO -->
+<div class="mbg" id="m-ev"><div class="mbox">
+  <h3 id="m-ev-t">Evento <button onclick="cm('m-ev')">×</button></h3>
+  <input type="hidden" id="ev-di"><input type="hidden" id="ev-ei">
+
+  <!-- TIPO -->
+  <div class="frow" id="ev-tipo-row">
+    <label>Tipo de evento</label>
+    <div class="etype-grid">
+      <button class="etype-btn sel" data-tipo="vuelo" onclick="selTipo('vuelo',this)"><span>✈</span>Vuelo</button>
+      <button class="etype-btn" data-tipo="hotel" onclick="selTipo('hotel',this)"><span>🏨</span>Hotel</button>
+      <button class="etype-btn" data-tipo="actividad" onclick="selTipo('actividad',this)"><span>🎯</span>Actividad</button>
+      <button class="etype-btn" data-tipo="restaurante" onclick="selTipo('restaurante',this)"><span>🍽</span>Restaurante</button>
+      <button class="etype-btn" data-tipo="traslado" onclick="selTipo('traslado',this)"><span>🚕</span>Traslado</button>
+      <button class="etype-btn" data-tipo="otro" onclick="selTipo('otro',this)"><span>📌</span>Otro</button>
+    </div>
+  </div>
+
+  <div class="f2">
+    <div class="frow"><label>Hora</label><input id="ev-hora" placeholder="08:00" maxlength="5"></div>
+    <div class="frow"><label>Fecha</label><input id="ev-fecha" placeholder="15 jul" maxlength="10"></div>
+  </div>
+
+  <!-- CAMPOS COMUNES -->
+  <div class="frow"><label id="ev-titulo-lbl">Título</label><input id="ev-titulo" placeholder="Ej: Vuelo EZE → AMS"></div>
+
+  <!-- VUELO -->
+  <div id="campos-vuelo">
+    <div class="sep">Datos del vuelo</div>
+    <div class="f2">
+      <div class="frow"><label>Aerolínea</label><input id="v-aerolinea" placeholder="Ej: KLM"></div>
+      <div class="frow"><label>N° de vuelo</label><input id="v-numero" placeholder="Ej: KL702"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Origen</label><input id="v-origen" placeholder="Ej: EZE — Ezeiza"></div>
+      <div class="frow"><label>Destino</label><input id="v-destino" placeholder="Ej: AMS — Schiphol"></div>
+    </div>
+    <div class="f3">
+      <div class="frow"><label>Salida</label><input id="v-salida" placeholder="08:00"></div>
+      <div class="frow"><label>Llegada</label><input id="v-llegada" placeholder="23:55"></div>
+      <div class="frow"><label>Duración</label><input id="v-duracion" placeholder="13h 30m"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Terminal</label><input id="v-terminal" placeholder="Ej: Terminal 3"></div>
+      <div class="frow"><label>Escala</label><input id="v-escala" placeholder="Ej: Sin escala"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Código PNR / reserva</label><input id="v-pnr" placeholder="Ej: ABC123"></div>
+      <div class="frow"><label>Clase</label><input id="v-clase" placeholder="Ej: Economy"></div>
+    </div>
+    <div class="frow"><label>Equipaje incluido</label><input id="v-equipaje" placeholder="Ej: 23kg bodega + 10kg cabina"></div>
+    <div class="frow"><label>Notas</label><textarea id="v-notas" placeholder="Check-in online, milla, asientos, etc."></textarea></div>
+  </div>
+
+  <!-- HOTEL -->
+  <div id="campos-hotel" style="display:none">
+    <div class="sep">Datos del hotel</div>
+    <div class="frow"><label>Nombre del hotel</label><input id="h-nombre" placeholder="Ej: Hotel Atenas Plaka"></div>
+    <div class="frow"><label>Dirección</label><input id="h-dir" placeholder="Calle, ciudad"></div>
+    <div class="f2">
+      <div class="frow"><label>Check-in</label><input id="h-cin" placeholder="15 jul · 14:00"></div>
+      <div class="frow"><label>Check-out</label><input id="h-cout" placeholder="17 jul · 11:00"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>N° confirmación</label><input id="h-conf" placeholder="Ej: BK-123456"></div>
+      <div class="frow"><label>Teléfono</label><input id="h-tel" placeholder="+30 21 0000 0000"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Habitaciones</label><input id="h-hab" placeholder="Ej: 2 dobles, vista al mar"></div>
+      <div class="frow"><label>Desayuno</label><input id="h-desayuno" placeholder="Incluido / No incluido"></div>
+    </div>
+    <div class="frow"><label>Link de reserva</label><input id="h-link" placeholder="https://..."></div>
+    <div class="frow"><label>Notas</label><textarea id="h-notas" placeholder="Pedidos especiales, acceso, parking, etc."></textarea></div>
+  </div>
+
+  <!-- ACTIVIDAD -->
+  <div id="campos-actividad" style="display:none">
+    <div class="sep">Datos de la actividad</div>
+    <div class="frow"><label>Lugar / dirección</label><input id="a-lugar" placeholder="Ej: Acrópolis, Atenas"></div>
+    <div class="f2">
+      <div class="frow"><label>Duración estimada</label><input id="a-duracion" placeholder="Ej: 3 horas"></div>
+      <div class="frow"><label>Precio por persona</label><input id="a-precio" placeholder="Ej: €25 / gratis"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>N° confirmación / entrada</label><input id="a-conf" placeholder="Ej: QR-78901"></div>
+      <div class="frow"><label>Proveedor / guía</label><input id="a-proveedor" placeholder="Ej: GetYourGuide"></div>
+    </div>
+    <div class="frow"><label>Link de reserva</label><input id="a-link" placeholder="https://..."></div>
+    <div class="frow"><label>Notas</label><textarea id="a-notas" placeholder="Qué llevar, cómo llegar, tips, dress code..."></textarea></div>
+  </div>
+
+  <!-- RESTAURANTE -->
+  <div id="campos-restaurante" style="display:none">
+    <div class="sep">Datos del restaurante</div>
+    <div class="frow"><label>Nombre del restaurante</label><input id="r-nombre" placeholder="Ej: Taverna Plaka"></div>
+    <div class="frow"><label>Dirección</label><input id="r-dir" placeholder="Calle, barrio, ciudad"></div>
+    <div class="f2">
+      <div class="frow"><label>Tipo de cocina</label><input id="r-cocina" placeholder="Ej: Griega, mariscos"></div>
+      <div class="frow"><label>Precio estimado</label><input id="r-precio" placeholder="Ej: €30/persona"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Horario</label><input id="r-horario" placeholder="Ej: 20:30"></div>
+      <div class="frow"><label>N° de reserva</label><input id="r-conf" placeholder="Ej: 4 personas - nombre"></div>
+    </div>
+    <div class="frow"><label>Link / web</label><input id="r-link" placeholder="https://..."></div>
+    <div class="frow">
+      <label>Reserva</label>
+      <select id="r-reserva"><option value="">— Estado —</option><option value="Reserva hecha ✓">Reserva hecha ✓</option><option value="Sin reserva — entrar directo">Sin reserva — entrar directo</option><option value="Pendiente de reserva">Pendiente de reserva</option></select>
+    </div>
+    <div class="frow"><label>Notas</label><textarea id="r-notas" placeholder="Pedidos especiales, alérgenos, vista, ambiente..."></textarea></div>
+  </div>
+
+  <!-- TRASLADO -->
+  <div id="campos-traslado" style="display:none">
+    <div class="sep">Datos del traslado</div>
+    <div class="f2">
+      <div class="frow"><label>Origen</label><input id="tr-origen" placeholder="Ej: Hotel Atenas"></div>
+      <div class="frow"><label>Destino</label><input id="tr-destino" placeholder="Ej: Puerto del Pireo"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Medio</label>
+        <select id="tr-medio"><option value="">— Elegir —</option><option>Taxi / Uber</option><option>Metro / Subte</option><option>Tren</option><option>Bus</option><option>Ferry</option><option>Auto alquilado</option><option>Transfer privado</option><option>A pie</option></select>
+      </div>
+      <div class="frow"><label>Duración estimada</label><input id="tr-duracion" placeholder="Ej: 40 min"></div>
+    </div>
+    <div class="f2">
+      <div class="frow"><label>Precio estimado</label><input id="tr-precio" placeholder="Ej: €15 / gratis"></div>
+      <div class="frow"><label>N° reserva / línea</label><input id="tr-conf" placeholder="Ej: Línea 3 — Azul"></div>
+    </div>
+    <div class="frow"><label>Notas</label><textarea id="tr-notas" placeholder="Dónde tomar, paradas, tips..."></textarea></div>
+  </div>
+
+  <!-- OTRO -->
+  <div id="campos-otro" style="display:none">
+    <div class="frow"><label>Detalle / descripción</label><textarea id="o-notas" placeholder="Descripción, info útil..."></textarea></div>
+    <div class="frow"><label>Lugar / dirección</label><input id="o-lugar" placeholder="Opcional"></div>
+  </div>
+
+  <!-- PAGO — siempre visible -->
+  <div class="sep">Estado de pago</div>
+  <div class="pago-row">
+    <label>¿Está pago?</label>
+    <div class="pago-toggle">
+      <button class="ptbtn" id="pago-si" onclick="setPago('si')">✓ Sí, pago</button>
+      <button class="ptbtn" id="pago-no" onclick="setPago('no')">⏳ Pendiente</button>
+      <button class="ptbtn" id="pago-na" onclick="setPago('na')">— N/A</button>
+    </div>
+  </div>
+
+  <div class="mft">
+    <button class="bcnl" onclick="cm('m-ev')">Cancelar</button>
+    <button class="bdel" id="b-edel" onclick="delEv()" style="display:none">Eliminar</button>
+    <button class="bsav" onclick="savEv()">Guardar</button>
+  </div>
+</div></div>
+
+<!-- MODAL DÍA -->
 <div class="mbg" id="m-day"><div class="mbox">
   <h3 id="m-day-t">Día <button onclick="cm('m-day')">×</button></h3>
   <input type="hidden" id="d-idx">
   <div class="frow"><label>Título del día</label><input id="d-label" placeholder="Ej: Amsterdam — canales y museos"></div>
   <div class="f2">
-    <div class="frow"><label>Referencia</label><input id="d-date" placeholder="Día 2"></div>
+    <div class="frow"><label>Referencia (Día X / fecha)</label><input id="d-date" placeholder="Día 2 · 16 jul"></div>
     <div class="frow"><label>Ciudad</label>
-      <select id="d-city"><option value="amsterdam">Amsterdam</option><option value="grecia">Grecia</option><option value="turquia">Turquía</option><option value="transito">Tránsito</option></select>
+      <select id="d-city"><option value="amsterdam">Amsterdam</option><option value="grecia">Grecia</option><option value="turquia">Turquía</option><option value="transito">Tránsito / vuelo</option></select>
     </div>
   </div>
   <div class="mft">
@@ -378,45 +450,21 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   </div>
 </div></div>
 
-<div class="mbg" id="m-ev"><div class="mbox">
-  <h3 id="m-ev-t">Evento <button onclick="cm('m-ev')">×</button></h3>
-  <input type="hidden" id="ev-di"><input type="hidden" id="ev-ei">
-  <div class="f2">
-    <div class="frow"><label>Hora</label><input id="ev-time" placeholder="09:00" maxlength="5"></div>
-    <div class="frow"><label>Ícono (emoji)</label><input id="ev-ico" placeholder="✈" maxlength="4"></div>
-  </div>
-  <div class="frow"><label>Título</label><input id="ev-title" placeholder="Ej: Vuelo EZE → AMS"></div>
-  <div class="frow"><label>Detalle / notas</label><textarea id="ev-det" placeholder="Confirmaciones, tips..."></textarea></div>
-  <div class="frow"><label>Etiquetas</label>
-    <div class="tchk">
-      <label><input type="checkbox" value="vuelo"> ✈ vuelo</label>
-      <label><input type="checkbox" value="hotel"> 🏨 hotel</label>
-      <label><input type="checkbox" value="actividad"> 🎯 actividad</label>
-      <label><input type="checkbox" value="traslado"> 🚕 traslado</label>
-      <label><input type="checkbox" value="comida"> 🍽 comida</label>
-    </div>
-  </div>
-  <div class="mft">
-    <button class="bcnl" onclick="cm('m-ev')">Cancelar</button>
-    <button class="bdel" id="b-edel" onclick="delEv()" style="display:none">Eliminar</button>
-    <button class="bsav" onclick="savEv()">Guardar</button>
-  </div>
-</div></div>
-
+<!-- MODAL HOTEL -->
 <div class="mbg" id="m-hotel"><div class="mbox">
   <h3 id="m-hotel-t">Alojamiento <button onclick="cm('m-hotel')">×</button></h3>
-  <input type="hidden" id="h-idx">
-  <div class="frow"><label>Nombre</label><input id="h-name"></div>
-  <div class="frow"><label>Ciudad / zona</label><input id="h-city"></div>
+  <input type="hidden" id="ht-idx">
+  <div class="frow"><label>Nombre</label><input id="ht-name"></div>
+  <div class="frow"><label>Ciudad / zona</label><input id="ht-city"></div>
   <div class="f2">
-    <div class="frow"><label>Check-in</label><input id="h-cin"></div>
-    <div class="frow"><label>Check-out</label><input id="h-cout"></div>
+    <div class="frow"><label>Check-in</label><input id="ht-cin"></div>
+    <div class="frow"><label>Check-out</label><input id="ht-cout"></div>
   </div>
   <div class="f2">
-    <div class="frow"><label>Duración</label><input id="h-noch"></div>
-    <div class="frow"><label>N° confirmación</label><input id="h-conf"></div>
+    <div class="frow"><label>Duración</label><input id="ht-noch"></div>
+    <div class="frow"><label>N° confirmación</label><input id="ht-conf"></div>
   </div>
-  <div class="frow"><label>Observaciones</label><textarea id="h-obs"></textarea></div>
+  <div class="frow"><label>Observaciones</label><textarea id="ht-obs"></textarea></div>
   <div class="mft">
     <button class="bcnl" onclick="cm('m-hotel')">Cancelar</button>
     <button class="bdel" id="b-hdel" onclick="delHotel()" style="display:none">Eliminar</button>
@@ -424,6 +472,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   </div>
 </div></div>
 
+<!-- MODAL CHECKLIST -->
 <div class="mbg" id="m-chk"><div class="mbox">
   <h3 id="m-chk-t">Tarea <button onclick="cm('m-chk')">×</button></h3>
   <input type="hidden" id="ck-gk"><input type="hidden" id="ck-idx">
@@ -435,20 +484,21 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   </div>
 </div></div>
 
+<!-- MODAL PERFIL -->
 <div class="mbg" id="m-profile"><div class="mbox">
   <h3 id="m-profile-t">Perfil <button onclick="cm('m-profile')">×</button></h3>
   <input type="hidden" id="prof-key">
-  <div class="frow"><label>🍽 Comida — gustos y restricciones</label><textarea id="prof-comida" placeholder="Ej: Le encantan los mariscos. No come cerdo."></textarea></div>
-  <div class="frow"><label>🛍 Shopping — marcas y gustos</label><textarea id="prof-shopping" placeholder="Ej: Le gusta Zara, H&M. Busca souvenirs."></textarea></div>
-  <div class="frow"><label>🎯 Actividades favoritas</label><textarea id="prof-actividades" placeholder="Ej: Museos, paseos en globo, fotografía."></textarea></div>
+  <div class="frow"><label>🍽 Comida — gustos y restricciones</label><textarea id="prof-comida" placeholder="Ej: Le encantan los mariscos. No come cerdo. Alérgica a los frutos secos."></textarea></div>
+  <div class="frow"><label>🛍 Shopping — marcas y gustos</label><textarea id="prof-shopping" placeholder="Ej: Le gusta Zara, H&M. Mercados de pulgas."></textarea></div>
+  <div class="frow"><label>🎯 Actividades favoritas</label><textarea id="prof-actividades" placeholder="Ej: Museos, paseos en globo, fotografía, shows."></textarea></div>
   <div class="frow"><label>😴 Ritmo de viaje</label>
     <select id="prof-ritmo">
       <option value="">— Elegir —</option>
-      <option value="🌅 Madrugadora y ritmo intenso">🌅 Madrugadora y ritmo intenso</option>
-      <option value="😴 Dormilona y ritmo tranquilo">😴 Dormilona y ritmo tranquilo</option>
-      <option value="🌅 Madrugador y ritmo intenso">🌅 Madrugador y ritmo intenso</option>
-      <option value="😴 Dormilón y ritmo tranquilo">😴 Dormilón y ritmo tranquilo</option>
-      <option value="🔄 Flexible según el día">🔄 Flexible según el día</option>
+      <option>🌅 Madrugadora y ritmo intenso</option>
+      <option>😴 Dormilona y ritmo tranquilo</option>
+      <option>🌅 Madrugador y ritmo intenso</option>
+      <option>😴 Dormilón y ritmo tranquilo</option>
+      <option>🔄 Flexible según el día</option>
     </select>
   </div>
   <div class="frow"><label>💬 Nota libre para el grupo</label><textarea id="prof-nota" placeholder="Cualquier cosa útil que el grupo deba saber..."></textarea></div>
@@ -462,17 +512,16 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 <div class="sync-bar" id="sbar"><div class="sdot warn" id="sdot"></div><span id="stxt">Conectando...</span></div>
 
 <div class="hero">
-  <div class="hero-inner">
+  <div class="hi">
     <p class="hero-dest" id="hero-dest">🌍 El Gran Viaje Mediterráneo</p>
     <h1 id="hero-title">Amsterdam · Grecia<br><em>& Turquía</em></h1>
     <p class="hero-sub">Verano 2025 · Itinerario compartido · 4 viajeros</p>
     <div class="travelers" id="tvl-list"></div>
-    <!-- Theme switcher dentro del hero -->
-    <div class="theme-bar" style="margin-top:1.25rem;border-radius:12px">
-      <span style="font-size:11px;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Destino activo:</span>
-      <button class="theme-btn active" data-t="amsterdam" onclick="setTheme('amsterdam',this)">🇳🇱 Amsterdam</button>
-      <button class="theme-btn" data-t="grecia" onclick="setTheme('grecia',this)">🇬🇷 Grecia</button>
-      <button class="theme-btn" data-t="turquia" onclick="setTheme('turquia',this)">🇹🇷 Turquía</button>
+    <div class="theme-row">
+      <span>Destino:</span>
+      <button class="tbtn on" data-t="amsterdam" onclick="setTheme('amsterdam',this)">🇳🇱 Amsterdam</button>
+      <button class="tbtn" data-t="grecia" onclick="setTheme('grecia',this)">🇬🇷 Grecia</button>
+      <button class="tbtn" data-t="turquia" onclick="setTheme('turquia',this)">🇹🇷 Turquía</button>
     </div>
     <div class="hero-stats">
       <div class="hstat"><p>Días</p><p id="hs-d">—</p></div>
@@ -483,7 +532,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   </div>
 </div>
 
-<div class="ebanner" id="ebanner">✏ Modo edición activo — los cambios se sincronizan para todos</div>
+<div class="ebanner" id="ebanner">✏ Modo edición activo — cambios sincronizados en tiempo real para todos</div>
 
 <div class="nav-wrap">
   <nav class="nav">
@@ -536,13 +585,10 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   <section id="tab-ft" class="section">
     <p style="font-size:15px;color:var(--ink2);margin-bottom:1.25rem;line-height:1.6">Las fotos se sincronizan en tiempo real entre los 4.</p>
     <div class="compose" style="margin-bottom:1.25rem">
-      <div style="font-size:14px;font-weight:700;color:var(--stat-color);margin-bottom:10px">¿Quién sube?</div>
+      <div style="font-size:14px;font-weight:700;color:var(--stat);margin-bottom:10px">¿Quién sube?</div>
       <div class="pbtns" id="photo-pbtns"></div>
       <input type="text" id="photo-caption" placeholder="Leyenda (opcional)..." style="width:100%;margin-top:12px;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);background:var(--sand);outline:none">
-      <label class="add-photo-btn">
-        📸 Elegir foto desde el dispositivo
-        <input type="file" style="display:none" accept="image/*" multiple onchange="handlePhotos(event)">
-      </label>
+      <label class="add-photo-btn">📸 Elegir foto<input type="file" style="display:none" accept="image/*" multiple onchange="handlePhotos(event)"></label>
       <div class="upload-prog" id="upload-prog"></div>
     </div>
     <div id="photos-grid" class="photos-grid"></div>
@@ -550,7 +596,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
   </section>
 
   <section id="tab-pr" class="section">
-    <p style="font-size:15px;color:var(--ink2);margin-bottom:1.5rem;line-height:1.6">Tocá tu foto de perfil para cambiarla. Completá tus gustos para que el grupo planifique mejor.</p>
+    <p style="font-size:15px;color:var(--ink2);margin-bottom:1.5rem;line-height:1.6">Tocá la foto para cambiarla. Completá tu perfil para que el grupo te conozca mejor.</p>
     <div id="profiles-wrap"><div class="loading">Cargando perfiles...</div></div>
   </section>
 </main>
@@ -569,271 +615,190 @@ const app = initializeApp({
 });
 const db = getFirestore(app);
 
-// ── TEMA ──────────────────────────────────────────────────
-const THEME_META = {
-  amsterdam:{dest:'🇳🇱 Amsterdam — Canales & Cultura', title:'Amsterdam<br><em>& los Países Bajos</em>'},
-  grecia:{dest:'🇬🇷 Grecia — Egeo & Caldera', title:'Grecia<br><em>& Santorini</em>'},
-  turquia:{dest:'🇹🇷 Turquía — Bósforo & Especias', title:'Estambul<br><em>& Turquía</em>'}
-};
-
-window.setTheme = (t, el) => {
-  document.body.setAttribute('data-theme', t);
-  document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.t===t));
-  const m = THEME_META[t];
-  if(m) {
-    document.getElementById('hero-dest').textContent = m.dest;
-    document.getElementById('hero-title').innerHTML = m.title;
-  }
-  try { localStorage.setItem('tp_theme', t); } catch(e){}
-};
-
-// Restaurar tema guardado
-try {
-  const saved = localStorage.getItem('tp_theme');
-  if(saved) setTheme(saved, document.querySelector(`[data-t="${saved}"]`));
-} catch(e){}
-
-// ── STATUS ────────────────────────────────────────────────
-const setSS = (s,msg) => {
-  document.getElementById('stxt').textContent=msg;
-  document.getElementById('sdot').className='sdot'+(s==='ok'?'':s==='warn'?' warn':' err');
-};
+const setSS=(s,m)=>{document.getElementById('stxt').textContent=m;document.getElementById('sdot').className='sdot'+(s==='ok'?'':s==='warn'?' warn':' err');};
 
 // ── STATE ─────────────────────────────────────────────────
-let EM=false;
+let EM=false,EVTIPO='vuelo',PAGADO='na';
 let AP={i:'ER',a:'av1',n:'Eugenia Romero'};
 let PAP={i:'ER',a:'av1',n:'Eugenia Romero'};
 let DAYS=[],HOTELS=[],CHECKLIST={},CHECKS={},NOTES=[],PHOTOS=[],PROFILES={},AVATARS={};
 
-const TRAVELERS=[
-  {i:'ER',n:'Eugenia',fn:'Eugenia Romero',a:'av1'},
-  {i:'JN',n:'Juan José',fn:'Juan José Noguera',a:'av2'},
-  {i:'VS',n:'Valeria',fn:'Valeria Secchi',a:'av3'},
-  {i:'GG',n:'Gustavo',fn:'Gustavo García',a:'av4'}
-];
+const TVL=[{i:'ER',n:'Eugenia',fn:'Eugenia Romero',a:'av1'},{i:'JN',n:'Juan José',fn:'Juan José Noguera',a:'av2'},{i:'VS',n:'Valeria',fn:'Valeria Secchi',a:'av3'},{i:'GG',n:'Gustavo',fn:'Gustavo García',a:'av4'}];
 const FN={ER:'Eugenia Romero',JN:'Juan José Noguera',VS:'Valeria Secchi',GG:'Gustavo García'};
 const AV={ER:'av1',JN:'av2',VS:'av3',GG:'av4'};
 const CL={amsterdam:'Amsterdam',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'};
+const TIPO_ICO={vuelo:'✈',hotel:'🏨',actividad:'🎯',restaurante:'🍽',traslado:'🚕',otro:'📌'};
+const TIPO_CLS={vuelo:'etype-vuelo',hotel:'etype-hotel',actividad:'etype-actividad',restaurante:'etype-restaurante',traslado:'etype-traslado',otro:'etype-otro'};
+
+// ── TEMA ──────────────────────────────────────────────────
+const TM={amsterdam:{dest:'🇳🇱 Amsterdam — Canales & Cultura',title:'Amsterdam<br><em>& los Países Bajos</em>'},grecia:{dest:'🇬🇷 Grecia — Egeo & Caldera',title:'Grecia<br><em>& Santorini</em>'},turquia:{dest:'🇹🇷 Turquía — Bósforo & Especias',title:'Estambul<br><em>& Turquía</em>'}};
+
+window.setTheme=(t,el)=>{
+  document.body.setAttribute('data-theme',t);
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const m=TM[t];if(m){document.getElementById('hero-dest').textContent=m.dest;document.getElementById('hero-title').innerHTML=m.title;}
+  try{localStorage.setItem('tp_theme',t);localStorage.setItem('tp_theme_m','1');}catch(e){}
+};
+try{const s=localStorage.getItem('tp_theme');if(s){const b=document.querySelector(`[data-t="${s}"]`);if(b)setTheme(s,b);}}catch(e){}
 
 // ── SEED ──────────────────────────────────────────────────
 const SD=[
-  {id:'d01',date:'Día 1',label:'Buenos Aires → Amsterdam',city:'transito',order:1,events:[{t:'08:00',ic:'✈',tt:'Vuelo EZE → AMS',det:'Confirmar check-in online 24hs antes',tags:['vuelo']},{t:'23:55',ic:'🛬',tt:'Llegada Amsterdam Schiphol',det:'Terminal 3 · Recoger equipaje',tags:['transito']}]},
-  {id:'d02',date:'Día 2',label:'Amsterdam — llegada y canales',city:'amsterdam',order:2,events:[{t:'09:00',ic:'🏨',tt:'Check-in hotel',det:'Early check-in a confirmar',tags:['hotel']},{t:'11:00',ic:'🚲',tt:'Recorrido en bicicleta',det:'Canales centro histórico',tags:['actividad']},{t:'19:00',ic:'🍽',tt:'Cena barrio Jordaan',det:'Reserva pendiente',tags:['comida']}]},
-  {id:'d03',date:'Día 3',label:'Amsterdam — museos y cultura',city:'amsterdam',order:3,events:[{t:'09:30',ic:'🎨',tt:'Rijksmuseum',det:'Entradas reservadas online',tags:['actividad']},{t:'14:00',ic:'🌷',tt:'Vondelpark',det:'Tarde libre',tags:['actividad']},{t:'20:00',ic:'🍺',tt:'Cena barrio De Pijp',det:'Mercado Albert Cuyp cerca',tags:['comida']}]},
-  {id:'d04',date:'Día 4',label:'Amsterdam → Atenas',city:'transito',order:4,events:[{t:'06:00',ic:'🚕',tt:'Traslado aeropuerto',det:'Tren desde Amsterdam Centraal',tags:['traslado']},{t:'08:45',ic:'✈',tt:'Vuelo AMS → ATH',det:'3h 30min',tags:['vuelo']},{t:'13:30',ic:'🛬',tt:'Llegada Atenas',det:'Metro Línea 3 → Syntagma',tags:['transito']},{t:'15:30',ic:'🏨',tt:'Check-in Atenas',det:'Zona Monastiraki',tags:['hotel']}]},
-  {id:'d05',date:'Día 5',label:'Atenas — Acrópolis y Plaka',city:'grecia',order:5,events:[{t:'08:00',ic:'🏛',tt:'Acrópolis',det:'Entradas compradas · Llevar agua',tags:['actividad']},{t:'12:00',ic:'🍋',tt:'Almuerzo en Plaka',det:'Barrio histórico al pie de la Acrópolis',tags:['comida']},{t:'16:00',ic:'🏺',tt:'Museo Arqueológico Nacional',det:'Opcional',tags:['actividad']}]},
-  {id:'d06',date:'Día 6',label:'Atenas → Santorini',city:'grecia',order:6,events:[{t:'07:30',ic:'⛴',tt:'Ferry desde el Pireo',det:'5h · Reservar con anticipación',tags:['traslado']},{t:'14:00',ic:'🏨',tt:'Check-in Santorini',det:'Oia o Fira',tags:['hotel']},{t:'19:30',ic:'🌅',tt:'Atardecer en Oia',det:'Llegar 30 min antes',tags:['actividad']}]},
-  {id:'d78',date:'Días 7–8',label:'Santorini — playas y caldera',city:'grecia',order:7,events:[{t:'10:00',ic:'🏖',tt:'Playa Perissa o Kamari',det:'Arena volcánica negra',tags:['actividad']},{t:'15:00',ic:'🚤',tt:'Tour en barco caldera',det:'Aguas termales + volcán · Reservar',tags:['actividad']},{t:'20:00',ic:'🍷',tt:'Cena con vista al mar',det:'Reservar mesa — alta temporada',tags:['comida']}]},
-  {id:'d09',date:'Día 9',label:'Santorini → Estambul',city:'transito',order:9,events:[{t:'10:00',ic:'✈',tt:'Vuelo hacia Estambul',det:'Vía Atenas o directo',tags:['vuelo']},{t:'16:30',ic:'🏨',tt:'Check-in Estambul',det:'Zona Sultanahmet',tags:['hotel']}]},
-  {id:'d10',date:'Días 10–11',label:'Estambul — entre dos continentes',city:'turquia',order:10,events:[{t:'09:00',ic:'🕌',tt:'Mezquita Azul + Hagia Sophia',det:'Hagia Sophia paga · Cubrir hombros',tags:['actividad']},{t:'15:00',ic:'🛍',tt:'Gran Bazar',det:'Negociar precios',tags:['actividad']},{t:'19:00',ic:'🚢',tt:'Crucero atardecer Bósforo',det:'Reservar con anticipación',tags:['actividad']},{t:'21:00',ic:'🍽',tt:'Cena en Karaköy',det:'Mariscos y meze',tags:['comida']}]},
-  {id:'d12',date:'Día 12',label:'Estambul → Buenos Aires',city:'transito',order:12,events:[{t:'09:00',ic:'🌿',tt:'Mañana libre — Bazar Egipcio',det:'Últimas compras de especias',tags:['actividad']},{t:'13:00',ic:'🚕',tt:'Traslado aeropuerto IST',det:'90 min · Salir temprano',tags:['traslado']},{t:'17:30',ic:'✈',tt:'Vuelo IST → EZE',det:'Con escala o directo',tags:['vuelo']}]}
+  {id:'d01',date:'Día 1',label:'Buenos Aires → Amsterdam',city:'transito',order:1,events:[{tipo:'vuelo',hora:'08:00',fecha:'',titulo:'Vuelo EZE → AMS',pago:'na',extras:{aerolinea:'',numero:'',origen:'EZE — Ministro Pistarini',destino:'AMS — Schiphol',salida:'08:00',llegada:'23:55',duracion:'',terminal:'',escala:'Sin escala',pnr:'',clase:'Economy',equipaje:'',notas:'Confirmar check-in online 24hs antes'}},{tipo:'traslado',hora:'23:55',fecha:'',titulo:'Traslado al hotel',pago:'na',extras:{origen:'Schiphol',destino:'Hotel Amsterdam',medio:'Taxi / Uber',duracion:'30 min',precio:'€40',conf:'',notas:'Terminal 3 · Recoger equipaje primero'}}]},
+  {id:'d02',date:'Día 2',label:'Amsterdam — llegada y canales',city:'amsterdam',order:2,events:[{tipo:'hotel',hora:'09:00',fecha:'',titulo:'Check-in hotel Amsterdam',pago:'no',extras:{nombre:'',dir:'',cin:'09:00',cout:'',conf:'',tel:'',hab:'',desayuno:'',link:'',notas:'Early check-in a confirmar'}},{tipo:'actividad',hora:'11:00',fecha:'',titulo:'Recorrido en bicicleta — canales',pago:'na',extras:{lugar:'Centro histórico, Amsterdam',duracion:'3 horas',precio:'€15/persona',conf:'',proveedor:'',link:'',notas:'Alquilar en el hotel o en MacBike'}},{tipo:'restaurante',hora:'19:00',fecha:'',titulo:'Cena barrio Jordaan',pago:'no',extras:{nombre:'',dir:'Barrio Jordaan, Amsterdam',cocina:'',precio:'',horario:'19:00',conf:'',link:'',reserva:'Pendiente de reserva',notas:''}}]},
+  {id:'d03',date:'Día 3',label:'Amsterdam — museos y cultura',city:'amsterdam',order:3,events:[{tipo:'actividad',hora:'09:30',fecha:'',titulo:'Rijksmuseum',pago:'no',extras:{lugar:'Museumstraat 1, Amsterdam',duracion:'3 horas',precio:'€22.50/persona',conf:'',proveedor:'',link:'https://www.rijksmuseum.nl',notas:'Entradas reservar online con anticipación'}},{tipo:'actividad',hora:'14:00',fecha:'',titulo:'Vondelpark — tarde libre',pago:'na',extras:{lugar:'Vondelpark, Amsterdam',duracion:'2 horas',precio:'Gratis',conf:'',proveedor:'',link:'',notas:''}},{tipo:'restaurante',hora:'20:00',fecha:'',titulo:'Cena barrio De Pijp',pago:'no',extras:{nombre:'',dir:'Barrio De Pijp, Amsterdam',cocina:'',precio:'',horario:'20:00',conf:'',link:'',reserva:'Pendiente de reserva',notas:'Cerca del Mercado Albert Cuyp'}}]},
+  {id:'d04',date:'Día 4',label:'Amsterdam → Atenas',city:'transito',order:4,events:[{tipo:'traslado',hora:'06:00',fecha:'',titulo:'Traslado aeropuerto Schiphol',pago:'na',extras:{origen:'Hotel Amsterdam',destino:'AMS — Schiphol',medio:'Tren',duracion:'20 min',precio:'€5',conf:'',notas:'Tren desde Amsterdam Centraal'}},{tipo:'vuelo',hora:'08:45',fecha:'',titulo:'Vuelo AMS → ATH',pago:'no',extras:{aerolinea:'',numero:'',origen:'AMS — Schiphol',destino:'ATH — El. Venizelos',salida:'08:45',llegada:'13:30',duracion:'3h 30m',terminal:'',escala:'Sin escala',pnr:'',clase:'Economy',equipaje:'',notas:''}},{tipo:'traslado',hora:'13:30',fecha:'',titulo:'Metro aeropuerto → hotel',pago:'na',extras:{origen:'ATH — El. Venizelos',destino:'Hotel Atenas',medio:'Metro',duracion:'40 min',precio:'€10',conf:'',notas:'Línea 3 — Azul hasta Syntagma'}},{tipo:'hotel',hora:'15:30',fecha:'',titulo:'Check-in Atenas',pago:'no',extras:{nombre:'',dir:'Zona Monastiraki / Syntagma',cin:'15:30',cout:'',conf:'',tel:'',hab:'',desayuno:'',link:'',notas:''}}]},
+  {id:'d05',date:'Día 5',label:'Atenas — Acrópolis y Plaka',city:'grecia',order:5,events:[{tipo:'actividad',hora:'08:00',fecha:'',titulo:'Acrópolis de Atenas',pago:'no',extras:{lugar:'Acrópolis, Atenas',duracion:'3 horas',precio:'€20/persona',conf:'',proveedor:'',link:'https://etickets.tap.gr',notas:'Entradas comprar online · Llevar agua y sombrero'}},{tipo:'restaurante',hora:'12:00',fecha:'',titulo:'Almuerzo en Plaka',pago:'na',extras:{nombre:'',dir:'Barrio Plaka, Atenas',cocina:'Griega tradicional',precio:'€20/persona',horario:'12:00',conf:'',link:'',reserva:'Sin reserva — entrar directo',notas:''}},{tipo:'actividad',hora:'16:00',fecha:'',titulo:'Museo Arqueológico Nacional',pago:'no',extras:{lugar:'28is Oktovriou 44, Atenas',duracion:'2 horas',precio:'€12/persona',conf:'',proveedor:'',link:'',notas:'Opcional'}}]},
+  {id:'d06',date:'Día 6',label:'Atenas → Santorini',city:'grecia',order:6,events:[{tipo:'traslado',hora:'07:30',fecha:'',titulo:'Ferry Pireo → Santorini',pago:'no',extras:{origen:'Puerto del Pireo',destino:'Puerto de Santorini',medio:'Ferry',duracion:'5-6 horas',precio:'€40/persona',conf:'',notas:'Blue Star Ferries — Reservar con anticipación'}},{tipo:'hotel',hora:'14:00',fecha:'',titulo:'Check-in Santorini',pago:'no',extras:{nombre:'',dir:'Oia o Fira, Santorini',cin:'14:00',cout:'',conf:'',tel:'',hab:'',desayuno:'',link:'',notas:'Vista caldera si es posible'}},{tipo:'actividad',hora:'19:30',fecha:'',titulo:'Atardecer en Oia',pago:'na',extras:{lugar:'Oia, Santorini',duracion:'1.5 horas',precio:'Gratis',conf:'',proveedor:'',link:'',notas:'Llegar 30 min antes — muy concurrido'}}]},
+  {id:'d78',date:'Días 7–8',label:'Santorini — playas y caldera',city:'grecia',order:7,events:[{tipo:'actividad',hora:'10:00',fecha:'',titulo:'Playa Perissa o Kamari',pago:'na',extras:{lugar:'Perissa, Santorini',duracion:'3 horas',precio:'Gratis',conf:'',proveedor:'',link:'',notas:'Arena volcánica negra · ATV para llegar'}},{tipo:'actividad',hora:'15:00',fecha:'',titulo:'Tour en barco — caldera',pago:'no',extras:{lugar:'Puerto de Santorini',duracion:'4 horas',precio:'€35/persona',conf:'',proveedor:'',link:'',notas:'Aguas termales + volcán activo · Reservar grupalmente'}},{tipo:'restaurante',hora:'20:00',fecha:'',titulo:'Cena con vista al mar',pago:'no',extras:{nombre:'',dir:'Oia o Fira, Santorini',cocina:'Griega, mariscos',precio:'€50/persona',horario:'20:00',conf:'',link:'',reserva:'Pendiente de reserva',notas:'Reservar mesa con anticipación — alta temporada'}}]},
+  {id:'d09',date:'Día 9',label:'Santorini → Estambul',city:'transito',order:9,events:[{tipo:'vuelo',hora:'10:00',fecha:'',titulo:'Vuelo hacia Estambul',pago:'no',extras:{aerolinea:'',numero:'',origen:'Santorini o ATH',destino:'IST — Aeropuerto Estambul',salida:'10:00',llegada:'14:00',duracion:'',terminal:'',escala:'',pnr:'',clase:'Economy',equipaje:'',notas:'Vía Atenas o directo según ruta'}},{tipo:'hotel',hora:'16:30',fecha:'',titulo:'Check-in Estambul',pago:'no',extras:{nombre:'',dir:'Sultanahmet, Estambul',cin:'16:30',cout:'',conf:'',tel:'',hab:'',desayuno:'',link:'',notas:'Zona histórica — todo a pie'}}]},
+  {id:'d10',date:'Días 10–11',label:'Estambul — entre dos continentes',city:'turquia',order:10,events:[{tipo:'actividad',hora:'09:00',fecha:'',titulo:'Mezquita Azul + Hagia Sophia',pago:'no',extras:{lugar:'Sultanahmet, Estambul',duracion:'3 horas',precio:'Hagia Sophia: €15 / Mezquita: Gratis',conf:'',proveedor:'',link:'',notas:'Cubrir hombros y cabeza · Hagia Sophia reservar online'}},{tipo:'actividad',hora:'13:00',fecha:'',titulo:'Gran Bazar',pago:'na',extras:{lugar:'Kapalıçarşı, Estambul',duracion:'2 horas',precio:'Gratis — ¡a negociar!',conf:'',proveedor:'',link:'',notas:'Más de 4000 tiendas'}},{tipo:'actividad',hora:'17:00',fecha:'',titulo:'Crucero atardecer Bósforo',pago:'no',extras:{lugar:'Embarcadero Eminönü',duracion:'2 horas',precio:'€20/persona',conf:'',proveedor:'',link:'',notas:'Entre Europa y Asia · Reservar con anticipación'}},{tipo:'restaurante',hora:'21:00',fecha:'',titulo:'Cena en Karaköy',pago:'na',extras:{nombre:'',dir:'Barrio Karaköy, Estambul',cocina:'Mariscos y meze turco',precio:'€35/persona',horario:'21:00',conf:'',link:'',reserva:'Pendiente de reserva',notas:''}}]},
+  {id:'d12',date:'Día 12',label:'Estambul → Buenos Aires',city:'transito',order:12,events:[{tipo:'actividad',hora:'09:00',fecha:'',titulo:'Bazar Egipcio — mañana libre',pago:'na',extras:{lugar:'Mısır Çarşısı, Estambul',duracion:'1.5 horas',precio:'Gratis',conf:'',proveedor:'',link:'',notas:'Especias, frutos secos, souvenirs'}},{tipo:'traslado',hora:'13:00',fecha:'',titulo:'Traslado aeropuerto IST',pago:'na',extras:{origen:'Hotel Sultanahmet',destino:'IST — Aeropuerto Estambul',medio:'Taxi / Uber',duracion:'60-90 min',precio:'€25',conf:'',notas:'Salir con tiempo — tráfico impredecible'}},{tipo:'vuelo',hora:'17:30',fecha:'',titulo:'Vuelo IST → EZE',pago:'no',extras:{aerolinea:'',numero:'',origen:'IST — Aeropuerto Estambul',destino:'EZE — Ministro Pistarini',salida:'17:30',llegada:'',duracion:'',terminal:'',escala:'',pnr:'',clase:'Economy',equipaje:'',notas:'Con escala o directo según ruta contratada'}}]}
 ];
-const SH=[
-  {id:'h1',name:'Hotel Amsterdam',city:'Amsterdam',cc:'p-amsterdam',cin:'Día 2',cout:'Día 4',conf:'',noch:'2 noches',obs:'Solicitar habitaciones contiguas. Early check-in a confirmar.',order:1},
-  {id:'h2',name:'Hotel Atenas',city:'Atenas · Monastiraki',cc:'p-grecia',cin:'Día 4',cout:'Día 6',conf:'',noch:'2 noches',obs:'Cerca del metro y de Plaka.',order:2},
-  {id:'h3',name:'Villa / Hotel Santorini',city:'Santorini · Oia o Fira',cc:'p-grecia',cin:'Día 6',cout:'Día 9',conf:'',noch:'3 noches',obs:'Alta temporada — reservar ya. Vista caldera si es posible.',order:3},
-  {id:'h4',name:'Hotel Estambul',city:'Estambul · Sultanahmet',cc:'p-turquia',cin:'Día 9',cout:'Día 12',conf:'',noch:'3 noches',obs:'Zona histórica, todo a pie.',order:4}
-];
-const SC=[
-  {id:'c1',group:'Documentos y visados',text:'Pasaportes vigentes (mín. 6 meses tras el regreso)',order:1},
-  {id:'c2',group:'Documentos y visados',text:'e-Visa de Turquía — evisa.gov.tr (USD 65/persona)',order:2},
-  {id:'c3',group:'Documentos y visados',text:'Confirmaciones de vuelo descargadas en PDF',order:3},
-  {id:'c4',group:'Documentos y visados',text:'Seguro de viaje para los 4',order:4},
-  {id:'c5',group:'Reservas y entradas',text:'Hoteles confirmados en los 4 destinos',order:1},
-  {id:'c6',group:'Reservas y entradas',text:'Entradas Acrópolis compradas online',order:2},
-  {id:'c7',group:'Reservas y entradas',text:'Entradas Rijksmuseum compradas online',order:3},
-  {id:'c8',group:'Reservas y entradas',text:'Ferry Pireo → Santorini reservado (¡alta temporada!)',order:4},
-  {id:'c9',group:'Reservas y entradas',text:'Tour barco caldera Santorini reservado',order:5},
-  {id:'c10',group:'Reservas y entradas',text:'Crucero atardecer Bósforo reservado',order:6},
-  {id:'c11',group:'Antes de salir',text:'Check-in online vuelo EZE → AMS (24hs antes)',order:1},
-  {id:'c12',group:'Antes de salir',text:'Mapas offline descargados',order:2},
-  {id:'c13',group:'Antes de salir',text:'SIM internacional o eSIM activada',order:3},
-  {id:'c14',group:'Antes de salir',text:'Euros y liras turcas en efectivo',order:4},
-  {id:'c15',group:'Antes de salir',text:'Adaptadores de enchufe tipo C',order:5},
-  {id:'c16',group:'Alojamiento',text:'Solicitar early check-in Amsterdam',order:1},
-  {id:'c17',group:'Alojamiento',text:'Confirmar habitaciones contiguas en todos los hoteles',order:2},
-  {id:'c18',group:'Alojamiento',text:'Reservar mesa cena caldera Santorini',order:3}
-];
-const SN=[
-  {person:'ER',personAv:'av1',personName:'Eugenia Romero',text:'Para Santorini: conviene reservar la villa con anticipación, julio/agosto es altísima temporada ✨',date:'hace 2 días',ts:Date.now()-172800000},
-  {person:'JN',personAv:'av2',personName:'Juan José Noguera',text:'La e-Visa de Turquía la saqué en 5 minutos en evisa.gov.tr. Son USD 65 por persona. Háganla antes de viajar!',date:'ayer',ts:Date.now()-86400000},
-  {person:'VS',personAv:'av3',personName:'Valeria Secchi',text:'Para el ferry a Santorini: Blue Star es más cómodo aunque tarda 5–6h. Hellenic Seaways más rápido (4h). ¿Votamos?',date:'hoy',ts:Date.now()-3600000}
-];
+const SH=[{id:'h1',name:'Hotel Amsterdam',city:'Amsterdam',cc:'p-amsterdam',cin:'Día 2',cout:'Día 4',conf:'',noch:'2 noches',obs:'Solicitar habitaciones contiguas. Early check-in a confirmar.',order:1},{id:'h2',name:'Hotel Atenas',city:'Atenas · Monastiraki',cc:'p-grecia',cin:'Día 4',cout:'Día 6',conf:'',noch:'2 noches',obs:'Cerca del metro y de Plaka.',order:2},{id:'h3',name:'Villa / Hotel Santorini',city:'Santorini · Oia o Fira',cc:'p-grecia',cin:'Día 6',cout:'Día 9',conf:'',noch:'3 noches',obs:'Alta temporada — reservar ya. Vista caldera si es posible.',order:3},{id:'h4',name:'Hotel Estambul',city:'Estambul · Sultanahmet',cc:'p-turquia',cin:'Día 9',cout:'Día 12',conf:'',noch:'3 noches',obs:'Zona histórica, todo a pie.',order:4}];
+const SC=[{id:'c1',group:'Documentos y visados',text:'Pasaportes vigentes (mín. 6 meses tras el regreso)',order:1},{id:'c2',group:'Documentos y visados',text:'e-Visa de Turquía — evisa.gov.tr (USD 65/persona)',order:2},{id:'c3',group:'Documentos y visados',text:'Confirmaciones de vuelo descargadas en PDF',order:3},{id:'c4',group:'Documentos y visados',text:'Seguro de viaje para los 4',order:4},{id:'c5',group:'Reservas y entradas',text:'Hoteles confirmados en los 4 destinos',order:1},{id:'c6',group:'Reservas y entradas',text:'Entradas Acrópolis compradas online',order:2},{id:'c7',group:'Reservas y entradas',text:'Entradas Rijksmuseum compradas online',order:3},{id:'c8',group:'Reservas y entradas',text:'Ferry Pireo → Santorini reservado',order:4},{id:'c9',group:'Reservas y entradas',text:'Tour barco caldera Santorini reservado',order:5},{id:'c10',group:'Reservas y entradas',text:'Crucero atardecer Bósforo reservado',order:6},{id:'c11',group:'Antes de salir',text:'Check-in online vuelo EZE → AMS (24hs antes)',order:1},{id:'c12',group:'Antes de salir',text:'Mapas offline descargados (Google Maps)',order:2},{id:'c13',group:'Antes de salir',text:'SIM internacional o eSIM activada',order:3},{id:'c14',group:'Antes de salir',text:'Euros y liras turcas en efectivo',order:4},{id:'c15',group:'Antes de salir',text:'Adaptadores de enchufe tipo C',order:5},{id:'c16',group:'Alojamiento',text:'Solicitar early check-in Amsterdam',order:1},{id:'c17',group:'Alojamiento',text:'Confirmar habitaciones contiguas en todos los hoteles',order:2},{id:'c18',group:'Alojamiento',text:'Reservar mesa cena caldera Santorini',order:3}];
+const SN=[{person:'ER',personAv:'av1',personName:'Eugenia Romero',text:'Para Santorini: conviene reservar la villa con anticipación, julio/agosto es altísima temporada ✨',date:'hace 2 días',ts:Date.now()-172800000},{person:'JN',personAv:'av2',personName:'Juan José Noguera',text:'La e-Visa de Turquía la saqué en 5 minutos en evisa.gov.tr. Son USD 65 por persona. Háganla antes de viajar!',date:'ayer',ts:Date.now()-86400000},{person:'VS',personAv:'av3',personName:'Valeria Secchi',text:'Para el ferry a Santorini: Blue Star es más cómodo aunque tarda 5–6h. Hellenic Seaways más rápido (4h). ¿Votamos?',date:'hoy',ts:Date.now()-3600000}];
 
 async function seedIfEmpty(){
   const s=await getDocs(collection(db,'days'));
-  if(!s.empty) return;
-  for(const d of SD) await setDoc(doc(db,'days',d.id),d);
-  for(const h of SH) await setDoc(doc(db,'hotels',h.id),h);
-  for(const c of SC) await setDoc(doc(db,'checklist',c.id),c);
-  for(const n of SN) await addDoc(collection(db,'notes'),n);
+  if(!s.empty)return;
+  for(const d of SD)await setDoc(doc(db,'days',d.id),d);
+  for(const h of SH)await setDoc(doc(db,'hotels',h.id),h);
+  for(const c of SC)await setDoc(doc(db,'checklist',c.id),c);
+  for(const n of SN)await addDoc(collection(db,'notes'),n);
 }
 
-// ── LISTENERS ─────────────────────────────────────────────
 function initListeners(){
-  onSnapshot(query(collection(db,'days'),orderBy('order')),s=>{
-    DAYS=s.docs.map(d=>({...d.data(),_id:d.id}));
-    renderDays();updateStats();
-    // Auto-tema: si la mayoría de días visibles son de un destino, cambiar tema
-    autoThemeFromDays();
-  });
-  onSnapshot(query(collection(db,'hotels'),orderBy('order')),s=>{
-    HOTELS=s.docs.map(d=>({...d.data(),_id:d.id}));
-    renderHotels();updateStats();
-  });
-  onSnapshot(collection(db,'checklist'),s=>{
-    const items=s.docs.map(d=>({...d.data(),_id:d.id})).sort((a,b)=>(a.order||0)-(b.order||0));
-    CHECKLIST={};
-    items.forEach(i=>{if(!CHECKLIST[i.group])CHECKLIST[i.group]=[];CHECKLIST[i.group].push(i);});
-    renderChecklist();
-  });
-  onSnapshot(collection(db,'checks'),s=>{
-    CHECKS={};s.docs.forEach(d=>CHECKS[d.id]=d.data().done);
-    renderChecklist();
-  });
-  onSnapshot(query(collection(db,'notes'),orderBy('ts','desc')),s=>{
-    NOTES=s.docs.map(d=>({...d.data(),_id:d.id}));
-    renderNotes();
-  });
-  onSnapshot(query(collection(db,'photos'),orderBy('ts','desc')),s=>{
-    PHOTOS=s.docs.map(d=>({...d.data(),_id:d.id}));
-    renderPhotos();
-  });
-  onSnapshot(collection(db,'profiles'),s=>{
-    PROFILES={};s.docs.forEach(d=>PROFILES[d.id]=d.data());
-    renderProfiles();
-  });
-  onSnapshot(collection(db,'avatars'),s=>{
-    AVATARS={};s.docs.forEach(d=>AVATARS[d.id]=d.data().data);
-    renderTravelers();renderNotesPbtns();renderPhotoPbtns();renderProfiles();
-  });
+  onSnapshot(query(collection(db,'days'),orderBy('order')),s=>{DAYS=s.docs.map(d=>({...d.data(),_id:d.id}));renderDays();updateStats();autoTheme();});
+  onSnapshot(query(collection(db,'hotels'),orderBy('order')),s=>{HOTELS=s.docs.map(d=>({...d.data(),_id:d.id}));renderHotels();updateStats();});
+  onSnapshot(collection(db,'checklist'),s=>{const items=s.docs.map(d=>({...d.data(),_id:d.id})).sort((a,b)=>(a.order||0)-(b.order||0));CHECKLIST={};items.forEach(i=>{if(!CHECKLIST[i.group])CHECKLIST[i.group]=[];CHECKLIST[i.group].push(i);});renderChecklist();});
+  onSnapshot(collection(db,'checks'),s=>{CHECKS={};s.docs.forEach(d=>CHECKS[d.id]=d.data().done);renderChecklist();});
+  onSnapshot(query(collection(db,'notes'),orderBy('ts','desc')),s=>{NOTES=s.docs.map(d=>({...d.data(),_id:d.id}));renderNotes();});
+  onSnapshot(query(collection(db,'photos'),orderBy('ts','desc')),s=>{PHOTOS=s.docs.map(d=>({...d.data(),_id:d.id}));renderPhotos();});
+  onSnapshot(collection(db,'profiles'),s=>{PROFILES={};s.docs.forEach(d=>PROFILES[d.id]=d.data());renderProfiles();});
+  onSnapshot(collection(db,'avatars'),s=>{AVATARS={};s.docs.forEach(d=>AVATARS[d.id]=d.data().data);renderTvl();renderNotesPbtns();renderPhotoPbtns();renderProfiles();});
   setSS('ok','🌍 Sincronizado en tiempo real');
 }
 
-// Auto-tema según los días que existen
-function autoThemeFromDays(){
-  // Si ya hay tema guardado manualmente, no sobreescribir
-  try{ if(localStorage.getItem('tp_theme_manual')) return; }catch(e){}
-  const counts={amsterdam:0,grecia:0,turquia:0};
-  DAYS.forEach(d=>{ if(counts[d.city]!==undefined) counts[d.city]++; });
-  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
-  if(top&&top[1]>0){
-    const btn=document.querySelector(`[data-t="${top[0]}"]`);
-    if(btn) setTheme(top[0],btn);
-  }
+function autoTheme(){
+  try{if(localStorage.getItem('tp_theme_m'))return;}catch(e){}
+  const c={amsterdam:0,grecia:0,turquia:0};
+  DAYS.forEach(d=>{if(c[d.city]!==undefined)c[d.city]++;});
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0];
+  if(top&&top[1]>0){const b=document.querySelector(`[data-t="${top[0]}"]`);if(b)window.setTheme(top[0],b);}
 }
 
-// Override: cuando el usuario clickea manualmente, recordar
-const origSetTheme = window.setTheme;
-window.setTheme = (t,el) => {
-  try{ localStorage.setItem('tp_theme_manual','1'); localStorage.setItem('tp_theme',t); }catch(e){}
-  origSetTheme(t,el);
-};
-
-try{ await seedIfEmpty(); initListeners(); }
-catch(e){ setSS('err','⚠ Error de conexión'); console.error(e); }
+try{await seedIfEmpty();initListeners();}catch(e){setSS('err','⚠ Error de conexión');console.error(e);}
 
 // ── AVATARES ──────────────────────────────────────────────
-function getAvHtml(i, cls='', size=34){
-  const data=AVATARS[i];
-  const av=AV[i]||'av1';
-  if(data) return `<div class="av ${av} ${cls}" style="width:${size}px;height:${size}px"><img src="${data}" alt="${i}"><div class="av-upload" onclick="triggerAvUpload('${i}')">📷</div></div>`;
-  return `<div class="av ${av} no-photo ${cls}" style="width:${size}px;height:${size}px">${i}<div class="av-upload" onclick="triggerAvUpload('${i}')">📷</div></div>`;
+function avHtml(i,cls='',sz=34){
+  const d=AVATARS[i],av=AV[i]||'av1';
+  if(d)return `<div class="av ${av} ${cls}" style="width:${sz}px;height:${sz}px"><img src="${d}" alt="${i}"><div class="av-up" onclick="triggerAv('${i}')">📷</div></div>`;
+  return `<div class="av ${av} np ${cls}" style="width:${sz}px;height:${sz}px">${i}<div class="av-up" onclick="triggerAv('${i}')">📷</div></div>`;
 }
+window.triggerAv=key=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async ev=>{const c=await compressImg(ev.target.result,200,.8);await setDoc(doc(db,'avatars',key),{data:c});};r.readAsDataURL(f);};inp.click();};
 
-window.triggerAvUpload = key => {
-  const inp=document.createElement('input');
-  inp.type='file';inp.accept='image/*';
-  inp.onchange=async e=>{
-    const file=e.target.files[0]; if(!file) return;
-    const reader=new FileReader();
-    reader.onload=async ev=>{
-      const compressed=await compressImg(ev.target.result,200,0.8);
-      await setDoc(doc(db,'avatars',key),{data:compressed});
-    };
-    reader.readAsDataURL(file);
-  };
-  inp.click();
-};
-
-// ── TRAVELERS RENDER ──────────────────────────────────────
-function renderTravelers(){
-  document.getElementById('tvl-list').innerHTML=TRAVELERS.map(t=>`
-    <div class="traveler">
-      ${getAvHtml(t.i,'',34)}
-      <span>${t.fn}</span>
-    </div>`).join('');
-  renderNotesPbtns();
-  renderPhotoPbtns();
-}
-
-function renderNotesPbtns(){
-  document.getElementById('note-pbtns').innerHTML=TRAVELERS.map((t,i)=>`
-    <div class="${i===0&&AP.i===t.i?'sel':''}" style="position:relative" onclick="selP('${t.i}','${t.a}','${t.fn}',this)">
-      ${getAvHtml(t.i,'pbtn'+(AP.i===t.i?' sel':''),36)}
-    </div>`).join('');
-}
-
-function renderPhotoPbtns(){
-  document.getElementById('photo-pbtns').innerHTML=TRAVELERS.map((t,i)=>`
-    <div onclick="selPhotoP('${t.i}','${t.a}','${t.fn}',this)">
-      ${getAvHtml(t.i,'pbtn'+(PAP.i===t.i?' sel':''),36)}
-    </div>`).join('');
-}
+function renderTvl(){document.getElementById('tvl-list').innerHTML=TVL.map(t=>`<div class="traveler">${avHtml(t.i,'',34)}<span>${t.fn}</span></div>`).join('');}
+function renderNotesPbtns(){document.getElementById('note-pbtns').innerHTML=TVL.map(t=>`<div onclick="selP('${t.i}','${t.a}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(AP.i===t.i?' sel':''),36)}</div>`).join('');}
+function renderPhotoPbtns(){document.getElementById('photo-pbtns').innerHTML=TVL.map(t=>`<div onclick="selPhotoP('${t.i}','${t.a}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(PAP.i===t.i?' sel':''),36)}</div>`).join('');}
 
 // ── HELPERS ───────────────────────────────────────────────
 window.cm=id=>document.getElementById(id).classList.remove('open');
 window.om=id=>document.getElementById(id).classList.add('open');
-window.showTab=(n,el)=>{
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');
+window.showTab=(n,el)=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');};
+window.toggleEdit=el=>{EM=!EM;el.textContent=EM?'✓ Listo':'✏ Editar';el.style.color=EM?'#4CAF50':'';document.getElementById('ebanner').classList.toggle('show',EM);document.querySelectorAll('.eo').forEach(e=>e.style.display=EM?'flex':'none');renderDays();renderHotels();renderChecklist();renderNotes();renderProfiles();};
+window.selP=(i,a,n,el)=>{AP={i,a,n};document.querySelectorAll('#note-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));el.querySelector('.pbtn')?.classList.add('sel');};
+window.selPhotoP=(i,a,n,el)=>{PAP={i,a,n};document.querySelectorAll('#photo-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));el.querySelector('.pbtn')?.classList.add('sel');};
+window.togDay=id=>{document.getElementById('db'+id).classList.toggle('open');document.getElementById('ch'+id).classList.toggle('open');const d=DAYS.find(x=>x._id===id);if(d&&d.city&&d.city!=='transito'&&document.getElementById('db'+id).classList.contains('open')){const b=document.querySelector(`[data-t="${d.city}"]`);if(b)window.setTheme(d.city,b);}};
+
+// ── EVENTO TIPO & PAGO ────────────────────────────────────
+window.selTipo=(t,el)=>{
+  EVTIPO=t;
+  document.querySelectorAll('.etype-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  ['vuelo','hotel','actividad','restaurante','traslado','otro'].forEach(tp=>{
+    const el=document.getElementById('campos-'+tp);
+    if(el)el.style.display=tp===t?'block':'none';
+  });
+  const labels={vuelo:'Ruta del vuelo',hotel:'Nombre del hotel',actividad:'Nombre de la actividad',restaurante:'Nombre del restaurante',traslado:'Descripción del traslado',otro:'Título'};
+  document.getElementById('ev-titulo-lbl').textContent=labels[t]||'Título';
 };
-window.toggleEdit=el=>{
-  EM=!EM;el.textContent=EM?'✓ Listo':'✏ Editar';
-  el.style.color=EM?'#4CAF50':'';
-  document.getElementById('ebanner').classList.toggle('show',EM);
-  document.querySelectorAll('.eo').forEach(e=>e.style.display=EM?'flex':'none');
-  renderDays();renderHotels();renderChecklist();renderNotes();renderProfiles();
+window.setPago=(v)=>{
+  PAGADO=v;
+  ['si','no','na'].forEach(x=>{const b=document.getElementById('pago-'+x);b.className='ptbtn'+(x===v?' '+x:'');});
 };
-window.selP=(i,a,n,el)=>{
-  AP={i,a,n};
-  document.querySelectorAll('#note-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));
-  el.querySelector('.pbtn').classList.add('sel');
+
+// ── EVENTS ────────────────────────────────────────────────
+window.openNewEv=dayId=>{
+  document.getElementById('m-ev-t').textContent='Nuevo evento';
+  document.getElementById('ev-di').value=dayId;document.getElementById('ev-ei').value='';
+  ['ev-hora','ev-fecha','ev-titulo'].forEach(id=>document.getElementById(id).value='');
+  // Reset campos
+  ['v-aerolinea','v-numero','v-origen','v-destino','v-salida','v-llegada','v-duracion','v-terminal','v-escala','v-pnr','v-clase','v-equipaje','v-notas','h-nombre','h-dir','h-cin','h-cout','h-conf','h-tel','h-hab','h-desayuno','h-link','h-notas','a-lugar','a-duracion','a-precio','a-conf','a-proveedor','a-link','a-notas','r-nombre','r-dir','r-cocina','r-precio','r-horario','r-conf','r-link','r-notas','tr-origen','tr-destino','tr-duracion','tr-precio','tr-conf','tr-notas','o-notas','o-lugar'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('r-reserva').value='';document.getElementById('tr-medio').value='';
+  selTipo('vuelo',document.querySelector('[data-tipo="vuelo"]'));
+  setPago('na');
+  document.getElementById('b-edel').style.display='none';
+  om('m-ev');
 };
-window.selPhotoP=(i,a,n,el)=>{
-  PAP={i,a,n};
-  document.querySelectorAll('#photo-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));
-  el.querySelector('.pbtn').classList.add('sel');
+
+window.openEditEv=(dayId,ei)=>{
+  const d=DAYS.find(x=>x._id===dayId);if(!d)return;const ev=d.events[ei];
+  document.getElementById('m-ev-t').textContent='Editar evento';
+  document.getElementById('ev-di').value=dayId;document.getElementById('ev-ei').value=ei;
+  document.getElementById('ev-hora').value=ev.hora||ev.t||'';
+  document.getElementById('ev-fecha').value=ev.fecha||'';
+  document.getElementById('ev-titulo').value=ev.titulo||ev.tt||'';
+  const tipo=ev.tipo||'otro';
+  const btn=document.querySelector(`[data-tipo="${tipo}"]`);
+  if(btn)selTipo(tipo,btn);
+  // Llenar extras
+  const x=ev.extras||{};
+  Object.entries(x).forEach(([k,v])=>{
+    const prefixes=['v-','h-','a-','r-','tr-','o-'];
+    for(const p of prefixes){const el=document.getElementById(p+k);if(el){el.value=v;break;}}
+  });
+  setPago(ev.pago||'na');
+  document.getElementById('b-edel').style.display='inline-block';
+  om('m-ev');
 };
-window.togDay=id=>{
-  document.getElementById('db'+id).classList.toggle('open');
-  document.getElementById('ch'+id).classList.toggle('open');
-  // Cambiar tema cuando se abre un día
-  const d=DAYS.find(x=>x._id===id);
-  if(d&&d.city&&d.city!=='transito'&&document.getElementById('db'+id).classList.contains('open')){
-    const btn=document.querySelector(`[data-t="${d.city}"]`);
-    if(btn) setTheme(d.city,btn);
-  }
+
+function collectExtras(){
+  const x={};
+  const maps={
+    vuelo:['aerolinea','numero','origen','destino','salida','llegada','duracion','terminal','escala','pnr','clase','equipaje','notas'],
+    hotel:['nombre','dir','cin','cout','conf','tel','hab','desayuno','link','notas'],
+    actividad:['lugar','duracion','precio','conf','proveedor','link','notas'],
+    restaurante:['nombre','dir','cocina','precio','horario','conf','link','reserva','notas'],
+    traslado:['origen','destino','medio','duracion','precio','conf','notas'],
+    otro:['notas','lugar']
+  };
+  const prefix={vuelo:'v-',hotel:'h-',actividad:'a-',restaurante:'r-',traslado:'tr-',otro:'o-'};
+  const fields=maps[EVTIPO]||[];
+  fields.forEach(f=>{const el=document.getElementById((prefix[EVTIPO]||'')+f);if(el)x[f]=el.value;});
+  return x;
+}
+
+window.savEv=async()=>{
+  const di=document.getElementById('ev-di').value;const ei=document.getElementById('ev-ei').value;
+  const o={tipo:EVTIPO,hora:document.getElementById('ev-hora').value||'—',fecha:document.getElementById('ev-fecha').value||'',titulo:document.getElementById('ev-titulo').value||'Sin título',pago:PAGADO,extras:collectExtras()};
+  const d=DAYS.find(x=>x._id===di);if(!d)return;
+  const evs=[...(d.events||[])];
+  if(ei!=='')evs[parseInt(ei)]=o;else evs.push(o);
+  await updateDoc(doc(db,'days',di),{events:evs});cm('m-ev');
 };
+window.delEv=async()=>{const di=document.getElementById('ev-di').value;const ei=parseInt(document.getElementById('ev-ei').value);const d=DAYS.find(x=>x._id===di);if(!d)return;const evs=[...(d.events||[])];evs.splice(ei,1);await updateDoc(doc(db,'days',di),{events:evs});cm('m-ev');};
 
 // ── DAYS ──────────────────────────────────────────────────
 window.openNewDay=()=>{document.getElementById('m-day-t').textContent='Nuevo día';document.getElementById('d-idx').value='';document.getElementById('d-label').value='';document.getElementById('d-date').value='';document.getElementById('d-city').value='amsterdam';document.getElementById('b-ddel').style.display='none';om('m-day');};
 window.openEditDay=id=>{const d=DAYS.find(x=>x._id===id);if(!d)return;document.getElementById('m-day-t').textContent='Editar día';document.getElementById('d-idx').value=id;document.getElementById('d-label').value=d.label;document.getElementById('d-date').value=d.date;document.getElementById('d-city').value=d.city;document.getElementById('b-ddel').style.display='inline-block';om('m-day');};
 window.savDay=async()=>{const idx=document.getElementById('d-idx').value;const o={date:document.getElementById('d-date').value||'Día ?',label:document.getElementById('d-label').value||'Sin título',city:document.getElementById('d-city').value,order:idx?(DAYS.find(x=>x._id===idx)?.order||99):DAYS.length+1,events:idx?(DAYS.find(x=>x._id===idx)?.events||[]):[]};if(idx)await setDoc(doc(db,'days',idx),o);else await addDoc(collection(db,'days'),o);cm('m-day');};
-window.delDay=async()=>{const idx=document.getElementById('d-idx').value;if(idx&&confirm('¿Eliminar este día?')){await deleteDoc(doc(db,'days',idx));cm('m-day');}};
-
-// ── EVENTS ────────────────────────────────────────────────
-window.openNewEv=di=>{document.getElementById('m-ev-t').textContent='Nuevo evento';document.getElementById('ev-di').value=di;document.getElementById('ev-ei').value='';['ev-time','ev-ico','ev-title','ev-det'].forEach(id=>document.getElementById(id).value='');document.querySelectorAll('.tchk input').forEach(c=>c.checked=false);document.getElementById('b-edel').style.display='none';om('m-ev');};
-window.openEditEv=(di,ei)=>{const d=DAYS.find(x=>x._id===di);if(!d)return;const ev=d.events[ei];document.getElementById('m-ev-t').textContent='Editar evento';document.getElementById('ev-di').value=di;document.getElementById('ev-ei').value=ei;document.getElementById('ev-time').value=ev.t;document.getElementById('ev-ico').value=ev.ic;document.getElementById('ev-title').value=ev.tt;document.getElementById('ev-det').value=ev.det;document.querySelectorAll('.tchk input').forEach(c=>c.checked=(ev.tags||[]).includes(c.value));document.getElementById('b-edel').style.display='inline-block';om('m-ev');};
-window.savEv=async()=>{const di=document.getElementById('ev-di').value;const ei=document.getElementById('ev-ei').value;const tags=[...document.querySelectorAll('.tchk input:checked')].map(c=>c.value);const o={t:document.getElementById('ev-time').value||'—',ic:document.getElementById('ev-ico').value||'📌',tt:document.getElementById('ev-title').value||'Sin título',det:document.getElementById('ev-det').value||'',tags};const d=DAYS.find(x=>x._id===di);if(!d)return;const evs=[...(d.events||[])];if(ei!=='')evs[parseInt(ei)]=o;else evs.push(o);await updateDoc(doc(db,'days',di),{events:evs});cm('m-ev');};
-window.delEv=async()=>{const di=document.getElementById('ev-di').value;const ei=parseInt(document.getElementById('ev-ei').value);const d=DAYS.find(x=>x._id===di);if(!d)return;const evs=[...(d.events||[])];evs.splice(ei,1);await updateDoc(doc(db,'days',di),{events:evs});cm('m-ev');};
+window.delDay=async()=>{const idx=document.getElementById('d-idx').value;if(idx&&confirm('¿Eliminar este día y todos sus eventos?')){await deleteDoc(doc(db,'days',idx));cm('m-day');}};
 
 // ── HOTELS ────────────────────────────────────────────────
-window.openNewHotel=()=>{document.getElementById('m-hotel-t').textContent='Nuevo alojamiento';document.getElementById('h-idx').value='';['h-name','h-city','h-cin','h-cout','h-noch','h-conf','h-obs'].forEach(id=>document.getElementById(id).value='');document.getElementById('b-hdel').style.display='none';om('m-hotel');};
-window.openEditHotel=id=>{const h=HOTELS.find(x=>x._id===id);if(!h)return;document.getElementById('m-hotel-t').textContent='Editar alojamiento';document.getElementById('h-idx').value=id;document.getElementById('h-name').value=h.name;document.getElementById('h-city').value=h.city;document.getElementById('h-cin').value=h.cin;document.getElementById('h-cout').value=h.cout;document.getElementById('h-noch').value=h.noch;document.getElementById('h-conf').value=h.conf;document.getElementById('h-obs').value=h.obs;document.getElementById('b-hdel').style.display='inline-block';om('m-hotel');};
-window.savHotel=async()=>{const idx=document.getElementById('h-idx').value;const c=document.getElementById('h-city').value.toLowerCase();const cc=c.includes('amster')?'p-amsterdam':c.includes('santa')||c.includes('aten')?'p-grecia':c.includes('estam')||c.includes('turq')?'p-turquia':'p-transito';const o={name:document.getElementById('h-name').value||'Hotel',city:document.getElementById('h-city').value,cc,cin:document.getElementById('h-cin').value,cout:document.getElementById('h-cout').value,noch:document.getElementById('h-noch').value,conf:document.getElementById('h-conf').value,obs:document.getElementById('h-obs').value,order:idx?(HOTELS.find(x=>x._id===idx)?.order||99):HOTELS.length+1};if(idx)await setDoc(doc(db,'hotels',idx),o);else await addDoc(collection(db,'hotels'),o);cm('m-hotel');};
-window.delHotel=async()=>{const idx=document.getElementById('h-idx').value;if(idx&&confirm('¿Eliminar?')){await deleteDoc(doc(db,'hotels',idx));cm('m-hotel');}};
+window.openNewHotel=()=>{document.getElementById('m-hotel-t').textContent='Nuevo alojamiento';document.getElementById('ht-idx').value='';['ht-name','ht-city','ht-cin','ht-cout','ht-noch','ht-conf','ht-obs'].forEach(id=>document.getElementById(id).value='');document.getElementById('b-hdel').style.display='none';om('m-hotel');};
+window.openEditHotel=id=>{const h=HOTELS.find(x=>x._id===id);if(!h)return;document.getElementById('m-hotel-t').textContent='Editar alojamiento';document.getElementById('ht-idx').value=id;document.getElementById('ht-name').value=h.name;document.getElementById('ht-city').value=h.city;document.getElementById('ht-cin').value=h.cin;document.getElementById('ht-cout').value=h.cout;document.getElementById('ht-noch').value=h.noch;document.getElementById('ht-conf').value=h.conf;document.getElementById('ht-obs').value=h.obs;document.getElementById('b-hdel').style.display='inline-block';om('m-hotel');};
+window.savHotel=async()=>{const idx=document.getElementById('ht-idx').value;const c=document.getElementById('ht-city').value.toLowerCase();const cc=c.includes('amster')?'p-amsterdam':c.includes('santa')||c.includes('aten')?'p-grecia':c.includes('estam')||c.includes('turq')?'p-turquia':'p-transito';const o={name:document.getElementById('ht-name').value||'Hotel',city:document.getElementById('ht-city').value,cc,cin:document.getElementById('ht-cin').value,cout:document.getElementById('ht-cout').value,noch:document.getElementById('ht-noch').value,conf:document.getElementById('ht-conf').value,obs:document.getElementById('ht-obs').value,order:idx?(HOTELS.find(x=>x._id===idx)?.order||99):HOTELS.length+1};if(idx)await setDoc(doc(db,'hotels',idx),o);else await addDoc(collection(db,'hotels'),o);cm('m-hotel');};
+window.delHotel=async()=>{const idx=document.getElementById('ht-idx').value;if(idx&&confirm('¿Eliminar?')){await deleteDoc(doc(db,'hotels',idx));cm('m-hotel');}};
 
 // ── CHECKLIST ─────────────────────────────────────────────
 window.openNewChk=gk=>{document.getElementById('m-chk-t').textContent='Nueva tarea · '+gk;document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value='';document.getElementById('ck-txt').value='';document.getElementById('b-ckdel').style.display='none';om('m-chk');};
@@ -848,38 +813,11 @@ window.delNote=async id=>{if(confirm('¿Eliminar nota?'))await deleteDoc(doc(db,
 
 // ── PHOTOS ────────────────────────────────────────────────
 window.handlePhotos=async event=>{
-  const files=[...event.target.files];
-  const caption=document.getElementById('photo-caption').value.trim();
-  const prog=document.getElementById('upload-prog');
-  prog.style.display='block';
-  for(let i=0;i<files.length;i++){
-    prog.textContent=`Subiendo foto ${i+1} de ${files.length}...`;
-    try{
-      const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(files[i]);});
-      let compressed=await compressImg(dataUrl,600,0.65);
-      if(compressed.length>900000)compressed=await compressImg(dataUrl,400,0.55);
-      await addDoc(collection(db,'photos'),{data:compressed,caption,person:PAP.i,personAv:PAP.a,personName:PAP.n,ts:Date.now(),date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});
-    }catch(e){prog.textContent='Error al subir. Intentá con imagen más pequeña.';console.error(e);}
-  }
-  prog.style.display='none';
-  document.getElementById('photo-caption').value='';
-  event.target.value='';
+  const files=[...event.target.files];const caption=document.getElementById('photo-caption').value.trim();const prog=document.getElementById('upload-prog');prog.style.display='block';
+  for(let i=0;i<files.length;i++){prog.textContent=`Subiendo ${i+1} de ${files.length}...`;try{const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(files[i]);});let c=await compressImg(dataUrl,600,.65);if(c.length>900000)c=await compressImg(dataUrl,400,.55);await addDoc(collection(db,'photos'),{data:c,caption,person:PAP.i,personAv:PAP.a,personName:PAP.n,ts:Date.now(),date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});}catch(e){prog.textContent='Error al subir.';console.error(e);}}
+  prog.style.display='none';document.getElementById('photo-caption').value='';event.target.value='';
 };
-
-async function compressImg(dataUrl,maxPx,q){
-  return new Promise(res=>{
-    const img=new Image();
-    img.onload=()=>{
-      let w=img.width,h=img.height;
-      if(w>maxPx||h>maxPx){if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}else{w=Math.round(w*maxPx/h);h=maxPx;}}
-      const c=document.createElement('canvas');c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      res(c.toDataURL('image/jpeg',q));
-    };
-    img.src=dataUrl;
-  });
-}
-
+async function compressImg(dataUrl,maxPx,q){return new Promise(res=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>maxPx||h>maxPx){if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}else{w=Math.round(w*maxPx/h);h=maxPx;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',q));};img.src=dataUrl;});}
 window.delPhoto=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'photos',id));};
 window.openViewer=(data,cap)=>{document.getElementById('vimg').src=data;document.getElementById('vcap').textContent=cap;document.getElementById('vbg').classList.add('open');};
 window.closeViewer=()=>document.getElementById('vbg').classList.remove('open');
@@ -889,15 +827,100 @@ window.openEditProfile=key=>{const p=PROFILES[key]||{};document.getElementById('
 window.savProfile=async()=>{const key=document.getElementById('prof-key').value;await setDoc(doc(db,'profiles',key),{comida:document.getElementById('prof-comida').value,shopping:document.getElementById('prof-shopping').value,actividades:document.getElementById('prof-actividades').value,ritmo:document.getElementById('prof-ritmo').value,nota:document.getElementById('prof-nota').value});cm('m-profile');};
 
 // ── RENDERS ───────────────────────────────────────────────
+function pagoBadge(p){const map={si:'✓ Pago',no:'⏳ Pendiente',na:''};const cls={si:'si',no:'no',na:'na'};if(!p||p==='na')return'';return`<span class="badge-pago ${cls[p]}">${map[p]}</span>`;}
+
+function renderEventCard(ev,dayId,j){
+  const tipo=ev.tipo||'otro';
+  const ico=TIPO_ICO[tipo]||'📌';
+  const cls=TIPO_CLS[tipo]||'etype-otro';
+  const titulo=ev.titulo||ev.tt||'Sin título';
+  const hora=ev.hora||ev.t||'';
+  const x=ev.extras||{};
+
+  // Construir detalles según tipo
+  let details='';
+  if(tipo==='vuelo'){
+    if(x.aerolinea||x.numero)details+=`<div class="edetail"><label>Aerolínea & vuelo</label><p>${[x.aerolinea,x.numero].filter(Boolean).join(' · ')}</p></div>`;
+    if(x.origen||x.destino)details+=`<div class="edetail full"><label>Ruta</label><p>${x.origen||'—'} → ${x.destino||'—'}</p></div>`;
+    if(x.salida||x.llegada)details+=`<div class="edetail"><label>Salida → Llegada</label><p>${x.salida||'—'} → ${x.llegada||'—'}${x.duracion?' ('+x.duracion+')':''}</p></div>`;
+    if(x.terminal)details+=`<div class="edetail"><label>Terminal</label><p>${x.terminal}</p></div>`;
+    if(x.escala)details+=`<div class="edetail"><label>Escala</label><p>${x.escala}</p></div>`;
+    if(x.pnr)details+=`<div class="edetail"><label>Código PNR</label><p>${x.pnr}</p></div>`;
+    if(x.clase)details+=`<div class="edetail"><label>Clase</label><p>${x.clase}</p></div>`;
+    if(x.equipaje)details+=`<div class="edetail full"><label>Equipaje</label><p>${x.equipaje}</p></div>`;
+    if(x.notas)details+=`<div class="edetail full"><label>Notas</label><p>${x.notas}</p></div>`;
+  } else if(tipo==='hotel'){
+    if(x.nombre)details+=`<div class="edetail full"><label>Hotel</label><p>${x.nombre}</p></div>`;
+    if(x.dir)details+=`<div class="edetail full"><label>Dirección</label><p>${x.dir}</p></div>`;
+    if(x.cin||x.cout)details+=`<div class="edetail"><label>Check-in / out</label><p>${x.cin||'—'} → ${x.cout||'—'}</p></div>`;
+    if(x.conf)details+=`<div class="edetail"><label>N° confirmación</label><p>${x.conf}</p></div>`;
+    if(x.tel)details+=`<div class="edetail"><label>Teléfono</label><p>${x.tel}</p></div>`;
+    if(x.hab)details+=`<div class="edetail"><label>Habitaciones</label><p>${x.hab}</p></div>`;
+    if(x.desayuno)details+=`<div class="edetail"><label>Desayuno</label><p>${x.desayuno}</p></div>`;
+    if(x.link)details+=`<div class="edetail full"><label>Link reserva</label><p><a href="${x.link}" target="_blank">${x.link}</a></p></div>`;
+    if(x.notas)details+=`<div class="edetail full"><label>Notas</label><p>${x.notas}</p></div>`;
+  } else if(tipo==='actividad'){
+    if(x.lugar)details+=`<div class="edetail full"><label>Lugar</label><p>${x.lugar}</p></div>`;
+    if(x.duracion)details+=`<div class="edetail"><label>Duración</label><p>${x.duracion}</p></div>`;
+    if(x.precio)details+=`<div class="edetail"><label>Precio</label><p>${x.precio}</p></div>`;
+    if(x.conf)details+=`<div class="edetail"><label>N° confirmación</label><p>${x.conf}</p></div>`;
+    if(x.proveedor)details+=`<div class="edetail"><label>Proveedor</label><p>${x.proveedor}</p></div>`;
+    if(x.link)details+=`<div class="edetail full"><label>Link</label><p><a href="${x.link}" target="_blank">${x.link}</a></p></div>`;
+    if(x.notas)details+=`<div class="edetail full"><label>Notas / tips</label><p>${x.notas}</p></div>`;
+  } else if(tipo==='restaurante'){
+    if(x.nombre)details+=`<div class="edetail full"><label>Restaurante</label><p>${x.nombre}</p></div>`;
+    if(x.dir)details+=`<div class="edetail full"><label>Dirección</label><p>${x.dir}</p></div>`;
+    if(x.cocina)details+=`<div class="edetail"><label>Cocina</label><p>${x.cocina}</p></div>`;
+    if(x.precio)details+=`<div class="edetail"><label>Precio est.</label><p>${x.precio}</p></div>`;
+    if(x.horario)details+=`<div class="edetail"><label>Horario reserva</label><p>${x.horario}</p></div>`;
+    if(x.conf)details+=`<div class="edetail"><label>N° reserva</label><p>${x.conf}</p></div>`;
+    if(x.reserva)details+=`<div class="edetail"><label>Estado reserva</label><p>${x.reserva}</p></div>`;
+    if(x.link)details+=`<div class="edetail full"><label>Link</label><p><a href="${x.link}" target="_blank">${x.link}</a></p></div>`;
+    if(x.notas)details+=`<div class="edetail full"><label>Notas</label><p>${x.notas}</p></div>`;
+  } else if(tipo==='traslado'){
+    if(x.origen||x.destino)details+=`<div class="edetail full"><label>Trayecto</label><p>${x.origen||'—'} → ${x.destino||'—'}</p></div>`;
+    if(x.medio)details+=`<div class="edetail"><label>Medio</label><p>${x.medio}</p></div>`;
+    if(x.duracion)details+=`<div class="edetail"><label>Duración</label><p>${x.duracion}</p></div>`;
+    if(x.precio)details+=`<div class="edetail"><label>Precio est.</label><p>${x.precio}</p></div>`;
+    if(x.conf)details+=`<div class="edetail"><label>N° / línea</label><p>${x.conf}</p></div>`;
+    if(x.notas)details+=`<div class="edetail full"><label>Notas</label><p>${x.notas}</p></div>`;
+  } else {
+    const det=ev.det||x.notas||'';
+    if(det)details+=`<div class="edetail full"><label>Detalle</label><p>${det}</p></div>`;
+    if(x.lugar)details+=`<div class="edetail full"><label>Lugar</label><p>${x.lugar}</p></div>`;
+  }
+
+  return `
+  <div class="ecard">
+    <div class="ecard-hd">
+      <div class="etype-icon ${cls}">${ico}</div>
+      <div class="ecard-main">
+        <div class="ecard-title">
+          ${hora?`<span class="ecard-time">${hora}${ev.fecha?' · '+ev.fecha:''}</span>`:''}
+          ${titulo}
+          ${pagoBadge(ev.pago)}
+        </div>
+        ${tipo==='vuelo'&&x.origen&&x.destino?`<div class="ecard-sub">${x.aerolinea||''} ${x.numero||''} · ${x.origen} → ${x.destino}</div>`:''}
+        ${tipo==='traslado'&&x.medio?`<div class="ecard-sub">${x.medio}${x.duracion?' · '+x.duracion:''}</div>`:''}
+        ${tipo==='restaurante'&&x.cocina?`<div class="ecard-sub">${x.cocina}${x.precio?' · '+x.precio:''}</div>`:''}
+        ${tipo==='actividad'&&x.lugar?`<div class="ecard-sub">${x.lugar}</div>`:''}
+      </div>
+      ${EM?`<div class="ecard-actions"><button class="ibtn" onclick="openEditEv('${dayId}',${j})">✏</button></div>`:''}
+    </div>
+    ${details?`<div class="edetails">${details}</div>`:''}
+  </div>`;
+}
+
 window.renderDays=()=>{
   const c=document.getElementById('days-wrap');
   if(!DAYS.length){c.innerHTML='<div class="loading">Sin días aún.</div>';return;}
   c.innerHTML=DAYS.map(d=>`
     <div class="day-card">
-      <div class="day-header">
+      <div class="day-hd">
         <span class="cpill p-${d.city}">${CL[d.city]||d.city}</span>
         <div class="day-info" onclick="togDay('${d._id}')">
-          <strong>${d.label}</strong><span>${d.date} · ${(d.events||[]).length} eventos</span>
+          <strong>${d.label}</strong>
+          <span>${d.date} · ${(d.events||[]).length} eventos</span>
         </div>
         <div class="day-actions">
           ${EM?`<button class="ibtn" onclick="openEditDay('${d._id}')">✏ día</button><button class="ibtn" onclick="openNewEv('${d._id}')">+ evento</button>`:''}
@@ -906,14 +929,7 @@ window.renderDays=()=>{
       </div>
       <div class="day-body" id="db${d._id}">
         <div class="elist">
-          ${(d.events||[]).map((ev,j)=>`
-            <div class="ev">
-              <div class="etime">${ev.t}</div><div class="eico">${ev.ic}</div>
-              <div class="einfo"><strong>${ev.tt}</strong><p>${ev.det}</p>
-                <div class="etags">${(ev.tags||[]).map(tg=>`<span class="etag etag-${tg}">${tg}</span>`).join('')}</div>
-              </div>
-              ${EM?`<button class="ibtn" style="align-self:flex-start;margin-top:2px" onclick="openEditEv('${d._id}',${j})">✏</button>`:''}
-            </div>`).join('')}
+          ${(d.events||[]).map((ev,j)=>renderEventCard(ev,d._id,j)).join('')}
         </div>
       </div>
     </div>`).join('');
@@ -954,22 +970,17 @@ window.renderChecklist=()=>{
           ${EM?`<button class="ibtn" onclick="openEditChk('${g}','${item._id||item.id}')">✏</button>`:''}
         </div>`).join('')}
     </div>`).join('');
-  const all=Object.values(CHECKLIST).flat();
-  const done=all.filter(i=>CHECKS[i._id||i.id]).length;
-  const pct=all.length?Math.round(done/all.length*100):0;
-  document.getElementById('pbar').style.width=pct+'%';
-  document.getElementById('ptxt').textContent=`${done} de ${all.length} tareas completadas`;
-  document.getElementById('ppct').textContent=pct+'%';
+  const all=Object.values(CHECKLIST).flat();const done=all.filter(i=>CHECKS[i._id||i.id]).length;const pct=all.length?Math.round(done/all.length*100):0;
+  document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptxt').textContent=`${done} de ${all.length} tareas completadas`;document.getElementById('ppct').textContent=pct+'%';
 };
 
 window.renderNotes=()=>{
   const c=document.getElementById('nt-wrap');
-  if(!NOTES.length){c.innerHTML='<div style="padding:1rem;color:var(--muted);font-size:15px;font-weight:700">Sin notas aún. ¡Escribí la primera!</div>';return;}
+  if(!NOTES.length){c.innerHTML='<div style="padding:1rem;color:var(--muted);font-size:15px;font-weight:700">Sin notas aún.</div>';return;}
   c.innerHTML=NOTES.map(n=>`
     <div class="note-card">
       <div class="note-hd">
-        ${getAvHtml(n.person,'',32)}
-        <strong>${n.personName||FN[n.person]||n.person}</strong>
+        ${avHtml(n.person,'',32)}<strong>${n.personName||FN[n.person]||n.person}</strong>
         <time>${n.date}</time>
         ${EM?`<button class="xbtn" onclick="delNote('${n._id}')">×</button>`:''}
       </div>
@@ -978,8 +989,7 @@ window.renderNotes=()=>{
 };
 
 window.renderPhotos=()=>{
-  const grid=document.getElementById('photos-grid');
-  const empty=document.getElementById('no-photos');
+  const grid=document.getElementById('photos-grid');const empty=document.getElementById('no-photos');
   if(!PHOTOS.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   grid.innerHTML=PHOTOS.map(p=>`
@@ -991,18 +1001,13 @@ window.renderPhotos=()=>{
 };
 
 window.renderProfiles=()=>{
-  const c=document.getElementById('profiles-wrap');
-  c.innerHTML=TRAVELERS.map(t=>{
-    const p=PROFILES[t.i]||{};
-    const has=p.comida||p.shopping||p.actividades||p.ritmo||p.nota;
+  document.getElementById('profiles-wrap').innerHTML=TVL.map(t=>{
+    const p=PROFILES[t.i]||{};const has=p.comida||p.shopping||p.actividades||p.ritmo||p.nota;
     return `
     <div class="profile-card">
       <div class="profile-hd">
-        ${getAvHtml(t.i,'profile-av',56)}
-        <div>
-          <div class="profile-name">${t.fn}</div>
-          <div class="profile-sub">${has?'✓ Perfil completo':'Tocá la foto para cambiarla · Completá el perfil'}</div>
-        </div>
+        ${avHtml(t.i,'profile-av',56)}
+        <div><div class="profile-name">${t.fn}</div><div class="profile-sub">${has?'✓ Perfil completo':'Tocá la foto para cambiarla'}</div></div>
       </div>
       <div class="profile-fields">
         <div class="pf"><div class="pf-lbl">🍽 Comida</div><div class="pf-val${!p.comida?' pf-empty':''}">${p.comida||'Sin completar'}</div></div>
@@ -1018,9 +1023,9 @@ window.renderProfiles=()=>{
 
 window.updateStats=()=>{
   const evs=DAYS.flatMap(d=>d.events||[]);
-  const v=evs.filter(e=>(e.tags||[]).includes('vuelo')).length;
+  const v=evs.filter(e=>e.tipo==='vuelo').length;
   const ci=[...new Set(DAYS.map(d=>d.city).filter(c=>c!=='transito'))].length;
-  const a=evs.filter(e=>(e.tags||[]).includes('actividad')).length;
+  const a=evs.filter(e=>e.tipo==='actividad').length;
   ['hs-d','sc-d'].forEach(id=>document.getElementById(id).textContent=DAYS.length);
   ['hs-v','sc-v'].forEach(id=>document.getElementById(id).textContent=v);
   ['hs-c','sc-c'].forEach(id=>document.getElementById(id).textContent=ci);
@@ -1028,7 +1033,7 @@ window.updateStats=()=>{
   document.getElementById('sc-a').textContent=a;
 };
 
-renderTravelers();
+renderTvl();
 </script>
 </body>
 </html>
