@@ -717,7 +717,8 @@ window.calcDuracionTraslado=()=>{
 
 // ── SORT EVENTS BY TIME ───────────────────────────────────
 function sortEvents(events){
-  return [...events].sort((a,b)=>{
+  // Tag each event with its original index before sorting
+  return events.map((e,i)=>({...e,_origIdx:i})).sort((a,b)=>{
     const ta=a.hora||'99:99';const tb=b.hora||'99:99';
     return ta.localeCompare(tb);
   });
@@ -1383,8 +1384,9 @@ window.renderDays=async()=>{
       <div class="day-body" id="db${d._id}">
         <div class="elist">
           ${evsSorted.map((ev,j)=>{
+            const realIdx=ev._origIdx!==undefined?ev._origIdx:j;
             const connector=j<evsSorted.length-1?routeConnector(ev,evsSorted[j+1]):'';
-            return renderEventCard(ev,d._id,j)+connector;
+            return renderEventCard(ev,d._id,realIdx)+connector;
           }).join('')}
           ${EM?`<div style="padding:.5rem 1rem"><button class="ibtn" style="width:100%;justify-content:center" onclick="openNewEv('${d._id}')">+ Agregar evento</button></div>`:''}
         </div>
