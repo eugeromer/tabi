@@ -700,7 +700,72 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
       <button class="export-btn primary" onclick="exportTravelBook()">📖 Exportar Travel Book (HTML)</button>
       <button class="export-btn" onclick="exportPDF()">📄 Exportar PDF</button>
     </div>
-    <div id="rs-lugares" style="margin-top:1rem"></div>
+
+    <!-- INSTAGRAM STORY GENERATOR -->
+    <div style="margin-top:1.5rem">
+      <div style="font-size:16px;font-weight:700;color:var(--stat);margin-bottom:4px">📱 Generar Story para Instagram</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">Creá una imagen 1080×1920px lista para subir a tu historia.</div>
+
+      <!-- Story type -->
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Tipo de story</div>
+      <div class="subtipo-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1rem">
+        <button class="subtipo-btn sel" data-story="dia" onclick="selStoryType('dia',this)"><span>📅</span>Resumen del día</button>
+        <button class="subtipo-btn" data-story="llegada" onclick="selStoryType('llegada',this)"><span>✈</span>Llegada a destino</button>
+        <button class="subtipo-btn" data-story="stats" onclick="selStoryType('stats',this)"><span>📊</span>Stats del viaje</button>
+        <button class="subtipo-btn" data-story="cierre" onclick="selStoryType('cierre',this)"><span>🌟</span>Cierre del viaje</button>
+      </div>
+
+      <!-- Style -->
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Estilo</div>
+      <div class="subtipo-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1rem">
+        <button class="subtipo-btn sel" data-style="mediterraneo" onclick="selStoryStyle('mediterraneo',this)"><span>🌊</span>Mediterráneo</button>
+        <button class="subtipo-btn" data-style="minimal" onclick="selStoryStyle('minimal',this)"><span>🖤</span>Minimalista</button>
+        <button class="subtipo-btn" data-style="foto" onclick="selStoryStyle('foto',this)"><span>📸</span>Fotográfico</button>
+      </div>
+
+      <!-- Config for "día" type -->
+      <div id="story-config-dia">
+        <div class="frow" style="margin-bottom:10px">
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:4px">Día del viaje</label>
+          <select id="story-day-sel" style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);background:var(--sand);outline:none">
+            <option value="">— Elegir día —</option>
+          </select>
+        </div>
+      </div>
+      <div id="story-config-llegada" style="display:none">
+        <div class="frow" style="margin-bottom:10px">
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:4px">Destino</label>
+          <input id="story-destino" placeholder="Ej: Santorini 🌅" style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);background:var(--sand);outline:none">
+        </div>
+        <div class="frow" style="margin-bottom:10px">
+          <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:4px">Frase personalizada (opcional)</label>
+          <input id="story-frase" placeholder="Ej: El viaje de nuestras vidas 💙" style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:9px;font-family:'Lato',sans-serif;font-size:15px;color:var(--ink);background:var(--sand);outline:none">
+        </div>
+      </div>
+
+      <!-- Photo selector for "foto" style -->
+      <div id="story-foto-sel" style="display:none;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Foto de fondo</div>
+        <div id="story-photos-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"></div>
+        <p id="story-no-photos" style="font-size:13px;color:var(--muted);padding:8px 0">No hay fotos cargadas aún. Subí fotos en la pestaña 📸 Fotos.</p>
+      </div>
+
+      <button onclick="generateStory()" style="width:100%;padding:13px;background:linear-gradient(135deg,#0D2B4E,#1B6CA8);color:#fff;border:none;border-radius:10px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:1rem">
+        ✨ Generar Story
+      </button>
+
+      <!-- Preview + download -->
+      <div id="story-preview-wrap" style="display:none">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:700">Vista previa (tocá para descargar)</div>
+        <div style="position:relative;width:100%;max-width:280px;margin:0 auto">
+          <canvas id="story-canvas" style="width:100%;border-radius:14px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.15)" onclick="downloadStory()"></canvas>
+          <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:12px;font-weight:700;padding:6px 16px;border-radius:20px;pointer-events:none;white-space:nowrap">⬇ Tocar para descargar</div>
+        </div>
+        <button onclick="downloadStory()" style="width:100%;max-width:280px;display:block;margin:10px auto 0;padding:10px;background:var(--nav-bg);color:#fff;border:none;border-radius:9px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer">⬇ Descargar PNG</button>
+      </div>
+    </div>
+
+    <div id="rs-lugares" style="margin-top:2rem"></div>
   </section>
 
 </main>
@@ -2204,6 +2269,477 @@ window.exportPDF = () => {
   setTimeout(()=>{
     alert('El archivo HTML se descargó. Abrilo en el navegador y usá Archivo → Imprimir → Guardar como PDF para obtener el PDF.');
   }, 500);
+};
+
+
+// ── INSTAGRAM STORY GENERATOR ─────────────────────────────
+let STORY_TYPE = 'dia';
+let STORY_STYLE = 'mediterraneo';
+let STORY_PHOTO = null;
+
+window.selStoryType = (t, el) => {
+  STORY_TYPE = t;
+  document.querySelectorAll('[data-story]').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('story-config-dia').style.display = t==='dia' ? 'block' : 'none';
+  document.getElementById('story-config-llegada').style.display = t==='llegada' ? 'block' : 'none';
+};
+
+window.selStoryStyle = (s, el) => {
+  STORY_STYLE = s;
+  document.querySelectorAll('[data-style]').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  const fotoSel = document.getElementById('story-foto-sel');
+  if(s === 'foto'){
+    fotoSel.style.display = 'block';
+    renderStoryPhotos();
+  } else {
+    fotoSel.style.display = 'none';
+  }
+};
+
+function renderStoryPhotos(){
+  const grid = document.getElementById('story-photos-grid');
+  const noPhotos = document.getElementById('story-no-photos');
+  if(!PHOTOS.length){ grid.innerHTML=''; noPhotos.style.display='block'; return; }
+  noPhotos.style.display='none';
+  grid.innerHTML = PHOTOS.slice(0,12).map((p,i) => `
+    <div onclick="selectStoryPhoto(${i},this)" style="aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:border-color .15s" id="sph-${i}">
+      <img src="${p.data}" style="width:100%;height:100%;object-fit:cover">
+    </div>`).join('');
+  // Auto-select first
+  if(PHOTOS.length){ selectStoryPhoto(0, document.getElementById('sph-0')); }
+}
+
+window.selectStoryPhoto = (i, el) => {
+  STORY_PHOTO = PHOTOS[i]?.data || null;
+  document.querySelectorAll('#story-photos-grid > div').forEach(d => d.style.borderColor='transparent');
+  if(el) el.style.borderColor = 'var(--accent)';
+};
+
+// Populate day selector
+function populateDaySel(){
+  const sel = document.getElementById('story-day-sel');
+  sel.innerHTML = '<option value="">— Elegir día —</option>';
+  DAYS.forEach((d,i) => {
+    const o = document.createElement('option');
+    o.value = i;
+    o.textContent = `${d.fecha ? fmtDateDisplay(d.fecha) : d.date} — ${d.label}`;
+    sel.appendChild(o);
+  });
+}
+
+// Patch initResumen to also populate story selectors
+const _origInitResumen = window.initResumen;
+window.initResumen = () => {
+  _origInitResumen();
+  populateDaySel();
+  renderStoryPhotos();
+};
+
+// ── CANVAS DRAWING ────────────────────────────────────────
+const W = 1080, H = 1920;
+
+function wrapText(ctx, text, x, y, maxW, lineH){
+  const words = text.split(' ');
+  let line = '';
+  let lines = [];
+  words.forEach(word => {
+    const test = line + word + ' ';
+    if(ctx.measureText(test).width > maxW && line !== ''){
+      lines.push(line.trim());
+      line = word + ' ';
+    } else { line = test; }
+  });
+  if(line.trim()) lines.push(line.trim());
+  lines.forEach((l,i) => ctx.fillText(l, x, y + i*lineH));
+  return lines.length;
+}
+
+function drawGradientBg(ctx, style, photoData){
+  ctx.clearRect(0,0,W,H);
+  if(style === 'foto' && photoData){
+    return new Promise(res => {
+      const img = new Image();
+      img.onload = () => {
+        // Cover fill
+        const scale = Math.max(W/img.width, H/img.height);
+        const sw = img.width*scale, sh = img.height*scale;
+        const sx = (W-sw)/2, sy = (H-sh)/2;
+        ctx.drawImage(img, sx, sy, sw, sh);
+        // Dark overlay
+        const grad = ctx.createLinearGradient(0,0,0,H);
+        grad.addColorStop(0,'rgba(0,0,0,0.55)');
+        grad.addColorStop(0.5,'rgba(0,0,0,0.2)');
+        grad.addColorStop(1,'rgba(0,0,0,0.75)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,W,H);
+        res();
+      };
+      img.src = photoData;
+    });
+  }
+  if(style === 'minimal'){
+    ctx.fillStyle = '#0A1628';
+    ctx.fillRect(0,0,W,H);
+    // Subtle dots
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    for(let i=0;i<80;i++){
+      const x=Math.random()*W, y=Math.random()*H, r=Math.random()*3+1;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+  } else {
+    // Mediterráneo gradient
+    const grad = ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'#0A3D62');
+    grad.addColorStop(0.4,'#0D2B4E');
+    grad.addColorStop(0.7,'#1A3F6B');
+    grad.addColorStop(1,'#0A3D62');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    // Waves decoration
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 2;
+    for(let i=0;i<5;i++){
+      ctx.beginPath();
+      ctx.arc(W/2, H*0.85+i*80, 600+i*150, Math.PI, 0);
+      ctx.stroke();
+    }
+  }
+  return Promise.resolve();
+}
+
+function drawAccentBar(ctx, style){
+  // Bottom gradient bar
+  const colors = style==='minimal'
+    ? ['#C0522A','#00838F','#F5C842']
+    : ['#C0522A','#1B6CA8','#2ECC71'];
+  const bw = W/3;
+  colors.forEach((c,i) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(i*bw, H-12, bw, 12);
+  });
+}
+
+function drawLogo(ctx, style){
+  const tc = style==='minimal'?'rgba(255,255,255,0.35)':'rgba(255,255,255,0.4)';
+  ctx.font = 'bold 36px Lato, sans-serif';
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  ctx.fillText('El Gran Viaje Mediterráneo', W/2, H-60);
+}
+
+async function drawStoryDia(ctx, dayIdx, style, photoData){
+  await drawGradientBg(ctx, style, photoData);
+  const d = DAYS[dayIdx];
+  if(!d) return;
+  const evs = sortEvents(d.events||[]);
+  const tc = '#ffffff';
+  const muted = 'rgba(255,255,255,0.65)';
+
+  // Date pill
+  ctx.font = 'bold 42px Lato, sans-serif';
+  ctx.fillStyle = style==='minimal'?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.12)';
+  const dateText = d.fecha ? fmtDateDisplay(d.fecha).toUpperCase() : (d.date||'').toUpperCase();
+  const dw = ctx.measureText(dateText).width + 60;
+  ctx.beginPath();
+  ctx.roundRect(W/2-dw/2, 160, dw, 80, 40);
+  ctx.fill();
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  ctx.fillText(dateText, W/2, 215);
+
+  // Day title
+  ctx.font = 'bold 72px Georgia, serif';
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  wrapText(ctx, d.label, W/2, 340, W-120, 88);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(100, 520); ctx.lineTo(W-100, 520); ctx.stroke();
+
+  // Events list
+  let y = 590;
+  evs.slice(0,6).forEach(ev => {
+    const ico = (ev.tipo==='actividad'&&ev.extras?.subtipo) ? (SUBTIPO_ICO[ev.extras.subtipo]||'🎯') : (TIPO_ICO[ev.tipo]||'📌');
+    ctx.font = 'bold 44px Lato, sans-serif';
+    ctx.fillStyle = muted;
+    ctx.textAlign = 'left';
+    if(ev.hora) ctx.fillText(ev.hora, 80, y);
+    ctx.font = 'bold 52px Lato, sans-serif';
+    ctx.fillStyle = tc;
+    ctx.textAlign = 'left';
+    // Emoji icon
+    ctx.font = '52px serif';
+    ctx.fillText(ico, ev.hora?220:80, y);
+    ctx.font = 'bold 50px Lato, sans-serif';
+    ctx.fillStyle = tc;
+    const titleX = ev.hora ? 300 : 160;
+    const maxW = W - titleX - 80;
+    const title = ev.titulo || '';
+    const shortTitle = title.length > 28 ? title.slice(0,25)+'...' : title;
+    ctx.fillText(shortTitle, titleX, y);
+    y += 130;
+  });
+
+  // Weather if available
+  const wKey = `${d.city}_${d.fecha||''}`;
+  const w = WEATHER_CACHE[wKey];
+  if(w){
+    ctx.font = '64px serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(w.ico, W-100, 230);
+    ctx.font = 'bold 42px Lato, sans-serif';
+    ctx.fillStyle = muted;
+    ctx.fillText(`${w.tmax}° / ${w.tmin}°`, W-100, 280);
+  }
+
+  drawAccentBar(ctx, style);
+  drawLogo(ctx, style);
+}
+
+async function drawStoryLlegada(ctx, destino, frase, style, photoData){
+  await drawGradientBg(ctx, style, photoData);
+  const tc = '#ffffff';
+  const muted = 'rgba(255,255,255,0.65)';
+
+  // "Llegamos a"
+  ctx.font = 'bold 56px Lato, sans-serif';
+  ctx.fillStyle = muted;
+  ctx.textAlign = 'center';
+  ctx.fillText('Llegamos a', W/2, H*0.38);
+
+  // Destination
+  ctx.font = 'bold 110px Georgia, serif';
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  const dest = destino || 'Santorini 🌅';
+  wrapText(ctx, dest, W/2, H*0.45, W-80, 130);
+
+  // Frase
+  if(frase){
+    ctx.font = 'italic 54px Georgia, serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.textAlign = 'center';
+    wrapText(ctx, frase, W/2, H*0.68, W-120, 70);
+  }
+
+  // Traveler avatars row
+  const names = ['ER','JN','VS','GG'];
+  const colors = ['#1B5E8E','#A03020','#155A30','#5E2E8E'];
+  const r = 70, spacing = 200, startX = W/2 - (names.length-1)*spacing/2;
+  names.forEach((n,i) => {
+    const x = startX + i*spacing;
+    const y = H*0.80;
+    // Check for avatar photo
+    const av = AVATARS[n];
+    if(av){
+      const img = new Image();
+      img.src = av;
+      ctx.save();
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.clip();
+      ctx.drawImage(img, x-r, y-r, r*2, r*2);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = colors[i];
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+      ctx.font = 'bold 40px Lato, sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.fillText(n, x, y+14);
+    }
+    // White ring
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(x,y,r+4,0,Math.PI*2); ctx.stroke();
+  });
+
+  drawAccentBar(ctx, style);
+  drawLogo(ctx, style);
+}
+
+async function drawStoryStats(ctx, style, photoData){
+  await drawGradientBg(ctx, style, photoData);
+  const tc = '#ffffff';
+  const muted = 'rgba(255,255,255,0.65)';
+  const evs = getAllEvents();
+  const acts = evs.filter(e=>e.tipo==='actividad');
+  const counts = {};
+  acts.forEach(e=>{ const s=e.extras?.subtipo||'actividad'; counts[s]=(counts[s]||0)+1; });
+
+  ctx.font = 'bold 52px Lato, sans-serif';
+  ctx.fillStyle = muted;
+  ctx.textAlign = 'center';
+  ctx.fillText('Hasta ahora...', W/2, 240);
+
+  ctx.font = 'bold 88px Georgia, serif';
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  ctx.fillText('Nuestro viaje', W/2, 350);
+  ctx.font = 'italic bold 88px Georgia, serif';
+  ctx.fillText('en números', W/2, 455);
+
+  const stats = [
+    {ico:'📅', num:DAYS.length, lbl:'días de aventura'},
+    {ico:'🌍', num:3, lbl:'países recorridos'},
+    {ico:'✈', num:evs.filter(e=>e.tipo==='vuelo').length, lbl:'vuelos'},
+    {ico:'🏨', num:HOTELS.length, lbl:'hoteles'},
+    {ico:'🏖', num:counts.playa||0, lbl:'playas'},
+    {ico:'🏘', num:counts.pueblo||0, lbl:'pueblos'},
+    {ico:'🍽', num:evs.filter(e=>e.tipo==='restaurante').length, lbl:'restaurantes'},
+    {ico:'📍', num:acts.length, lbl:'lugares visitados'},
+  ].filter(s=>s.num>0);
+
+  let y = 580;
+  const cols = 2, colW = W/cols;
+  stats.slice(0,8).forEach((s,i) => {
+    const col = i%cols, row = Math.floor(i/cols);
+    const x = col*colW + colW/2;
+    const ry = y + row*220;
+
+    // Card bg
+    ctx.fillStyle = style==='minimal'?'rgba(255,255,255,0.08)':'rgba(255,255,255,0.1)';
+    ctx.beginPath();
+    ctx.roundRect(col*colW+30, ry-80, colW-60, 190, 20);
+    ctx.fill();
+
+    ctx.font = '56px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.ico, x, ry-10);
+
+    ctx.font = 'bold 80px Lato, sans-serif';
+    ctx.fillStyle = tc;
+    ctx.textAlign = 'center';
+    ctx.fillText(s.num, x, ry+70);
+
+    ctx.font = 'bold 34px Lato, sans-serif';
+    ctx.fillStyle = muted;
+    ctx.fillText(s.lbl, x, ry+115);
+  });
+
+  drawAccentBar(ctx, style);
+  drawLogo(ctx, style);
+}
+
+async function drawStoryCierre(ctx, style, photoData){
+  await drawGradientBg(ctx, style, photoData);
+  const tc = '#ffffff';
+  const muted = 'rgba(255,255,255,0.65)';
+  const gold = style==='minimal' ? '#F5C842' : '#F0C040';
+  const evs = getAllEvents();
+  const acts = evs.filter(e=>e.tipo==='actividad');
+  const counts = {};
+  acts.forEach(e=>{ const s=e.extras?.subtipo||'actividad'; counts[s]=(counts[s]||0)+1; });
+
+  // Stars decoration
+  ctx.font = '40px serif';
+  ctx.textAlign = 'center';
+  ['✦','✧','✦'].forEach((s,i) => ctx.fillText(s, W/2-80+i*80, 200));
+
+  ctx.font = 'italic bold 64px Georgia, serif';
+  ctx.fillStyle = muted;
+  ctx.textAlign = 'center';
+  ctx.fillText('Fin del viaje', W/2, 300);
+
+  ctx.font = 'bold 96px Georgia, serif';
+  ctx.fillStyle = tc;
+  ctx.textAlign = 'center';
+  ctx.fillText('Amsterdam', W/2, 420);
+  ctx.font = 'italic 80px Georgia, serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.fillText('Grecia & Turquía', W/2, 520);
+
+  // Big number highlight
+  ctx.font = 'bold 220px Lato, sans-serif';
+  ctx.fillStyle = gold;
+  ctx.textAlign = 'center';
+  ctx.fillText(DAYS.length, W/2, 810);
+  ctx.font = 'bold 52px Lato, sans-serif';
+  ctx.fillStyle = muted;
+  ctx.fillText('días inolvidables', W/2, 870);
+
+  // Stats row
+  const row = [
+    {ico:'🌍',n:3,l:'países'},{ico:'🏖',n:counts.playa||0,l:'playas'},
+    {ico:'🏘',n:counts.pueblo||0,l:'pueblos'},{ico:'🍽',n:evs.filter(e=>e.tipo==='restaurante').length,l:'restaurantes'},
+  ];
+  const rw = W/row.length;
+  row.forEach((s,i) => {
+    const x = i*rw + rw/2;
+    ctx.font = '52px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.ico, x, 1000);
+    ctx.font = 'bold 64px Lato, sans-serif';
+    ctx.fillStyle = tc;
+    ctx.fillText(s.n, x, 1080);
+    ctx.font = 'bold 32px Lato, sans-serif';
+    ctx.fillStyle = muted;
+    ctx.fillText(s.l, x, 1125);
+  });
+
+  // Traveler names
+  ctx.font = 'bold 48px Lato, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Eugenia · Juan José · Valeria · Gustavo', W/2, 1260);
+
+  // Quote
+  ctx.font = 'italic 44px Georgia, serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.textAlign = 'center';
+  wrapText(ctx, '"Viajar es la única cosa en la que gastás dinero y te hace más rico"', W/2, 1380, W-120, 58);
+
+  // Dates
+  if(DAYS.length > 0){
+    const first = DAYS[0].fecha ? fmtDateDisplay(DAYS[0].fecha) : DAYS[0].date;
+    const last = DAYS[DAYS.length-1].fecha ? fmtDateDisplay(DAYS[DAYS.length-1].fecha) : DAYS[DAYS.length-1].date;
+    ctx.font = 'bold 46px Lato, sans-serif';
+    ctx.fillStyle = gold;
+    ctx.textAlign = 'center';
+    ctx.fillText(`${first} → ${last}`, W/2, 1600);
+  }
+
+  drawAccentBar(ctx, style);
+  drawLogo(ctx, style);
+}
+
+window.generateStory = async () => {
+  const canvas = document.getElementById('story-canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('story-preview-wrap');
+  wrap.style.display = 'none';
+
+  try {
+    if(STORY_TYPE === 'dia'){
+      const idx = parseInt(document.getElementById('story-day-sel').value);
+      if(isNaN(idx)){ alert('Elegí un día primero'); return; }
+      await drawStoryDia(ctx, idx, STORY_STYLE, STORY_PHOTO);
+    } else if(STORY_TYPE === 'llegada'){
+      const dest = document.getElementById('story-destino').value || 'Santorini 🌅';
+      const frase = document.getElementById('story-frase').value;
+      await drawStoryLlegada(ctx, dest, frase, STORY_STYLE, STORY_PHOTO);
+    } else if(STORY_TYPE === 'stats'){
+      await drawStoryStats(ctx, STORY_STYLE, STORY_PHOTO);
+    } else if(STORY_TYPE === 'cierre'){
+      await drawStoryCierre(ctx, STORY_STYLE, STORY_PHOTO);
+    }
+    wrap.style.display = 'block';
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  } catch(e){
+    console.error(e);
+    alert('Error al generar la story. Revisá la consola.');
+  }
+};
+
+window.downloadStory = () => {
+  const canvas = document.getElementById('story-canvas');
+  const a = document.createElement('a');
+  a.download = `story-${STORY_TYPE}-${Date.now()}.png`;
+  a.href = canvas.toDataURL('image/png',1.0);
+  a.click();
 };
 
 renderTvl();
