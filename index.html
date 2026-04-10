@@ -100,6 +100,49 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 .role-owner{background:#E5F4EB;color:#1A6B3A;border:1px solid #A0CCB0}
 .role-editor{background:#D5E8F5;color:#0D3A60;border:1px solid #90BCDA}
 .role-viewer{background:#F0EDF8;color:#3A0870;border:1px solid #C0A8E0}
+
+/* TRIP OPTIONS MENU */
+.trip-options-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:var(--sand);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .15s;color:var(--muted)}
+.trip-options-btn:hover{background:var(--accent-light);border-color:var(--accent)}
+.trip-opts-menu{position:fixed;z-index:350;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:.5rem;min-width:190px;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+.trip-opts-menu .umitem{border-radius:8px}
+
+/* MANAGE TRAVELERS MODAL */
+#m-travelers{display:none;position:fixed;inset:0;background:rgba(10,22,40,.7);z-index:400;align-items:flex-end;justify-content:center}
+#m-travelers.open{display:flex}
+.travelers-box{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;padding:1.75rem;animation:slideUp .25s cubic-bezier(.32,1,.46,1)}
+.member-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.member-row:last-child{border-bottom:none}
+.member-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.member-info{flex:1;min-width:0}
+.member-name{font-size:15px;font-weight:700;color:var(--ink)}
+.member-uid{font-size:11px;color:var(--muted);margin-top:1px}
+.role-select{padding:6px 10px;border:2px solid var(--border);border-radius:8px;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;color:var(--ink);background:var(--sand);outline:none;cursor:pointer}
+.role-select:focus{border-color:var(--accent)}
+.role-select option[value="owner"]{color:var(--success)}
+.role-select option[value="editor"]{color:var(--accent)}
+.role-select option[value="viewer"]{color:#5E2E8E}
+@media(min-width:641px){#m-travelers{align-items:center}.travelers-box{border-radius:20px}}
+
+/* DELETE CONFIRM MODAL */
+#m-delete{display:none;position:fixed;inset:0;background:rgba(10,22,40,.7);z-index:400;align-items:flex-end;justify-content:center}
+#m-delete.open{display:flex}
+.delete-box{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:1.75rem;animation:slideUp .25s cubic-bezier(.32,1,.46,1)}
+.delete-box h3{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#B02020;margin-bottom:.5rem}
+.delete-box p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem}
+.delete-confirm-input{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:10px;font-family:'Lato',sans-serif;font-size:16px;color:var(--ink);background:var(--sand);outline:none;margin-bottom:12px}
+.delete-confirm-input:focus{border-color:#B02020}
+.delete-confirm-input.match{border-color:var(--success);background:#E5F4EB}
+.delete-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-cancel-del{padding:12px;border:2px solid var(--border);border-radius:10px;background:none;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer}
+.btn-confirm-del{padding:12px;border:none;border-radius:10px;background:#B02020;color:#fff;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer;opacity:.4;transition:opacity .2s}
+.btn-confirm-del.ready{opacity:1}
+.btn-confirm-del:disabled{opacity:.3;cursor:not-allowed}
+.del-progress{font-size:13px;color:var(--muted);text-align:center;margin-top:8px;display:none;font-weight:700}
+/* Trip card delete button */
+.trip-del-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid #FFCDD2;background:#FFF5F5;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background .15s}
+.trip-del-btn:hover{background:#FFEBEE;border-color:#EF9A9A}
+@media(min-width:641px){#m-delete{align-items:center}.delete-box{border-radius:20px}}
 .trip-chevron{color:var(--muted);font-size:18px;font-weight:700}
 .trip-travelers{display:flex}
 .trip-av{width:26px;height:26px;border-radius:50%;border:2px solid #fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;margin-left:-6px;overflow:hidden}
@@ -343,6 +386,37 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
   </div>
 </div>
 
+<!-- MANAGE TRAVELERS MODAL -->
+<div id="m-travelers">
+  <div class="travelers-box">
+    <div class="nt-handle"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:.25rem" id="mt-title">Viajeros</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1.25rem">Solo vos (el creador) podés cambiar los roles.</p>
+    <div id="mt-members-list"></div>
+    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:space-between">
+      <button onclick="document.getElementById('m-travelers').classList.remove('open')" style="flex:1;padding:11px;border:2px solid var(--border);border-radius:10px;background:none;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer">Cerrar</button>
+      <button onclick="saveRoles()" id="save-roles-btn" style="flex:1;padding:11px;border:none;border-radius:10px;background:var(--bg);color:#fff;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div id="m-delete">
+  <div class="delete-box">
+    <div class="nt-handle"></div>
+    <h3>🗑 Eliminar viaje</h3>
+    <p id="del-msg">Para confirmar, escribí el nombre del viaje exactamente como aparece:</p>
+    <div id="del-trip-name" style="font-size:14px;font-weight:700;color:var(--ink);background:var(--sand);padding:8px 12px;border-radius:8px;margin-bottom:12px;border:1.5px solid var(--border)"></div>
+    <input class="delete-confirm-input" id="del-confirm-input" placeholder="Escribí el nombre aquí..." oninput="checkDeleteMatch()">
+    <div class="delete-btn-row">
+      <button class="btn-cancel-del" onclick="closeDeleteModal()">Cancelar</button>
+      <button class="btn-confirm-del" id="btn-confirm-del" onclick="executeDelete()" disabled>Eliminar</button>
+    </div>
+    <div class="del-progress" id="del-progress">Eliminando viaje...</div>
+  </div>
+</div>
+
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, getDoc, updateDoc, query, where, orderBy, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -564,8 +638,9 @@ function renderTrips(){
                 '<span class="role-badge role-editor">✏ Editor</span>'}
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px">
             <div class="trip-travelers">${travelerAvatars}</div>
+            <button class="trip-options-btn" onclick="event.stopPropagation();openTripOptions('${t._id}','${(t.nombre||'Mi viaje').replace(/'/g,"\\'")}',getUserRole(t),this)">⋯</button>
             <span class="trip-chevron">›</span>
           </div>
         </div>
@@ -876,6 +951,188 @@ showDashboard = function(){
   _origShowDash.call(this);
   setTimeout(checkShowMigrationBanner, 1500);
 };
+
+
+// ── TRIP OPTIONS MENU ─────────────────────────────────────
+let activeOptionsMenu = null;
+
+window.openTripOptions = (tripId, tripName, role, btnEl) => {
+  // Close any open menu
+  if(activeOptionsMenu){ activeOptionsMenu.remove(); activeOptionsMenu=null; }
+
+  const menu = document.createElement('div');
+  menu.className = 'trip-opts-menu';
+
+  const items = [
+    {ico:'🔗', label:'Compartir viaje', fn:`openShareFromOptions('${tripId}')`},
+    {ico:'👥', label:'Gestionar viajeros', fn:`openManageTravelers('${tripId}')`, ownerOnly:true},
+    {ico:'🗑', label:'Eliminar viaje', fn:`confirmDelete('${tripId}','${tripName.replace(/'/g,"\'")}')`, ownerOnly:true, danger:true},
+  ];
+
+  items.forEach(item=>{
+    if(item.ownerOnly && role!=='owner') return;
+    const el = document.createElement('div');
+    el.className = 'umitem' + (item.danger?' danger':'');
+    el.innerHTML = `<span>${item.ico}</span><span>${item.label}</span>`;
+    el.onclick = () => { menu.remove(); activeOptionsMenu=null; eval(item.fn); };
+    menu.appendChild(el);
+  });
+
+  // Position near button
+  const rect = btnEl.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 6) + 'px';
+  menu.style.right = (window.innerWidth - rect.right) + 'px';
+  document.body.appendChild(menu);
+  activeOptionsMenu = menu;
+
+  // Close on outside click
+  setTimeout(()=>{
+    document.addEventListener('click', function handler(){
+      menu.remove(); activeOptionsMenu=null;
+      document.removeEventListener('click', handler);
+    });
+  }, 50);
+};
+
+window.openShareFromOptions = (tripId) => {
+  document.getElementById('m-invite').classList.add('open');
+  document.getElementById('invite-trip-select').value = tripId;
+  document.getElementById('invite-trip-select').dispatchEvent(new Event('change'));
+};
+
+// ── MANAGE TRAVELERS ───────────────────────────────────────
+let MANAGE_TRIP_ID = null;
+let MANAGE_MEMBERS = [];
+
+window.openManageTravelers = async (tripId) => {
+  MANAGE_TRIP_ID = tripId;
+  const snap = await getDoc(doc(db,'trips',tripId));
+  if(!snap.exists()) return;
+  const trip = snap.data();
+  MANAGE_MEMBERS = (trip.members||[]).map(m=>({...m}));
+
+  document.getElementById('mt-title').textContent = '👥 ' + (trip.nombre||'Viaje');
+
+  renderMembersList();
+  document.getElementById('m-travelers').classList.add('open');
+};
+
+function renderMembersList(){
+  const AV_COLORS = ['#1B5E8E','#A03020','#155A30','#5E2E8E','#5E4E0E','#2E5E4E'];
+  document.getElementById('mt-members-list').innerHTML = MANAGE_MEMBERS.map((m,i)=>`
+    <div class="member-row">
+      <div class="member-av" style="background:${m.color||AV_COLORS[i%6]}">${(m.name||'?')[0].toUpperCase()}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name||'Sin nombre'}</div>
+        <div class="member-uid">${m.uid?'✓ Cuenta vinculada':'Sin cuenta aún'}</div>
+      </div>
+      ${m.role==='owner'
+        ? '<span class="role-badge role-owner" style="flex-shrink:0">✦ Creador</span>'
+        : `<select class="role-select" onchange="updateMemberRole(${i},this.value)">
+            <option value="editor" ${(m.role||'editor')==='editor'?'selected':''}>✏ Editor</option>
+            <option value="viewer" ${m.role==='viewer'?'selected':''}>👁 Solo ver</option>
+           </select>`
+      }
+    </div>`).join('');
+}
+
+window.updateMemberRole = (i, role) => {
+  MANAGE_MEMBERS[i].role = role;
+};
+
+window.saveRoles = async () => {
+  if(!MANAGE_TRIP_ID) return;
+  const btn = document.getElementById('save-roles-btn');
+  btn.disabled=true; btn.textContent='Guardando...';
+  try{
+    await updateDoc(doc(db,'trips',MANAGE_TRIP_ID),{ members: MANAGE_MEMBERS });
+    document.getElementById('m-travelers').classList.remove('open');
+    btn.disabled=false; btn.textContent='Guardar cambios';
+  }catch(e){
+    console.error(e);
+    btn.disabled=false; btn.textContent='Guardar cambios';
+    alert('Error al guardar. Intentá de nuevo.');
+  }
+};
+
+// Close travelers modal on backdrop
+document.getElementById('m-travelers').addEventListener('click', e=>{
+  if(e.target===document.getElementById('m-travelers'))
+    document.getElementById('m-travelers').classList.remove('open');
+});
+
+// ── DELETE TRIP ───────────────────────────────────────────
+let DELETE_TRIP_ID = null;
+let DELETE_TRIP_NAME = '';
+
+window.confirmDelete = (tripId, tripName) => {
+  DELETE_TRIP_ID = tripId;
+  DELETE_TRIP_NAME = tripName;
+  document.getElementById('del-trip-name').textContent = tripName;
+  document.getElementById('del-confirm-input').value = '';
+  document.getElementById('del-confirm-input').classList.remove('match');
+  document.getElementById('btn-confirm-del').classList.remove('ready');
+  document.getElementById('btn-confirm-del').disabled = true;
+  document.getElementById('del-progress').style.display = 'none';
+  document.getElementById('m-delete').classList.add('open');
+  setTimeout(()=>document.getElementById('del-confirm-input').focus(), 300);
+};
+
+window.checkDeleteMatch = () => {
+  const val = document.getElementById('del-confirm-input').value;
+  const match = val === DELETE_TRIP_NAME;
+  document.getElementById('del-confirm-input').classList.toggle('match', match);
+  document.getElementById('btn-confirm-del').classList.toggle('ready', match);
+  document.getElementById('btn-confirm-del').disabled = !match;
+};
+
+window.closeDeleteModal = () => {
+  document.getElementById('m-delete').classList.remove('open');
+  DELETE_TRIP_ID = null;
+  DELETE_TRIP_NAME = '';
+};
+
+window.executeDelete = async () => {
+  if(!DELETE_TRIP_ID) return;
+  const btn = document.getElementById('btn-confirm-del');
+  const prog = document.getElementById('del-progress');
+  btn.disabled = true;
+  prog.style.display = 'block';
+  prog.textContent = 'Eliminando viaje...';
+
+  try{
+    // Delete all subcollections
+    const subcollections = ['days','hotels','checklist','checks','notes','photos','profiles','avatars'];
+    for(const colName of subcollections){
+      prog.textContent = `Eliminando ${colName}...`;
+      const snap = await getDocs(collection(db,'trips',DELETE_TRIP_ID,colName));
+      for(const d of snap.docs){
+        await deleteDoc(doc(db,'trips',DELETE_TRIP_ID,colName,d.id));
+      }
+    }
+    // Delete the trip document itself
+    prog.textContent = 'Finalizando...';
+    await deleteDoc(doc(db,'trips',DELETE_TRIP_ID));
+
+    closeDeleteModal();
+  }catch(e){
+    console.error('Delete error:', e);
+    prog.textContent = '⚠ Error al eliminar. Intentá de nuevo.';
+    btn.disabled = false;
+  }
+};
+
+// Close on backdrop
+document.getElementById('m-delete').addEventListener('click', e=>{
+  if(e.target===document.getElementById('m-delete')) closeDeleteModal();
+});
+// Enter key confirms if name matches
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && DELETE_TRIP_ID){
+    const btn = document.getElementById('btn-confirm-del');
+    if(!btn.disabled) executeDelete();
+  }
+});
 
 // Handle Enter on login
 document.getElementById('l-email').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('l-pass').focus(); });
