@@ -745,7 +745,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
   </div>
 </div>
 
-<div class="ebanner" id="ebanner">✏ Modo edición activo — cambios sincronizados en tiempo real para todos</div>
+<div class="ebanner" id="ebanner" style="display:none"></div>
 
 <div class="nav-wrap">
   <nav class="nav">
@@ -772,12 +772,12 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
   <div class="skeleton-card"><div class="skeleton" style="width:70%;margin-bottom:8px"></div><div class="skeleton" style="width:45%"></div></div>
   <div class="skeleton-card"><div class="skeleton" style="width:55%;margin-bottom:8px"></div><div class="skeleton" style="width:35%"></div></div>
 </div>
-    <div class="add-row eo" style="display:none" onclick="openNewDay()">+ Agregar día</div>
+    <div class="add-row" onclick="openNewDay()">+ Agregar día</div>
   </section>
 
   <section id="tab-ht" class="section">
     <div id="htl-wrap"><div class="loading">Cargando hoteles...</div></div>
-    <div class="add-row eo" style="display:none" onclick="openNewHotel()">+ Agregar alojamiento</div>
+    <div class="add-row" onclick="openNewHotel()">+ Agregar alojamiento</div>
   </section>
 
   <section id="tab-ck" class="section">
@@ -1448,7 +1448,7 @@ window.toggleEdit=el=>{
     alert('Tenés acceso de solo lectura en este viaje. Pedile al creador que te dé permisos de edición.');
     return;
   }
-  EM=!EM;el.textContent=EM?'✓ Listo':'✏ Editar';el.style.color=EM?'#4CAF50':'';document.getElementById('ebanner').classList.toggle('show',EM);document.querySelectorAll('.eo').forEach(e=>e.style.display=EM?'flex':'none');renderDays();renderHotels();renderChecklist();renderNotes();renderProfiles();};
+  EM=!EM;el.textContent=EM?'✓ Listo':'✏ Editar';el.style.color=EM?'#4CAF50':'';renderDays();renderHotels();};
 window.selP=(i,a,n,el)=>{AP={i,a,n};document.querySelectorAll('#note-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));el.querySelector('.pbtn')?.classList.add('sel');};
 window.selPhotoP=(i,a,n,el)=>{PAP={i,a,n};document.querySelectorAll('#photo-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));el.querySelector('.pbtn')?.classList.add('sel');};
 window.togDay=id=>{
@@ -1883,7 +1883,7 @@ function renderEventCard(ev,dayId,j){
         ${keyInfo?`<div class="ecard-sub" style="font-size:13px;margin-top:3px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${keyInfo}</div>`:''}
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:4px">
-        ${EM?`<button class="ecard-opts-btn" onclick="event.stopPropagation();openEditEv('${dayId}',${j})">⋯</button>`:''}
+        <button class="ecard-opts-btn" onclick="event.stopPropagation();openEditEv('${dayId}',${j})">⋯</button>
         ${hasDetails?`<span id="ecc-${cid}" style="color:var(--muted);font-size:12px;transition:transform .2s;display:inline-block">▾</span>`:''}
       </div>
     </div>
@@ -1951,7 +1951,7 @@ window.renderDays=async()=>{
             const connector=j<evsSorted.length-1?routeConnector(ev,evsSorted[j+1]):'';
             return renderEventCard(ev,d._id,realIdx)+connector;
           }).join('')}
-          ${EM?`<div style="padding:.5rem 1rem"><button class="ibtn" style="width:100%;justify-content:center" onclick="openNewEv('${d._id}')">+ Agregar evento</button></div>`:''}
+          <div style="padding:.5rem 1rem"><button class="ibtn" style="width:100%;text-align:center;justify-content:center;color:var(--accent);border-color:var(--accent)" onclick="openNewEv('${d._id}')">+ Agregar evento</button></div>
         </div>
       </div>
     </div>`;
