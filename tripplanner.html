@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Trip Planner — Amsterdam · Grecia · Turquía</title>
+<title>Trip Planner — Países Bajos · Grecia · Turquía</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Trip Planner">
 <meta name="theme-color" content="#0D2B4E">
-<meta name="description" content="Amsterdam · Grecia · Turquía 2026 — Itinerario compartido">
+<meta name="description" content="Países Bajos · Grecia · Turquía 2026 — Itinerario compartido">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -725,12 +725,12 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 <div class="hero">
   <div class="hi">
     <p class="hero-dest" id="hero-dest">🌍 El Gran Viaje Mediterráneo</p>
-    <h1 id="hero-title">Amsterdam · Grecia<br><em>& Turquía</em></h1>
+    <h1 id="hero-title">Países Bajos · Grecia<br><em>& Turquía</em></h1>
     <p class="hero-sub">Verano 2026 · Itinerario compartido · 4 viajeros</p>
     <div class="travelers" id="tvl-list"></div>
     <div class="theme-row">
       <span>Destino:</span>
-      <button class="tbtn on" data-t="amsterdam" onclick="setTheme('amsterdam',this)">🇳🇱 Amsterdam</button>
+      <button class="tbtn on" data-t="amsterdam" onclick="setTheme('amsterdam',this)">🇳🇱 Países Bajos</button>
       <button class="tbtn" data-t="grecia" onclick="setTheme('grecia',this)">🇬🇷 Grecia</button>
       <button class="tbtn" data-t="turquia" onclick="setTheme('turquia',this)">🇹🇷 Turquía</button>
     </div>
@@ -993,7 +993,7 @@ let WEATHER_CACHE={};
 const TVL=[{i:'ER',n:'Eugenia',fn:'Eugenia Romero',a:'av1'},{i:'JN',n:'Juan José',fn:'Juan José Noguera',a:'av2'},{i:'VS',n:'Valeria',fn:'Valeria Secchi',a:'av3'},{i:'GG',n:'Gustavo',fn:'Gustavo García',a:'av4'}];
 const FN={ER:'Eugenia Romero',JN:'Juan José Noguera',VS:'Valeria Secchi',GG:'Gustavo García'};
 const AV={ER:'av1',JN:'av2',VS:'av3',GG:'av4'};
-const CL={amsterdam:'Amsterdam',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'};
+const CL={amsterdam:'Países Bajos',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'};
 const TIPO_ICO={vuelo:'✈',hotel:'🏨',actividad:'🎯',restaurante:'🍽',traslado:'🚕',otro:'📌'};
 const TIPO_CLS={vuelo:'etype-vuelo',hotel:'etype-hotel',actividad:'etype-actividad',restaurante:'etype-restaurante',traslado:'etype-traslado',otro:'etype-otro'};
 
@@ -1006,7 +1006,11 @@ const CITY_COORDS={
 };
 
 // TEMA
-const TM={amsterdam:{dest:'🇳🇱 Amsterdam',title:'Amsterdam<br><em>& los Países Bajos</em>'},grecia:{dest:'🇬🇷 Grecia',title:'Grecia<br><em>& sus islas</em>'},turquia:{dest:'🇹🇷 Turquía',title:'Turquía<br><em>& Estambul</em>'}};
+const TM={
+  amsterdam:{dest:'🇳🇱 Países Bajos · Amsterdam',title:'Países Bajos<br><em>& Amsterdam</em>'},
+  grecia:{dest:'🇬🇷 Grecia & sus Islas',title:'Grecia<br><em>& sus Islas</em>'},
+  turquia:{dest:'🇹🇷 Turquía · Estambul & Capadocia',title:'Turquía<br><em>Estambul & Capadocia</em>'}
+};
 window.setTheme=(t,el)=>{
   document.body.setAttribute('data-theme',t);
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
@@ -1301,6 +1305,8 @@ const SN=[
 ];
 
 async function seedIfEmpty(){
+  // Only seed the legacy Amsterdam trip — new trips start completely empty
+  if(TRIP_ID) return;
   const s=await getDocs(col('days'));
   if(!s.empty) return;
   for(const d of SD) await setDoc(dref('days',d.id),d);
@@ -2039,7 +2045,7 @@ window.openNewEv = dayId => {
 
 // ── GASTOS RENDER ─────────────────────────────────────────
 const TIPO_LABELS = {vuelo:'✈ Vuelos',hotel:'🏨 Hoteles',actividad:'🎯 Actividades',restaurante:'🍽 Comida',traslado:'🚕 Traslados',otro:'📌 Otros'};
-const CITY_LABELS = {amsterdam:'🇳🇱 Amsterdam',grecia:'🇬🇷 Grecia',turquia:'🇹🇷 Turquía',transito:'Tránsito'};
+const CITY_LABELS = {amsterdam:'🇳🇱 Países Bajos',grecia:'🇬🇷 Grecia',turquia:'🇹🇷 Turquía',transito:'Tránsito'};
 const NAMES = {ER:'Eugenia',JN:'Juan José',VS:'Valeria',GG:'Gustavo'};
 const AV_CLASS = {ER:'av1',JN:'av2',VS:'av3',GG:'av4'};
 
@@ -2405,7 +2411,7 @@ window.exportTravelBook = () => {
   const html = `<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Travel Book — Amsterdam · Grecia · Turquía 2026</title>
+<title>Travel Book — Países Bajos · Grecia · Turquía 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -2432,7 +2438,7 @@ body{font-family:'Lato',sans-serif;background:#F5EFE0;color:#0A1628;font-size:16
 </style></head><body>
 <div class="cover">
   <p style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1rem">Travel Book · Verano 2026</p>
-  <h1>Amsterdam · Grecia<br><em>& Turquía</em></h1>
+  <h1>Países Bajos · Grecia<br><em>& Turquía</em></h1>
   <p>Eugenia · Juan José · Valeria · Gustavo</p>
   <p>${DAYS.length} días · ${new Date().toLocaleDateString('es-AR')}</p>
 </div>
@@ -2475,7 +2481,7 @@ ${photos.length>0?`<div class="section"><h2>Fotos del viaje</h2><div class="phot
 
 <div class="footer">
   <p>Travel Book generado el ${new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})}</p>
-  <p style="margin-top:4px">Amsterdam · Grecia · Turquía · Verano 2026</p>
+  <p style="margin-top:4px">Países Bajos · Grecia · Turquía · Verano 2026</p>
 </div>
 </body></html>`;
 
