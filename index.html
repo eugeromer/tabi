@@ -2,8 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Trip Planner — Amsterdam · Grecia · Turquía</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trip Planner">
+<meta name="theme-color" content="#0D2B4E">
+<meta name="description" content="Amsterdam · Grecia · Turquía 2026 — Itinerario compartido">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -21,8 +27,11 @@
 [data-theme="grecia"]{--hero-bg:#0A3D62;--hero-bg2:#1A5276;--hero-accent:#F0C040;--hero-s1:#D4AC0D;--hero-s2:#1A8FCA;--hero-s3:#27AE60;--nav-bg:#0A3D62;--nav-border:#1A8FCA;--nav-active:#F0C040;--page-bg:#F0F7FF;--sand:#E8F2FA;--sand2:#D0E5F5;--ink:#051525;--ink2:#0D2B42;--muted:#3A5570;--border:#90C0E0;--border-s:#C0DCF0;--accent:#1A8FCA;--accent-light:#D0EAF8;--stat:#0A3D62;}
 [data-theme="turquia"]{--hero-bg:#2C1654;--hero-bg2:#3D2070;--hero-accent:#00BCD4;--hero-s1:#8B0000;--hero-s2:#00838F;--hero-s3:#E65100;--nav-bg:#2C1654;--nav-border:#00838F;--nav-active:#00BCD4;--page-bg:#F5F0FF;--sand:#EDE8F8;--sand2:#DDD5F0;--ink:#1A0A30;--ink2:#2D1A48;--muted:#5A4878;--border:#C0A8E0;--border-s:#D8C8F0;--accent:#00838F;--accent-light:#E0F5F8;--stat:#2C1654;}
 body,div,button,input,select,textarea,span,p{transition:background-color var(--tr) ease,border-color var(--tr) ease,color var(--tr) ease;}
-html{scroll-behavior:smooth}
-body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);font-size:16px;line-height:1.6}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.nav{-webkit-overflow-scrolling:touch}
+button,a,[onclick]{-webkit-tap-highlight-color:transparent}
+input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .sync-bar{background:var(--hero-bg2);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;padding:6px;display:flex;align-items:center;justify-content:center;gap:8px}
 .sdot{width:9px;height:9px;border-radius:50%;background:#4CAF50;flex-shrink:0;transition:background .3s}
 .sdot.warn{background:#FF9800}.sdot.err{background:#F44336}
@@ -57,7 +66,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .nav{max-width:860px;margin:0 auto;display:flex;padding:0 1rem;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .ntab{padding:.85rem .9rem;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;margin-bottom:-3px}
-.ntab:hover{color:rgba(255,255,255,.9)}.ntab.active{color:#fff;border-color:var(--nav-active)}
+.ntab:hover{color:rgba(255,255,255,.9)}.ntab.active{color:#fff;border-color:var(--nav-active);background:rgba(255,255,255,.06)}
 .ntab-edit{color:var(--hero-accent) !important}
 .main{max-width:860px;margin:0 auto;padding:1.75rem 2rem}
 .section{display:none}.section.active{display:block}
@@ -84,7 +93,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .day-actions{display:flex;gap:6px;align-items:center}
 .ibtn{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);white-space:nowrap}
 .ibtn:hover{background:var(--accent-light);border-color:var(--accent)}
-.chev{font-size:13px;color:var(--muted);transition:transform .2s;cursor:pointer;flex-shrink:0;font-weight:700}
+.chev{font-size:13px;color:var(--muted);transition:transform .2s;cursor:pointer;flex-shrink:0;font-weight:700;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;margin:-4px}
 .chev.open{transform:rotate(90deg)}
 .day-body{display:none;border-top:1.5px solid var(--border-s)}.day-body.open{display:block}
 .elist{padding:.25rem .75rem}
@@ -96,7 +105,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .etype-vuelo{background:#DDEEFF}.etype-hotel{background:#DDEEE5}.etype-actividad{background:#FFF0D8}
 .etype-restaurante{background:#FDDEE8}.etype-traslado{background:#EDEEF0}.etype-otro{background:#F0EDF8}
 .ecard-main{flex:1;min-width:0}
-.ecard-title{font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ecard-title{font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}
 .ecard-sub{font-size:13px;color:var(--muted);margin-top:2px}
 .ecard-time{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:2px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
 .ecard-actions{display:flex;gap:4px;align-items:flex-start;flex-shrink:0}
@@ -112,7 +121,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 /* ACTION BUTTONS on events */
 .ecard-btns{display:flex;gap:6px;flex-wrap:wrap;padding:0 1rem .75rem 3.5rem}
-.action-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--ink2);cursor:pointer;text-decoration:none;transition:background .15s}
+.action-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--ink2);cursor:pointer;text-decoration:none;transition:background .15s;min-height:32px;white-space:nowrap}
 .action-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
 .action-btn.flight{border-color:#B5CCEE;color:#1E4F8C;background:#DDEEFF}
 .action-btn.maps{border-color:#A5CCB5;color:#1A6B3A;background:#DDEEE5}
@@ -173,6 +182,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .photo-owner{position:absolute;bottom:0;left:0;right:0;background:rgba(13,43,78,.82);padding:4px 6px;font-size:11px;font-weight:700;color:#fff;text-align:center}
 .photo-del{position:absolute;top:4px;right:4px;background:rgba(170,20,20,.88);border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px;color:#fff;display:none;align-items:center;justify-content:center;font-weight:700;line-height:1}
 .photo-thumb:hover .photo-del{display:flex}
+@media(hover:none){.photo-del{display:flex !important;opacity:.85}}
 .add-photo-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border:2px dashed var(--border);border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;color:var(--accent);background:var(--accent-light);margin-top:4px}
 .upload-prog{background:var(--accent-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--stat);margin-top:8px;display:none}
 .vbg{display:none;position:fixed;inset:0;background:rgba(10,22,40,.93);z-index:300;align-items:center;justify-content:center;flex-direction:column;padding:1rem}
@@ -202,9 +212,12 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .loading{text-align:center;padding:2rem;color:var(--muted);font-size:15px;font-weight:700}
 
 /* MODAL */
-.mbg{display:none;position:fixed;inset:0;background:rgba(10,22,40,.65);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.mbg{display:none;position:fixed;inset:0;background:rgba(10,22,40,.65);z-index:200;align-items:flex-end;justify-content:center;padding:0}
 .mbg.open{display:flex}
-.mbox{background:var(--card);border-radius:16px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;padding:1.75rem;border:2px solid var(--border)}
+.mbox{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;padding:1.75rem;border:2px solid var(--border);border-bottom:none;animation:slideUp .28s cubic-bezier(.32,1,.46,1)}
+@keyframes slideUp{from{transform:translateY(100%);opacity:.5}to{transform:translateY(0);opacity:1}}
+.mbox-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1rem;display:block}
+@media(min-width:641px){.mbg{align-items:center;padding:1rem}.mbox{border-radius:20px;border-bottom:2px solid var(--border)}.mbox-handle{display:none}}
 .mbox h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;color:var(--stat)}
 .mbox h3 button{background:none;border:none;cursor:pointer;font-size:24px;color:var(--muted);line-height:1}
 .frow{margin-bottom:12px}
@@ -237,14 +250,121 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .hotel-select-row label{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
 .hotel-select-row select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Lato',sans-serif;font-size:14px;color:var(--ink);background:var(--card);outline:none}
 
-@media(max-width:600px){
-  .hero{padding:2rem 1.25rem 1.75rem}.main{padding:1.25rem}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}.hero-stats{gap:1.25rem}.nav{padding:0 .5rem}
-  .f2,.f3{grid-template-columns:1fr}.profile-fields{grid-template-columns:1fr}.pf.full{grid-column:1}
-  .edetails{padding-left:1rem;grid-template-columns:1fr}
-  .ecard-btns{padding-left:1rem}
-  .route-connector{padding-left:1rem}
+
+/* ── RESPONSIVE: all phones ── */
+@media(max-width:640px){
+  /* Layout */
+  .hero{padding:1.5rem 1rem 1.25rem}
+  .main{padding:1rem}
+  .nav{padding:0 .25rem}
+  .ntab{padding:.75rem .65rem;font-size:12px}
+
+  /* Hero: hide theme row on tiny screens, show compact stats */
+  .hero-sub{font-size:13px;margin-bottom:1.25rem}
+  .hero-stats{gap:1.25rem;margin-top:1rem;padding-top:1rem}
+  .hstat p:last-child{font-size:1.4rem}
+  .travelers{gap:7px}
+  .traveler{padding:3px 10px 3px 3px}
+  .traveler span{font-size:12px}
+
+  /* Stats grid 2 cols */
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .scard p:last-child{font-size:1.5rem}
+
+  /* Day cards: tighter */
+  .day-hd{padding:.75rem 1rem;gap:8px}
+  .day-info strong{font-size:14px}
+  .cpill{font-size:10px;padding:3px 8px}
+  .elist{padding:.2rem .5rem}
+
+  /* Event cards: optimize for thumb */
+  .ecard-hd{padding:.6rem .75rem;gap:8px}
+  .etype-icon{width:34px;height:34px;font-size:16px}
+  .ecard-title{font-size:14px;gap:5px}
+  .ecard-time{font-size:11px;padding:2px 6px}
+  .edetails{padding:0 .75rem .6rem 3rem;grid-template-columns:1fr}
+  .edetail{padding:6px 9px}
+  .edetail label{font-size:9px}
+  .edetail p{font-size:12px}
+  .ecard-btns{padding:0 .75rem .6rem 3rem;gap:5px}
+  .action-btn{font-size:11px;padding:4px 10px}
+  .route-connector{padding:3px .75rem 3px 3rem}
+  .route-btn{font-size:10px;padding:3px 8px}
+
+  /* Forms */
+  .f2,.f3{grid-template-columns:1fr}
+  .mbox{padding:1.25rem}
+  .mbox h3{font-size:17px}
+  .frow input,.frow select,.frow textarea{font-size:16px} /* prevents iOS zoom */
+  .etype-grid{grid-template-columns:repeat(3,1fr);gap:6px}
+  .etype-btn{padding:8px 4px;font-size:11px}
+  .etype-btn span{font-size:18px}
+  .subtipo-grid{grid-template-columns:repeat(4,1fr) !important;gap:5px}
+  .subtipo-btn{padding:6px 2px;font-size:10px}
+  .subtipo-btn span{font-size:16px}
+  .participantes-grid{grid-template-columns:repeat(2,1fr)}
+  .part-btn{padding:7px 8px;font-size:12px}
+  .hotel-select-row{padding:8px 10px}
+  .pago-toggle{gap:4px}
+  .ptbtn{padding:5px 10px;font-size:12px}
+  .mft{gap:6px}
+  .bcnl,.bsav,.bdel{padding:9px 14px;font-size:13px}
+
+  /* Hotels */
+  .hotel-card{padding:1rem}
+  .hfields{grid-template-columns:repeat(2,1fr)}
+  .hotel-head{flex-direction:column;gap:6px}
+
+  /* Checklist */
+  .citem label{font-size:14px}
+
+  /* Notes */
+  .compose{padding:.9rem 1rem}
+
+  /* Photos */
+  .photos-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+
+  /* Profiles */
+  .profile-card{padding:1.1rem}
+  .profile-fields{grid-template-columns:1fr}
+  .pf.full{grid-column:1}
+
+  /* Resumen */
+  .counter-grid{grid-template-columns:repeat(3,1fr);gap:7px}
+  .counter-card{padding:.7rem .5rem}
+  .counter-card .ico{font-size:22px;margin-bottom:3px}
+  .counter-card .num{font-size:1.5rem}
+  .counter-card .lbl{font-size:9px}
+  .export-btns{grid-template-columns:1fr}
+  .map-container{height:260px}
+  .resumen-hero{padding:1.5rem 1rem}
+  .resumen-hero h2{font-size:1.3rem}
+}
+
+/* ── iPhone SE / very small (375px and under) ── */
+@media(max-width:375px){
+  .ntab{padding:.7rem .5rem;font-size:11px}
+  .hero h1{font-size:1.7rem}
+  .counter-grid{grid-template-columns:repeat(3,1fr)}
+  .counter-card .num{font-size:1.3rem}
+  .stats-grid{gap:6px}
+  .theme-row{padding:5px 8px;gap:4px}
+  .tbtn{font-size:11px;padding:3px 8px}
+  .subtipo-grid{grid-template-columns:repeat(4,1fr) !important}
+}
+
+/* ── iPad / tablet ── */
+@media(min-width:641px) and (max-width:1024px){
+  .main{padding:1.5rem}
+  .f2{grid-template-columns:1fr 1fr}
   .etype-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── Safe area for iPhone notch / Dynamic Island ── */
+@supports(padding:max(0px)){
+  .nav-wrap{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+  .main{padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right))}
+  .hero{padding-left:max(1.5rem,env(safe-area-inset-left));padding-right:max(1.5rem,env(safe-area-inset-right))}
 }
 
 /* PARTICIPANTES */
@@ -299,6 +419,11 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .export-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
 .export-btn.primary{background:var(--nav-bg);color:#fff;border-color:var(--nav-bg)}
 .export-btn.primary:hover{opacity:.85}
+
+/* SKELETON LOADER */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--sand) 25%,var(--sand2) 50%,var(--sand) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:16px}
+.skeleton-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:10px}
 </style>
 </head>
 <body data-theme="amsterdam">
@@ -311,7 +436,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 <!-- MODAL EVENTO -->
 <div class="mbg" id="m-ev"><div class="mbox">
-  <h3 id="m-ev-t">Evento <button onclick="cm('m-ev')">×</button></h3>
+  <div class="mbox-handle"></div><h3 id="m-ev-t">Evento <button onclick="cm('m-ev')">×</button></h3>
   <input type="hidden" id="ev-di"><input type="hidden" id="ev-ei">
   <div class="frow">
     <label>Tipo de evento</label>
@@ -501,7 +626,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 <!-- MODAL DÍA -->
 <div class="mbg" id="m-day"><div class="mbox">
-  <h3 id="m-day-t">Día <button onclick="cm('m-day')">×</button></h3>
+  <div class="mbox-handle"></div><h3 id="m-day-t">Día <button onclick="cm('m-day')">×</button></h3>
   <input type="hidden" id="d-idx">
   <div class="frow"><label>Título del día</label><input id="d-label" placeholder="Ej: Amsterdam — canales y museos"></div>
   <div class="f2">
@@ -519,7 +644,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 <!-- MODAL HOTEL COMPLETO -->
 <div class="mbg" id="m-hotel"><div class="mbox">
-  <h3 id="m-hotel-t">Alojamiento <button onclick="cm('m-hotel')">×</button></h3>
+  <div class="mbox-handle"></div><h3 id="m-hotel-t">Alojamiento <button onclick="cm('m-hotel')">×</button></h3>
   <input type="hidden" id="ht-idx">
   <div class="frow"><label>Nombre del hotel</label><input id="ht-name" placeholder="Ej: Katikies Santorini"></div>
   <div class="frow"><label>Ciudad / zona</label><input id="ht-city" placeholder="Ej: Oia, Santorini"></div>
@@ -566,7 +691,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 <!-- MODAL CHECKLIST -->
 <div class="mbg" id="m-chk"><div class="mbox">
-  <h3 id="m-chk-t">Tarea <button onclick="cm('m-chk')">×</button></h3>
+  <div class="mbox-handle"></div><h3 id="m-chk-t">Tarea <button onclick="cm('m-chk')">×</button></h3>
   <input type="hidden" id="ck-gk"><input type="hidden" id="ck-idx">
   <div class="frow"><label>Descripción</label><textarea id="ck-txt"></textarea></div>
   <div class="mft">
@@ -578,7 +703,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 
 <!-- MODAL PERFIL -->
 <div class="mbg" id="m-profile"><div class="mbox">
-  <h3 id="m-profile-t">Perfil <button onclick="cm('m-profile')">×</button></h3>
+  <div class="mbox-handle"></div><h3 id="m-profile-t">Perfil <button onclick="cm('m-profile')">×</button></h3>
   <input type="hidden" id="prof-key">
   <div class="frow"><label>🍽 Comida — gustos y restricciones</label><textarea id="prof-comida"></textarea></div>
   <div class="frow"><label>🛍 Shopping — marcas y gustos</label><textarea id="prof-shopping"></textarea></div>
@@ -638,7 +763,11 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
       <div class="scard"><p>Ciudades</p><p id="sc-c">—</p></div>
       <div class="scard"><p>Actividades</p><p id="sc-a">—</p></div>
     </div>
-    <div id="days-wrap"><div class="loading">Cargando itinerario...</div></div>
+    <div id="days-wrap">
+  <div class="skeleton-card"><div class="skeleton" style="width:60%;margin-bottom:8px"></div><div class="skeleton" style="width:40%"></div></div>
+  <div class="skeleton-card"><div class="skeleton" style="width:70%;margin-bottom:8px"></div><div class="skeleton" style="width:45%"></div></div>
+  <div class="skeleton-card"><div class="skeleton" style="width:55%;margin-bottom:8px"></div><div class="skeleton" style="width:35%"></div></div>
+</div>
     <div class="add-row eo" style="display:none" onclick="openNewDay()">+ Agregar día</div>
   </section>
 
@@ -676,7 +805,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
       <div class="upload-prog" id="upload-prog"></div>
     </div>
     <div id="photos-grid" class="photos-grid"></div>
-    <div id="no-photos" style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:15px;font-weight:700">📷 Todavía no hay fotos. ¡Agreguen recuerdos!</div>
+    <div id="no-photos" style="text-align:center;padding:3rem 1rem;color:var(--muted);font-weight:700"><div style="font-size:48px;margin-bottom:12px">📷</div><div style="font-size:16px;margin-bottom:4px">Todavía no hay fotos</div><div style="font-size:13px;font-weight:400">Subí recuerdos desde la sección de arriba</div></div>
   </section>
 
   <section id="tab-pr" class="section">
@@ -1157,7 +1286,12 @@ function renderPhotoPbtns(){document.getElementById('photo-pbtns').innerHTML=TVL
 
 // ── HELPERS ───────────────────────────────────────────────
 window.cm=id=>document.getElementById(id).classList.remove('open');
-window.om=id=>document.getElementById(id).classList.add('open');
+window.om=id=>{
+  document.getElementById(id).classList.add('open');
+  // Close on backdrop tap
+  const el=document.getElementById(id);
+  el.onclick=e=>{if(e.target===el)cm(id);};
+};
 window.showTab=(n,el)=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');};
 window.toggleEdit=el=>{EM=!EM;el.textContent=EM?'✓ Listo':'✏ Editar';el.style.color=EM?'#4CAF50':'';document.getElementById('ebanner').classList.toggle('show',EM);document.querySelectorAll('.eo').forEach(e=>e.style.display=EM?'flex':'none');renderDays();renderHotels();renderChecklist();renderNotes();renderProfiles();};
 window.selP=(i,a,n,el)=>{AP={i,a,n};document.querySelectorAll('#note-pbtns .pbtn').forEach(b=>b.classList.remove('sel'));el.querySelector('.pbtn')?.classList.add('sel');};
@@ -1517,6 +1651,7 @@ function routeConnector(ev1, ev2){
 }
 
 window.renderDays=async()=>{
+  const todayISO = new Date().toISOString().slice(0,10);
   const c=document.getElementById('days-wrap');
   if(!DAYS.length){c.innerHTML='<div class="loading">Sin días aún.</div>';return;}
 
@@ -1540,7 +1675,7 @@ window.renderDays=async()=>{
       <div class="day-hd">
         <span class="cpill p-${d.city}">${CL[d.city]||d.city}</span>
         <div class="day-info" onclick="togDay('${d._id}')">
-          <strong>${d.label}</strong>
+          <strong>${d.label}${d.fecha===todayISO?'<span style="display:inline-flex;align-items:center;background:#E8A020;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:6px;letter-spacing:.04em">HOY</span>':''}</strong>
           <div class="day-meta">
             <span>${dateDisp||d.date}</span>
             <span>·</span><span>${evCount} eventos</span>
