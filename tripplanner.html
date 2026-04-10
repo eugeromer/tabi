@@ -1398,16 +1398,36 @@ catch(e){setSS('err','⚠ Error de conexión');console.error(e);}
 
 // ── AVATARES ──────────────────────────────────────────────
 function avHtml(i,cls='',sz=34){
-  const d=AVATARS[i],av=AV[i]||'av1';
+  // Look up avatar by UID, then by legacy key position
+  let d = AVATARS[i];
+  if(!d){
+    // Try legacy keys by matching TVL position
+    const tvlList = window.TVL_OVERRIDE || TVL;
+    const legacyKeys = ['ER','JN','VS','GG'];
+    const idx = tvlList.findIndex(t => t.i === i);
+    if(idx >= 0 && idx < legacyKeys.length) d = AVATARS[legacyKeys[idx]];
+  }
+  // Get initials from TVL_OVERRIDE or fallback
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const tvlItem = tvlList.find(t => t.i === i);
+  const initials = tvlItem ? tvlItem.fn.split(' ').map(w=>w[0]).slice(0,2).join('') : i.slice(0,2).toUpperCase();
+  const av = AV[i] || `av${(tvlList.findIndex(t=>t.i===i)%4)+1 || 1}`;
   if(d)return `<div class="av ${av} ${cls}" style="width:${sz}px;height:${sz}px" onclick="triggerAv('${i}')"><img src="${d}" alt="${i}"><div class="av-up">📷</div></div>`;
-  return `<div class="av ${av} np ${cls}" style="width:${sz}px;height:${sz}px" onclick="triggerAv('${i}')">${i}<div class="av-up">📷</div></div>`;
+  return `<div class="av ${av} np ${cls}" style="width:${sz}px;height:${sz}px" onclick="triggerAv('${i}')">${initials}<div class="av-up">📷</div></div>`;
 }
-window.triggerAv=key=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async ev=>{const c=await compressImg(ev.target.result,200,.8);await setDoc(dref('avatars',key),{data:c});};r.readAsDataURL(f);};inp.click();};
+window.triggerAv=key=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async ev=>{const c=await compressImg(ev.target.result,200,.8);// Save under both the key and legacy key if applicable
+await setDoc(dref('avatars',key),{data:c});
+// Also save under legacy key for backward compat
+const tvlList=window.TVL_OVERRIDE||TVL;
+const legacyKeys=['ER','JN','VS','GG'];
+const idx=tvlList.findIndex(t=>t.i===key);
+if(idx>=0&&idx<legacyKeys.length&&legacyKeys[idx]!==key){await setDoc(dref('avatars',legacyKeys[idx]),{data:c});}
+};r.readAsDataURL(f);};inp.click();};
 function renderTvl(){
   const tvl = window.TVL_OVERRIDE || TVL;
   document.getElementById('tvl-list').innerHTML=tvl.map(t=>`<div class="traveler">${avHtml(t.i,'',34)}<span>${t.fn}</span></div>`).join('');}
-function renderNotesPbtns(){document.getElementById('note-pbtns').innerHTML=TVL.map(t=>`<div onclick="selP('${t.i}','${t.a}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(AP.i===t.i?' sel':''),36)}</div>`).join('');}
-function renderPhotoPbtns(){document.getElementById('photo-pbtns').innerHTML=TVL.map(t=>`<div onclick="selPhotoP('${t.i}','${t.a}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(PAP.i===t.i?' sel':''),36)}</div>`).join('');}
+function renderNotesPbtns(){const tvlList=window.TVL_OVERRIDE||TVL;document.getElementById('note-pbtns').innerHTML=tvlList.map(t=>`<div onclick="selP('${t.i}','${t.a||'av1'}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(AP.i===t.i?' sel':''),36)}</div>`).join('');}
+function renderPhotoPbtns(){const tvlList=window.TVL_OVERRIDE||TVL;document.getElementById('photo-pbtns').innerHTML=tvlList.map(t=>`<div onclick="selPhotoP('${t.i}','${t.a||'av1'}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(PAP.i===t.i?' sel':''),36)}</div>`).join('');}
 
 // ── HELPERS ───────────────────────────────────────────────
 window.cm=id=>document.getElementById(id).classList.remove('open');
@@ -1654,8 +1674,60 @@ window.openViewer=(data,cap)=>{document.getElementById('vimg').src=data;document
 window.closeViewer=()=>document.getElementById('vbg').classList.remove('open');
 
 // ── PROFILES ──────────────────────────────────────────────
-window.openEditProfile=key=>{const p=PROFILES[key]||{};document.getElementById('m-profile-t').textContent='Perfil de '+(FN[key]||key);document.getElementById('prof-key').value=key;['comida','shopping','actividades','ritmo','nota'].forEach(f=>document.getElementById('prof-'+f).value=p[f]||'');om('m-profile');};
-window.savProfile=async()=>{const key=document.getElementById('prof-key').value;await setDoc(dref('profiles',key),{comida:document.getElementById('prof-comida').value,shopping:document.getElementById('prof-shopping').value,actividades:document.getElementById('prof-actividades').value,ritmo:document.getElementById('prof-ritmo').value,nota:document.getElementById('prof-nota').value});cm('m-profile');};
+// Smart profile lookup: checks by UID, legacy key (JN/ER), and name match
+function getProfile(tvlItem){
+  // 1. Direct key match (UID or legacy)
+  if(PROFILES[tvlItem.i]) return PROFILES[tvlItem.i];
+  // 2. Search all profiles for a name match (handles migrated trips)
+  const nameLower = tvlItem.fn.toLowerCase().split(' ')[0];
+  const match = Object.values(PROFILES).find(p => p._name?.toLowerCase().includes(nameLower));
+  if(match) return match;
+  // 3. Try legacy keys JN/ER/VS/GG mapped by position
+  const legacyKeys = ['ER','JN','VS','GG'];
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const idx = tvlList.findIndex(t => t.i === tvlItem.i);
+  if(idx >= 0 && idx < legacyKeys.length && PROFILES[legacyKeys[idx]]){
+    return PROFILES[legacyKeys[idx]];
+  }
+  return {};
+}
+
+// Get the best key to save a profile under
+function getProfileSaveKey(tvlItem){
+  // If UID looks like a real Firebase UID (>10 chars), use it
+  if(tvlItem.i && tvlItem.i.length > 5) return tvlItem.i;
+  return tvlItem.i;
+}
+
+window.openEditProfile = key => {
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const tvlItem = tvlList.find(t => t.i === key) || {i:key, fn:key, n:key};
+  const p = getProfile(tvlItem);
+  const displayName = tvlItem.fn || FN[key] || key;
+  document.getElementById('m-profile-t').textContent = 'Perfil de ' + displayName;
+  document.getElementById('prof-key').value = key;
+  ['comida','shopping','actividades','ritmo','nota'].forEach(f =>
+    document.getElementById('prof-'+f).value = p[f]||''
+  );
+  om('m-profile');
+};
+
+window.savProfile = async () => {
+  const key = document.getElementById('prof-key').value;
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const tvlItem = tvlList.find(t => t.i === key) || {i:key};
+  const saveKey = getProfileSaveKey(tvlItem);
+  const data = {
+    comida: document.getElementById('prof-comida').value,
+    shopping: document.getElementById('prof-shopping').value,
+    actividades: document.getElementById('prof-actividades').value,
+    ritmo: document.getElementById('prof-ritmo').value,
+    nota: document.getElementById('prof-nota').value,
+    _name: tvlItem.fn || key, // store name for lookup
+  };
+  await setDoc(dref('profiles', saveKey), data);
+  cm('m-profile');
+};
 
 // ── RENDERS ───────────────────────────────────────────────
 function pagoBadge(p){if(!p||p==='na')return'';return`<span class="badge-pago ${p==='si'?'si':'no'}">${p==='si'?'✓ Pago':'⏳ Pendiente'}</span>`;}
@@ -1920,8 +1992,9 @@ window.renderPhotos=()=>{
 };
 
 window.renderProfiles=()=>{
-  document.getElementById('profiles-wrap').innerHTML=TVL.map(t=>{
-    const p=PROFILES[t.i]||{};const has=p.comida||p.shopping||p.actividades||p.ritmo||p.nota;
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  document.getElementById('profiles-wrap').innerHTML=tvlList.map(t=>{
+    const p=getProfile(t);const has=p.comida||p.shopping||p.actividades||p.ritmo||p.nota;
     return `
     <div class="profile-card">
       <div class="profile-hd">
@@ -1935,7 +2008,7 @@ window.renderProfiles=()=>{
         <div class="pf"><div class="pf-lbl">😴 Ritmo</div><div class="pf-val${!p.ritmo?' pf-empty':''}">${p.ritmo||'Sin completar'}</div></div>
         ${p.nota?`<div class="pf full"><div class="pf-lbl">💬 Nota para el grupo</div><div class="pf-val">${p.nota}</div></div>`:''}
       </div>
-      <button class="edit-prof-btn" onclick="openEditProfile('${t.i}')">✏ Editar perfil de ${t.n}</button>
+      <button class="edit-prof-btn" onclick="openEditProfile('${t.i}')">✏ Editar perfil de ${t.fn.split(' ')[0]}</button>
     </div>`;
   }).join('');
 };
