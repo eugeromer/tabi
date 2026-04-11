@@ -975,14 +975,9 @@ window.acceptInvite = async (tripId, btn) => {
 // Show migration banner only for the original owner
 function checkShowMigrationBanner(){
   if(!currentUser) return;
-  const email = currentUser.email||'';
-  if(email.toLowerCase().includes('eugeromer') || email.toLowerCase().includes('eugen')){
-    const q2 = query(collection(db,'trips'), where('ownerId','==',currentUser.uid), where('migrated','==',true));
-    getDocs(q2).then(snap=>{
-      if(snap.empty) document.getElementById('migration-banner').style.display='block';
-    }).catch(()=>{
-      document.getElementById('migration-banner').style.display='block';
-    });
+  // In dev: show for any user with no trips yet
+  if(myTrips.length === 0){
+    document.getElementById('migration-banner').style.display='block';
   }
 }
 
