@@ -70,7 +70,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 .av img{width:100%;height:100%;object-fit:cover;display:block}
 .av.np{background:var(--avbg,#1B5E8E);color:#fff}
 .av1{--avbg:#1B5E8E}.av2{--avbg:#A03020}.av3{--avbg:#155A30}.av4{--avbg:#5E2E8E}
-.av-up{position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;border:1.5px solid var(--bg);pointer-events:none;color:#fff}
+.av-up{display:none}
 .traveler span{display:none} /* hide names — shown as overlay on expand */
 .traveler-names{font-size:13px;color:var(--muted);margin-left:12px;font-weight:400}
 .theme-row{display:none}
@@ -376,6 +376,9 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
   .hero h1{font-size:1.9rem}
   .ntab{font-size:11px;padding:5px 3px}
 }
+.mas-item{padding:12px 14px;border-radius:10px;font-size:15px;font-weight:500;color:#000;cursor:pointer;text-align:center;transition:background .15s}
+.mas-item:hover,.mas-item:active{background:rgba(0,0,0,.05)}
+
 @supports(padding:max(0px)){
   .nav-wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
   .main{padding-bottom:max(24px,env(safe-area-inset-bottom))}
@@ -720,11 +723,8 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
       <button class="tbtn" data-t="grecia" onclick="setTheme('grecia',this)">🇬🇷 Grecia</button>
       <button class="tbtn" data-t="turquia" onclick="setTheme('turquia',this)">🇹🇷 Turquía</button>
     </div>
-    <div class="hero-stats">
-      <div class="hstat"><p>Días</p><p id="hs-d">—</p></div>
-      <div class="hstat"><p>Vuelos</p><p id="hs-v">—</p></div>
-      <div class="hstat"><p>Ciudades</p><p id="hs-c">—</p></div>
-      <div class="hstat"><p>Hoteles</p><p id="hs-h">—</p></div>
+    <div style="display:none">
+      <span id="hs-d"></span><span id="hs-v"></span><span id="hs-c"></span><span id="hs-h"></span>
     </div>
   </div>
 </div>
@@ -733,16 +733,26 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 
 <div class="nav-wrap">
   <nav class="nav">
-    <div class="ntab active" onclick="showTab('it',this)">📅 Itinerario</div>
-    <div class="ntab" onclick="showTab('ht',this)">🏨 Hoteles</div>
-    <div class="ntab" onclick="showTab('gs',this)">💰 Gastos</div>
-    <div class="ntab" onclick="showTab('ck',this)">✓ Checklist</div>
-    <div class="ntab" onclick="showTab('nt',this)">💬 Notas</div>
-    <div class="ntab" onclick="showTab('ft',this)">📸 Fotos</div>
-    <div class="ntab" onclick="showTab('pr',this)">👤 Perfiles</div>
-    <div class="ntab" onclick="showTab('rs',this);initResumen()">🗺 Resumen</div>
-    <div class="ntab ntab-edit" id="etab" onclick="toggleEdit(this)">✏ Editar</div>
+    <div class="ntab active" onclick="showTab('it',this)" id="ntab-it">Itinerario</div>
+    <div class="ntab" onclick="showTab('ht',this)" id="ntab-ht">Hoteles</div>
+    <div class="ntab" onclick="showTab('gs',this)" id="ntab-gs">Gastos</div>
+    <div class="ntab" onclick="openMasMenu(this)" id="ntab-mas">Más ▾</div>
   </nav>
+</div>
+
+<!-- MÁS MENU -->
+<div id="mas-menu" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:300">
+  <div onclick="closeMasMenu()" style="position:absolute;inset:0;background:rgba(0,0,0,.3)"></div>
+  <div style="position:absolute;background:#fff;border-radius:0 0 16px 16px;width:100%;max-width:860px;left:50%;transform:translateX(-50%);padding:8px;box-shadow:0 4px 24px rgba(0,0,0,.15)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+      <div class="mas-item" onclick="closeMasMenu();showTab('ck',document.getElementById('ntab-mas'))">✓ Checklist</div>
+      <div class="mas-item" onclick="closeMasMenu();showTab('nt',document.getElementById('ntab-mas'))">💬 Notas</div>
+      <div class="mas-item" onclick="closeMasMenu();showTab('ft',document.getElementById('ntab-mas'))">📸 Fotos</div>
+      <div class="mas-item" onclick="closeMasMenu();showTab('pr',document.getElementById('ntab-mas'))">👤 Perfiles</div>
+      <div class="mas-item" onclick="closeMasMenu();showTab('rs',document.getElementById('ntab-mas'));initResumen()">🗺 Resumen</div>
+      <div class="mas-item" onclick="closeMasMenu();toggleEdit(document.getElementById('ntab-mas'))">✏ Editar</div>
+    </div>
+  </div>
 </div>
 
 <main class="main">
@@ -1447,8 +1457,14 @@ const idx=tvlList.findIndex(t=>t.i===key);
 if(idx>=0&&idx<legacyKeys.length&&legacyKeys[idx]!==key){await setDoc(dref('avatars',legacyKeys[idx]),{data:c});}
 };r.readAsDataURL(f);};inp.click();};
 function renderTvl(){
-  const tvl = window.TVL_OVERRIDE || TVL;
-  document.getElementById('tvl-list').innerHTML=tvl.map(t=>`<div class="traveler">${avHtml(t.i,'',34)}<span>${t.fn}</span></div>`).join('');}
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const avs = tvlList.map((t,i)=>{
+    const av = avHtml(t.i,'',30);
+    return `<div style="margin-left:${i>0?'-8px':'0'};position:relative;z-index:${10-i};display:inline-block">${av}</div>`;
+  }).join('');
+  const names = tvlList.map(t=>t.n).join(', ');
+  document.getElementById('tvl-list').innerHTML=`<div style="display:flex;align-items:center">${avs}<span style="font-size:13px;color:rgba(60,60,67,.6);margin-left:10px;font-weight:400">${names}</span></div>`;
+}
 function renderNotesPbtns(){const tvlList=window.TVL_OVERRIDE||TVL;document.getElementById('note-pbtns').innerHTML=tvlList.map(t=>`<div onclick="selP('${t.i}','${t.a||'av1'}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(AP.i===t.i?' sel':''),36)}</div>`).join('');}
 function renderPhotoPbtns(){const tvlList=window.TVL_OVERRIDE||TVL;document.getElementById('photo-pbtns').innerHTML=tvlList.map(t=>`<div onclick="selPhotoP('${t.i}','${t.a||'av1'}','${t.fn}',this)">${avHtml(t.i,'pbtn'+(PAP.i===t.i?' sel':''),36)}</div>`).join('');}
 
@@ -1459,6 +1475,12 @@ window.om=id=>{
   // Close on backdrop tap
   const el=document.getElementById(id);
   el.onclick=e=>{if(e.target===el)cm(id);};
+};
+window.openMasMenu = el => {
+  document.getElementById('mas-menu').style.display='block';
+};
+window.closeMasMenu = () => {
+  document.getElementById('mas-menu').style.display='none';
 };
 window.showTab=(n,el)=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');};
 window.toggleEdit=el=>{
@@ -1891,7 +1913,7 @@ window.toggleEcard = id => {
   if(!body) return;
   const open = body.style.display !== 'none';
   body.style.display = open ? 'none' : 'block';
-  if(chev) chev.style.transform = open ? '' : 'rotate(180deg)';
+  if(chev) chev.style.transform = open ? '' : 'rotate(90deg)';
 };
 
 function renderEventCard(ev,dayId,j){
@@ -1919,19 +1941,17 @@ function renderEventCard(ev,dayId,j){
 
   return `
   <div class="ecard">
-    <div class="ecard-hd" onclick="${hasDetails?`toggleEcard('${cid}')`:''}" style="${hasDetails?'cursor:pointer':''}">
-      <div class="etype-icon ${cls}">${ico}</div>
+    <div class="ecard-hd" onclick="toggleEcard('${cid}')">
+      <div class="etype-icon ${cls}"></div>
       <div class="ecard-main">
-        <div class="ecard-title">
-          ${hora?`<span class="ecard-time">${hora}</span>`:''}
-          <span style="font-size:16px;font-weight:700">${titulo}</span>
-          ${ev.pago==='no'?pagoBadge(ev.pago):''}
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="font-size:15px;font-weight:500;color:#000;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${titulo}</span>
+          ${hora?`<span style="font-size:13px;font-weight:500;color:rgba(60,60,67,.5);flex-shrink:0">${hora}</span>`:''}
+          ${ev.pago&&ev.pago!=='na'?`<span class="badge-pago ${ev.pago==='si'?'si':'no'}" style="flex-shrink:0">${ev.pago==='si'?'Pago':'Pendiente'}</span>`:''}
+          <button class="ecard-opts-btn" onclick="event.stopPropagation();openEditEv('${dayId}',${j})" style="flex-shrink:0">⋯</button>
+          <span style="color:#C7C7CC;font-size:14px;flex-shrink:0;transition:transform .2s" id="ecc-${cid}">›</span>
         </div>
-        ${keyInfo?`<div class="ecard-sub" style="font-size:13px;margin-top:3px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${keyInfo}</div>`:''}
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:4px">
-        <button class="ecard-opts-btn" onclick="event.stopPropagation();openEditEv('${dayId}',${j})">⋯</button>
-        ${hasDetails?`<span id="ecc-${cid}" style="color:var(--muted);font-size:12px;transition:transform .2s;display:inline-block">▾</span>`:''}
+        ${keyInfo?`<div class="ecard-sub">${keyInfo}</div>`:''}
       </div>
     </div>
     <div id="ecb-${cid}" style="display:none">
@@ -1998,12 +2018,12 @@ window.renderDays=async()=>{
         <div class="day-info">
           <strong>${d.label}</strong>
           <div class="day-meta">
-            <span class="cpill p-${d.city}" style="padding:2px 8px;font-size:10px">${CL[d.city]||d.city}</span>
+            <span style="font-size:11px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em">${CL[d.city]||d.city}</span>
             <span>${evCount} evento${evCount!==1?'s':''}</span>
             <span id="wc-${d._id}"></span>
             ${d.fecha===todayISO?'<span style="background:#1A6B3A;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.04em">HOY</span>':''}
           </div>
-          ${dayHighlight?`<div style="font-size:12px;color:#3A5068;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600">${TIPO_ICO[dayHighlight.tipo]||'📌'} ${dayHighlight.hora||''} ${(dayHighlight.titulo||'').slice(0,40)}</div>`:''}
+          ${dayHighlight?`<div style="font-size:12px;color:rgba(60,60,67,.55);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block;background:${dayHighlight.tipo==='vuelo'?'#007AFF':dayHighlight.tipo==='hotel'?'#34C759':dayHighlight.tipo==='actividad'?'#FF9500':dayHighlight.tipo==='restaurante'?'#FF2D55':'#8E8E93'}"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dayHighlight.hora?dayHighlight.hora+' ':''}${(dayHighlight.titulo||'').slice(0,38)}</span></div>`:''}
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           ${EM?`<button class="ibtn" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:''}
