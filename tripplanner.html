@@ -62,7 +62,8 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .hstat p:last-child{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700}
 .ebanner{background:#FFF8E7;border-bottom:2px solid #E8A020;padding:.6rem 2rem;font-size:14px;font-weight:700;color:#7A4A00;text-align:center;display:none}
 .ebanner.show{display:block}
-.nav-wrap{background:var(--nav-bg);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--nav-border)}
+.nav-wrap{background:var(--nav-bg);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--nav-border);position:relative}
+.nav-wrap::after{content:'';position:absolute;right:0;top:0;bottom:3px;width:32px;background:linear-gradient(to right,transparent,var(--nav-bg));pointer-events:none;z-index:1}
 .nav{max-width:860px;margin:0 auto;display:flex;padding:0 1rem;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .ntab{padding:.85rem .9rem;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;margin-bottom:-3px}
@@ -96,11 +97,11 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .chev{font-size:13px;color:var(--muted);transition:transform .2s;cursor:pointer;flex-shrink:0;font-weight:700;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;margin:-4px}
 .chev.open{transform:rotate(90deg)}
 .day-body{display:none;border-top:1.5px solid var(--border-s)}.day-body.open{display:block}
-.elist{padding:.25rem .75rem}
+.elist{padding:.2rem .6rem .4rem}
 
 /* EVENT CARDS */
-.ecard{background:var(--card);border:1.5px solid var(--border-s);border-radius:12px;margin:.4rem 0;overflow:hidden}
-.ecard-hd{display:flex;gap:10px;align-items:center;padding:.85rem 1rem}
+.ecard{background:var(--card);border:1.5px solid var(--border-s);border-radius:12px;margin:.3rem 0;overflow:hidden}
+.ecard-hd{display:flex;gap:10px;align-items:center;padding:.7rem .9rem}
 .ecard-opts-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:var(--sand);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);flex-shrink:0;transition:background .15s;font-weight:700}
 .ecard-opts-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
 .etype-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
@@ -115,7 +116,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .badge-pago.si{background:#E5F4EB;color:#1A6B3A;border:1px solid #A0CCB0}
 .badge-pago.no{background:#FFF3E0;color:#8B4500;border:1px solid #E0B870}
 .edetails{padding:0 1rem .7rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.edetail{background:var(--sand);border-radius:8px;padding:7px 10px;border:1px solid var(--border-s)}
+.edetail{background:var(--sand);border-radius:8px;padding:6px 9px;border:1px solid var(--border-s)}
 .edetail label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-bottom:2px;font-weight:700}
 .edetail p{font-size:13px;font-weight:700;color:var(--ink);word-break:break-word}
 .edetail.full{grid-column:1/-1}
@@ -806,11 +807,11 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
   <nav class="nav">
     <div class="ntab active" onclick="showTab('it',this)">📅 Itinerario</div>
     <div class="ntab" onclick="showTab('ht',this)">🏨 Hoteles</div>
+    <div class="ntab" onclick="showTab('gs',this)">💰 Gastos</div>
     <div class="ntab" onclick="showTab('ck',this)">✓ Checklist</div>
     <div class="ntab" onclick="showTab('nt',this)">💬 Notas</div>
     <div class="ntab" onclick="showTab('ft',this)">📸 Fotos</div>
     <div class="ntab" onclick="showTab('pr',this)">👤 Perfiles</div>
-    <div class="ntab" onclick="showTab('gs',this)">💰 Gastos</div>
     <div class="ntab" onclick="showTab('rs',this);initResumen()">🗺 Resumen</div>
     <div class="ntab ntab-edit" id="etab" onclick="toggleEdit(this)">✏ Editar</div>
   </nav>
@@ -1847,6 +1848,14 @@ function buildDetails(ev){
   const tipo=ev.tipo||'otro';
   const x=ev.extras||{};
   let d='';
+  // Show pago + monto at top of details
+  if(ev.pago&&ev.pago!=='na'){
+    const pagoLabel=ev.pago==='si'?'✓ Pago':'⏳ Pendiente';
+    const pagoColor=ev.pago==='si'?'#0D4A20':'#6A3200';
+    const pagoBg=ev.pago==='si'?'#C8EED8':'#FFE8C0';
+    const montoStr=ev.monto>0?` · ${CURRENCY_SYMBOLS[ev.moneda||'EUR']||''}${ev.monto}`:'';
+    d+=`<div class="edetail full" style="background:${pagoBg};border-color:${ev.pago==='si'?'#6BBD90':'#D4900A'}"><label>Estado de pago</label><p style="color:${pagoColor}">${pagoLabel}${montoStr}</p></div>`;
+  }
   if(tipo==='vuelo'){
     if(x.origen||x.destino) d+=`<div class="edetail full"><label>Ruta</label><p>${x.origen||'—'} → ${x.destino||'—'}</p></div>`;
     if(x.salida||x.llegada) d+=`<div class="edetail"><label>Salida → Llegada</label><p>${x.salida||'—'} → ${x.llegada||'—'}${x.duracion?' ('+x.duracion+')':''}</p></div>`;
@@ -1931,10 +1940,9 @@ function renderEventCard(ev,dayId,j){
       <div class="etype-icon ${cls}">${ico}</div>
       <div class="ecard-main">
         <div class="ecard-title">
-          ${hora?`<span class="ecard-time">${hora}${fechaDisp&&fechaDisp!==fmtDateDisplay(ev.fecha)?'':''}</span>`:''}
+          ${hora?`<span class="ecard-time">${hora}</span>`:''}
           <span style="font-size:16px;font-weight:700">${titulo}</span>
-          ${pagoBadge(ev.pago)}
-          ${ev.monto>0?`<span class="badge-moneda">${CURRENCY_SYMBOLS[ev.moneda||'EUR']||''}${ev.monto}</span>`:''}
+          ${ev.pago==='no'?pagoBadge(ev.pago):''}
         </div>
         ${keyInfo?`<div class="ecard-sub" style="font-size:13px;margin-top:3px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${keyInfo}</div>`:''}
       </div>
@@ -1982,6 +1990,7 @@ window.renderDays=async()=>{
   c.innerHTML=DAYS.map(d=>{
     const evsSorted=sortEvents(d.events||[]);
     const evCount=evsSorted.length;
+    const dayHighlight=evsSorted.find(e=>e.tipo==='vuelo')||evsSorted.find(e=>e.tipo==='hotel')||evsSorted.find(e=>e.tipo==='traslado')||null;
     const dateDisp=d.fecha?fmtDateDisplay(d.fecha):d.date;
     return `
     <div class="day-card" id="day-card-${d._id}" data-day-id="${d._id}">
@@ -2004,8 +2013,9 @@ window.renderDays=async()=>{
             <span class="cpill p-${d.city}" style="padding:2px 8px;font-size:10px">${CL[d.city]||d.city}</span>
             <span>${evCount} evento${evCount!==1?'s':''}</span>
             <span id="wc-${d._id}"></span>
-            ${d.fecha===todayISO?'<span style="background:#1A6B3A;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.04em">HOY</span>':''} 
+            ${d.fecha===todayISO?'<span style="background:#1A6B3A;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.04em">HOY</span>':''}
           </div>
+          ${dayHighlight?`<div style="font-size:12px;color:#3A5068;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600">${TIPO_ICO[dayHighlight.tipo]||'📌'} ${dayHighlight.hora||''} ${(dayHighlight.titulo||'').slice(0,40)}</div>`:''}
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           ${EM?`<button class="ibtn" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:''}
@@ -2014,12 +2024,19 @@ window.renderDays=async()=>{
       </div>
       <div class="day-body" id="db${d._id}">
         <div class="elist">
-          ${evsSorted.map((ev,j)=>{
+          ${evsSorted.length===0?`
+            <div style="text-align:center;padding:1.5rem 1rem;color:var(--muted)">
+              <div style="font-size:28px;margin-bottom:6px">📋</div>
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px">Sin eventos aún</div>
+              <div style="font-size:12px;margin-bottom:12px">Agregá vuelos, hoteles, actividades...</div>
+              <button class="ibtn" style="color:var(--accent);border-color:var(--accent)" onclick="openNewEv('${d._id}')">+ Agregar primer evento</button>
+            </div>`:
+          evsSorted.map((ev,j)=>{
             const realIdx=ev._origIdx!==undefined?ev._origIdx:j;
             const connector=j<evsSorted.length-1?routeConnector(ev,evsSorted[j+1]):'';
             return renderEventCard(ev,d._id,realIdx)+connector;
-          }).join('')}
-          <div style="padding:.5rem 1rem"><button class="ibtn" style="width:100%;text-align:center;justify-content:center;color:var(--accent);border-color:var(--accent)" onclick="openNewEv('${d._id}')">+ Agregar evento</button></div>
+          }).join('')+`<div style="padding:.4rem .6rem .6rem"><button class="ibtn" style="width:100%;text-align:center;justify-content:center;color:var(--accent);border-color:var(--accent);font-size:13px" onclick="openNewEv('${d._id}')">+ Agregar evento</button></div>`
+          }
         </div>
       </div>
     </div>`;
