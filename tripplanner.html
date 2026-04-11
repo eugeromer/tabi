@@ -32,7 +32,7 @@ body{font-family:'Lato',sans-serif;background:var(--page-bg);color:var(--ink);fo
 .nav{-webkit-overflow-scrolling:touch}
 button,a,[onclick]{-webkit-tap-highlight-color:transparent}
 input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
-.sync-bar{background:var(--hero-bg2);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;padding:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sync-bar{background:var(--hero-bg2);color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;padding:6px;display:flex;align-items:center;justify-content:center;gap:8px;position:sticky;top:0;z-index:101}
 .sdot{width:9px;height:9px;border-radius:50%;background:#4CAF50;flex-shrink:0;transition:background .3s}
 .sdot.warn{background:#FF9800}.sdot.err{background:#F44336}
 .hero{background:var(--hero-bg);color:#fff;padding:2.5rem 2rem 2rem;position:relative;overflow:hidden}
@@ -57,7 +57,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .tbtn[data-t="amsterdam"]{background:rgba(40,116,166,.6);color:#A8D4F5}
 .tbtn[data-t="grecia"]{background:rgba(26,143,202,.6);color:#AADDF5}
 .tbtn[data-t="turquia"]{background:rgba(0,131,143,.6);color:#A0EEF5}
-.hero-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
+.hero-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.25rem;padding-bottom:.5rem;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
 .hstat p:first-child{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:2px;font-weight:700}
 .hstat p:last-child{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700}
 .ebanner{background:#FFF8E7;border-bottom:2px solid #E8A020;padding:.6rem 2rem;font-size:14px;font-weight:700;color:#7A4A00;text-align:center;display:none}
@@ -2295,28 +2295,31 @@ window.updateStats=()=>{
 
 // ── PRECIO & PARTICIPANTES ────────────────────────────────
 const CURRENCY_SYMBOLS = {USD:'$',EUR:'€',TRY:'₺',ARS:'$',GBP:'£'};
-let EXCHANGE_RATES = {USD:1,EUR:1.08,TRY:0.031,ARS:0.001,GBP:1.27}; // fallback
+let EXCHANGE_RATES = {USD:1,EUR:1.08,TRY:0.031,ARS:0.00105,GBP:1.27}; // fallback: USD per 1 unit
 
 async function loadExchangeRates(){
   try{
     const r = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
     const d = await r.json();
     if(d.rates){
+      // Store as: how many USD is 1 unit of currency
       EXCHANGE_RATES = {
         USD: 1,
-        EUR: 1/(d.rates.EUR||0.93),
-        TRY: 1/(d.rates.TRY||32),
-        ARS: 1/(d.rates.ARS||900),
-        GBP: 1/(d.rates.GBP||0.79)
+        EUR: 1/(d.rates.EUR||0.93),   // 1 EUR = ~1.08 USD
+        TRY: 1/(d.rates.TRY||32),     // 1 TRY = ~0.03 USD
+        ARS: 1/(d.rates.ARS||900),    // 1 ARS = ~0.001 USD
+        GBP: 1/(d.rates.GBP||0.79),  // 1 GBP = ~1.27 USD
       };
     }
-  }catch(e){ /* use fallback */ }
+  }catch(e){ /* use fallback rates */ }
 }
 loadExchangeRates();
 
 function toUSD(amount, currency){
-  const rate = EXCHANGE_RATES[currency] || 1;
-  return amount / rate;
+  if(!amount || isNaN(amount)) return 0;
+  const rate = EXCHANGE_RATES[currency||'EUR'] || 1;
+  // rate = USD per 1 unit of currency, so multiply
+  return parseFloat(amount) * rate;
 }
 
 function formatMoney(amount, currency){
