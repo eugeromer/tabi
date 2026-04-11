@@ -691,6 +691,7 @@ function renderTrips(){
       const travelerAvatars = (t.members||[]).slice(0,4).map((m,i)=>
         `<div class="trip-av av-c${(i%6)+1}" style="background:${['#1B5E8E','#A03020','#155A30','#5E2E8E','#5E4E0E','#2E5E4E'][i%6]}">${(m.name||'?')[0].toUpperCase()}</div>`
       ).join('');
+      const tRole = getUserRole(t);
       return `
       <div class="trip-card" onclick="openTrip('${t._id}')">
         <div class="trip-banner ${bannerClass}" style="${t.color?`background:linear-gradient(135deg,${t.color},${t.color}CC)`:''}">
@@ -704,14 +705,14 @@ function renderTrips(){
             <div class="trip-meta">
               ${status?`<span class="trip-chip ${status}">${statusLabel}</span>`:''}
               ${t.fechaSalida?`<span class="trip-chip">${fmtDate(t.fechaSalida)} → ${fmtDate(t.fechaRegreso)}</span>`:''}
-              ${getUserRole(t)==='viewer'?'<span class="role-badge role-viewer">👁 Solo ver</span>':
-                getUserRole(t)==='owner'?'<span class="role-badge role-owner">✦ Creador</span>':
+              ${tRole==='viewer'?'<span class="role-badge role-viewer">👁 Solo ver</span>':
+                tRole==='owner'?'<span class="role-badge role-owner">✦ Creador</span>':
                 '<span class="role-badge role-editor">✏ Editor</span>'}
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <div class="trip-travelers">${travelerAvatars}</div>
-            <button class="trip-options-btn" onclick="event.stopPropagation();openTripOptions('${t._id}','${(t.nombre||'Mi viaje').replace(/'/g,"\\'")}',getUserRole(t),this)">⋯</button>
+            <button class="trip-options-btn" onclick="event.stopPropagation();openTripOptions('${t._id}','${(t.nombre||'Mi viaje').replace(/'/g,"\\'")}','${tRole}',this)">⋯</button>
             <span class="trip-chevron">›</span>
           </div>
         </div>
