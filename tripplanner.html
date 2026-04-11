@@ -522,31 +522,60 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 
   <!-- VUELO -->
   <div id="campos-vuelo">
+    <div class="sep">Ruta del vuelo</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div class="frow" style="flex:1;margin:0"><label>Origen</label><input id="v-cod-origen" placeholder="EZE" maxlength="4" style="text-transform:uppercase;font-size:18px;font-weight:700;letter-spacing:.05em;text-align:center" oninput="this.value=this.value.toUpperCase();autoFillVueloTitulo()"></div>
+      <div style="font-size:22px;color:var(--muted);font-weight:300;padding-top:18px">→</div>
+      <div class="frow" style="flex:1;margin:0"><label>Destino</label><input id="v-cod-destino" placeholder="AMS" maxlength="4" style="text-transform:uppercase;font-size:18px;font-weight:700;letter-spacing:.05em;text-align:center" oninput="this.value=this.value.toUpperCase();autoFillVueloTitulo()"></div>
+    </div>
     <div class="sep">Datos del vuelo</div>
     <div class="f2">
-      <div class="frow"><label>Aerolínea</label><input id="v-aerolinea" placeholder="Ej: KLM"></div>
+      <div class="frow"><label>Aerolínea</label><input id="v-aerolinea" placeholder="Ej: KLM" oninput="autoFillVueloTitulo()"></div>
       <div class="frow"><label>N° de vuelo</label><input id="v-numero" placeholder="Ej: KL702"></div>
     </div>
     <div class="f2">
-      <div class="frow"><label>Origen</label><input id="v-origen" placeholder="Ej: EZE — Ezeiza"></div>
-      <div class="frow"><label>Destino</label><input id="v-destino" placeholder="Ej: AMS — Schiphol"></div>
+      <div class="frow"><label>Nombre aeropuerto origen</label><input id="v-origen" placeholder="Ej: EZE — Ministro Pistarini"></div>
+      <div class="frow"><label>Nombre aeropuerto destino</label><input id="v-destino" placeholder="Ej: AMS — Amsterdam Schiphol"></div>
     </div>
+    <div class="sep">Horarios</div>
     <div class="f2">
-      <div class="frow"><label>Hora salida</label><input type="time" id="v-salida" oninput="calcDuracion()"></div>
-      <div class="frow"><label>Hora llegada</label><input type="time" id="v-llegada" oninput="calcDuracion()"></div>
+      <div class="frow"><label>Hora salida</label><input type="time" id="v-salida" oninput="syncVueloHora();calcDuracion()"></div>
+      <div class="frow">
+        <label>Hora llegada</label>
+        <input type="time" id="v-llegada" oninput="calcDuracion()">
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+          <input type="checkbox" id="v-next-day" onchange="calcDuracion()" style="width:16px;height:16px">
+          <label for="v-next-day" style="font-size:12px;color:var(--muted);font-weight:700;cursor:pointer">+1 día (llega al día siguiente)</label>
+        </div>
+      </div>
     </div>
-    <div class="frow"><label>Duración <span id="duracion-auto"></span></label><input id="v-duracion" placeholder="Se calcula automáticamente"></div>
+    <div class="frow"><label>Duración <span id="duracion-auto" style="color:var(--success);font-weight:700"></span></label><input id="v-duracion" placeholder="Se calcula automáticamente"></div>
     <div class="f2">
       <div class="frow"><label>Terminal</label><input id="v-terminal" placeholder="Ej: Terminal 3"></div>
       <div class="frow"><label>Escala</label><input id="v-escala" placeholder="Ej: Sin escala"></div>
     </div>
     <div class="f2">
-      <div class="frow"><label>Código PNR</label><input id="v-pnr" placeholder="Ej: BWCTB7"></div>
+      <div class="frow"><label>Código PNR</label><input id="v-pnr" placeholder="Ej: BWCTB7" style="font-weight:700;letter-spacing:.05em"></div>
       <div class="frow"><label>Clase</label><input id="v-clase" placeholder="Ej: Economy"></div>
     </div>
-    <div class="frow"><label>Equipaje</label><input id="v-equipaje" placeholder="Ej: 23kg bodega + 10kg cabina"></div>
+    <div class="sep">Equipaje</div>
+    <div class="f3">
+      <div class="frow">
+        <label>🧳 Maleta (kg)</label>
+        <input type="number" id="v-eq-maleta" placeholder="23" min="0" max="99" style="text-align:center;font-size:16px;font-weight:700">
+      </div>
+      <div class="frow">
+        <label>🎒 Carry-on (kg)</label>
+        <input type="number" id="v-eq-carry" placeholder="10" min="0" max="99" style="text-align:center;font-size:16px;font-weight:700">
+      </div>
+      <div class="frow">
+        <label>👜 Equipaje de mano</label>
+        <input type="number" id="v-eq-mano" placeholder="0" min="0" max="99" style="text-align:center;font-size:16px;font-weight:700">
+      </div>
+    </div>
     <div class="frow"><label>Asientos</label><input id="v-asientos" placeholder="Ej: ER 14A · JN 14B · VS 15A · GG 15B"></div>
     <div class="frow"><label>Notas</label><textarea id="v-notas" placeholder="Check-in online, millas, upgrade..."></textarea></div>
+    <input type="hidden" id="v-equipaje">
   </div>
 
   <!-- HOTEL — con selector -->
@@ -1022,17 +1051,26 @@ async function loadTripConfig(){
     const destEl = document.getElementById('hero-dest');
     const subEl = document.querySelector('.hero-sub');
     if(t.nombre && titleEl){
-      // Split on · to make it poetic: first part bold, rest italic
-      const parts = t.nombre.split('·').map(p=>p.trim()).filter(Boolean);
+      // Normalize nombre: Amsterdam → Países Bajos
+      const normNombre = t.nombre.replace(/Amsterdam/gi,'Países Bajos');
+      const parts = normNombre.split('·').map(p=>p.trim()).filter(Boolean);
       if(parts.length >= 2){
         titleEl.innerHTML = `${parts[0]}<br><em>${parts.slice(1).join(' · ')}</em>`;
       } else {
-        titleEl.innerHTML = t.nombre;
+        titleEl.innerHTML = normNombre;
       }
     }
     // Hero dest: show country/region label
     if(t.destinos?.length && destEl){
-      destEl.textContent = '🌍 ' + t.destinos.slice(0,3).join(' · ') + (t.destinos.length > 3 ? ' & más' : '');
+      // Normalize: replace city names with country labels for display
+      const normalize = d => {
+        if(/amsterdam/i.test(d)) return 'Países Bajos';
+        if(/atenas|mykonos|naxos|santorini|milos|paros|koufonisia/i.test(d)) return 'Grecia';
+        if(/estambul|capadocia|estanbul/i.test(d)) return 'Turquía';
+        return d;
+      };
+      const destNorm = [...new Set(t.destinos.map(normalize))];
+      destEl.textContent = '🌍 ' + destNorm.slice(0,3).join(' · ') + (destNorm.length > 3 ? ' & más' : '');
     }
     // Subtitle: dates + traveler count (not destinations — avoid repetition)
     if(subEl){
@@ -1162,18 +1200,34 @@ function fmtDateISO(dateStr){
 }
 
 // ── DURATION CALC ─────────────────────────────────────────
+window.autoFillVueloTitulo=()=>{
+  const orig=document.getElementById('v-cod-origen')?.value.trim()||'';
+  const dest=document.getElementById('v-cod-destino')?.value.trim()||'';
+  const al=document.getElementById('v-aerolinea')?.value.trim()||'';
+  const tit=document.getElementById('ev-titulo');
+  if(tit&&(orig||dest)){
+    const parts=[al,orig&&dest?orig+'→'+dest:''].filter(Boolean);
+    tit.value=parts.join(' · ');
+  }
+};
+window.syncVueloHora=()=>{
+  // Sync v-salida → ev-hora so the event time matches departure
+  const sal=document.getElementById('v-salida')?.value;
+  if(sal) document.getElementById('ev-hora').value=sal;
+};
 window.calcDuracion=()=>{
   const s=document.getElementById('v-salida').value;
   const l=document.getElementById('v-llegada').value;
   if(!s||!l) return;
+  const nextDay=document.getElementById('v-next-day')?.checked?1440:0;
   const [sh,sm]=s.split(':').map(Number);
   const [lh,lm]=l.split(':').map(Number);
-  let mins=(lh*60+lm)-(sh*60+sm);
+  let mins=(lh*60+lm+nextDay)-(sh*60+sm);
   if(mins<0) mins+=24*60;
   const h=Math.floor(mins/60);const m=mins%60;
   const dur=`${h}h ${m>0?m+'m':''}`.trim();
   document.getElementById('v-duracion').value=dur;
-  document.getElementById('duracion-auto').textContent=`→ ${dur}`;
+  document.getElementById('duracion-auto').textContent=`→ ${dur}${nextDay?'  (+1 día)':''}`;
   document.getElementById('duracion-auto').className='auto-calc';
 };
 
@@ -1558,6 +1612,9 @@ function autoOpenToday(){
 
 // ── TIPO & PAGO ───────────────────────────────────────────
 window.selTipo=(t,el)=>{
+  // Hide/show top hora+fecha for vuelo (they're duplicated by v-salida)
+  const topTime = document.querySelector('.f2:has(#ev-hora)');
+  if(topTime) topTime.style.display = t==='vuelo' ? 'none' : '';
   EVTIPO=t;
   document.querySelectorAll('.etype-btn').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
@@ -1576,8 +1633,9 @@ window.openNewEv=dayId=>{
   document.getElementById('m-ev-t').textContent='Nuevo evento';
   document.getElementById('ev-di').value=dayId;document.getElementById('ev-ei').value='';
   document.getElementById('ev-hora').value='';document.getElementById('ev-fecha').value='';
+  const nd=document.getElementById('v-next-day');if(nd)nd.checked=false;
   document.getElementById('ev-titulo').value='';
-  ['v-aerolinea','v-numero','v-origen','v-destino','v-salida','v-llegada','v-duracion','v-terminal','v-escala','v-pnr','v-clase','v-equipaje','v-asientos','v-notas',
+  ['v-cod-origen','v-cod-destino','v-eq-maleta','v-eq-carry','v-eq-mano','v-aerolinea','v-numero','v-origen','v-destino','v-salida','v-llegada','v-duracion','v-terminal','v-escala','v-pnr','v-clase','v-equipaje','v-asientos','v-notas',
    'h-nombre','h-ciudad','h-dir','h-maps','h-cin-fecha','h-cin-hora','h-cout-fecha','h-cout-hora','h-conf','h-tel','h-notas',
    'a-lugar','a-maps','a-horafin','a-precio','a-conf','a-proveedor','a-link','a-notas',
    'r-nombre','r-dir','r-maps','r-cocina','r-precio','r-conf','r-link','r-notas',
@@ -2096,38 +2154,56 @@ window.renderDays=async()=>{
   }
 };
 
+window.toggleHotel=id=>{
+  const body=document.getElementById('hb-'+id);
+  const chev=document.getElementById('hc-'+id);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(chev)chev.style.transform=open?'':'rotate(180deg)';
+};
+
 window.renderHotels=()=>{
   const c=document.getElementById('htl-wrap');
-  if(!HOTELS.length){c.innerHTML='<div class="loading">Sin hoteles aún.</div>';return;}
+  if(!HOTELS.length){c.innerHTML=`<div style="text-align:center;padding:2rem 1rem;color:var(--muted)"><div style="font-size:36px;margin-bottom:8px">🏨</div><div style="font-size:15px;font-weight:700;margin-bottom:4px">Sin alojamientos aún</div><div style="font-size:13px">Agregá hoteles, hostels o Airbnb</div></div>`;return;}
   c.innerHTML=HOTELS.map(h=>{
     const cinDisp=h.cinFecha?fmtDateDisplay(h.cinFecha)+(h.cinHora?' · '+h.cinHora:''):(h.cin||'—');
     const coutDisp=h.coutFecha?fmtDateDisplay(h.coutFecha)+(h.coutHora?' · '+h.coutHora:''):(h.cout||'—');
+    // Key info line for collapsed view
+    const keyInfo=[cinDisp!=='—'?'Check-in '+cinDisp:'',h.noch?h.noch:''].filter(Boolean).join(' · ');
     return `
-    <div class="hotel-card">
-      <div class="hotel-head">
-        <div>
-          <div class="hotel-name">${h.name}</div>
-          <span style="font-size:13px;color:var(--muted);font-weight:700">${h.city}</span>
-          ${h.plat?`<span style="font-size:12px;color:var(--accent);font-weight:700;margin-left:8px">${h.plat}</span>`:''}
+    <div class="hotel-card" style="padding:0;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:10px;padding:1rem 1.25rem;cursor:pointer" onclick="toggleHotel('${h._id}')">
+        <div style="width:38px;height:38px;border-radius:10px;background:#DDEEE5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏨</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--stat);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${h.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span class="cpill ${h.cc}" style="padding:2px 8px;font-size:10px">${h.city.split('·')[0].trim()}</span>
+            ${keyInfo?`<span style="font-weight:600">${keyInfo}</span>`:''}
+            ${h.pago==='no'?pagoBadge('no'):''}
+          </div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <span class="cpill ${h.cc}">${h.city.split('·')[0].trim()}</span>
-          ${pagoBadge(h.pago||'no')}
-          ${EM?`<button class="ibtn" onclick="openEditHotel('${h._id}')">✏ Editar</button>`:''}
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <button class="ecard-opts-btn" onclick="event.stopPropagation();openEditHotel('${h._id}')">⋯</button>
+          <span id="hc-${h._id}" style="color:var(--muted);font-size:12px;transition:transform .2s;display:inline-block">▾</span>
         </div>
       </div>
-      <div class="hfields">
-        <div class="hfield"><label>Check-in</label><p>${cinDisp}</p></div>
-        <div class="hfield"><label>Check-out</label><p>${coutDisp}</p></div>
-        <div class="hfield"><label>Duración</label><p>${h.noch||'—'}</p></div>
-        <div class="hfield"><label>N° confirmación</label><p>${h.conf||'Pendiente'}</p></div>
-        ${h.tel?`<div class="hfield"><label>Teléfono</label><p>${h.tel}</p></div>`:''}
-        ${h.hab?`<div class="hfield"><label>Habitaciones</label><p>${h.hab}</p></div>`:''}
-        ${h.desayuno?`<div class="hfield"><label>Desayuno</label><p>${h.desayuno}</p></div>`:''}
-        ${h.dir?`<div class="hfield" style="grid-column:1/-1"><label>Dirección</label><p>${h.dir}${h.maps&&h.maps.startsWith('http')?` <a href="${h.maps}" target="_blank" class="action-btn maps" style="display:inline-flex;padding:2px 8px;margin-left:6px;font-size:11px">📍 Maps</a>`:''}</p></div>`:''}
+      <div id="hb-${h._id}" style="display:none;border-top:1.5px solid var(--border-s);padding:1rem 1.25rem">
+        <div class="hfields" style="margin-bottom:10px">
+          <div class="hfield"><label>Check-in</label><p>${cinDisp}</p></div>
+          <div class="hfield"><label>Check-out</label><p>${coutDisp}</p></div>
+          <div class="hfield"><label>Duración</label><p>${h.noch||'—'}</p></div>
+          <div class="hfield"><label>N° confirmación</label><p>${h.conf||'Pendiente'}</p></div>
+          ${h.tel?`<div class="hfield"><label>Teléfono</label><p>${h.tel}</p></div>`:''}
+          ${h.hab?`<div class="hfield"><label>Habitaciones</label><p>${h.hab}</p></div>`:''}
+          ${h.plat?`<div class="hfield"><label>Plataforma</label><p>${h.plat}</p></div>`:''}
+          ${h.desayuno?`<div class="hfield"><label>Desayuno</label><p>${h.desayuno}</p></div>`:''}
+          ${h.dir?`<div class="hfield" style="grid-column:1/-1"><label>Dirección</label><p>${h.dir}${h.maps&&h.maps.startsWith('http')?` <a href="${h.maps}" target="_blank" class="action-btn action-secondary" style="display:inline-flex;padding:3px 10px;margin-left:6px;font-size:11px">📍 Maps</a>`:''}</p></div>`:''}
+        </div>
+        ${h.pago==='si'?`<div style="font-size:13px;color:#0D4A20;background:#C8EED8;padding:6px 10px;border-radius:8px;font-weight:700;margin-bottom:8px;display:inline-block">✓ Pago confirmado</div>`:''}
+        ${h.link?`<div><a href="${h.link}" target="_blank" class="action-btn action-primary" style="display:inline-flex">🔗 Ver reserva</a></div>`:''}
+        ${h.obs?`<div class="hotel-obs" style="margin-top:8px">📌 ${h.obs}</div>`:''}
       </div>
-      ${h.link?`<div style="margin-bottom:8px"><a href="${h.link}" target="_blank" class="action-btn" style="display:inline-flex">🔗 Ver reserva</a></div>`:''}
-      ${h.obs?`<div class="hotel-obs">📌 ${h.obs}</div>`:''}
     </div>`;
   }).join('');
 };
