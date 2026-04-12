@@ -374,7 +374,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 @supports(padding:max(0px)){
   .nav-wrap{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
   .main{padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right))}
-  .hero{padding-left:max(1.5rem,env(safe-area-inset-left));padding-right:max(1.5rem,env(safe-area-inset-right))}
+  .hero{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 }
 
 /* PARTICIPANTES */
@@ -483,13 +483,12 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .hfield p{color:#0A1628;font-weight:700}
 /* Note text */
 .note-text{font-size:15px;color:#0A1628;line-height:1.65}
-
-/* Apple day section */
-.day-card{background:transparent !important;border-radius:0 !important;margin-bottom:0 !important;border:none !important}
-.day-body{border-top:.5px solid rgba(60,60,67,.08) !important}
 .mas-item{padding:10px 16px;font-size:15px;font-weight:500;color:#000;border-radius:8px;cursor:pointer;white-space:nowrap}
 .mas-item:hover,.mas-item:active{background:rgba(60,60,67,.06)}
 .mas-item-blue{color:#007AFF}
+
+.day-card{background:transparent !important;border:none !important;border-radius:0 !important;margin-bottom:0 !important}
+.day-body{border-top:.5px solid rgba(60,60,67,.08) !important}
 </style>
 </head>
 <body data-theme="amsterdam">
@@ -853,6 +852,10 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
     <span id="sc-v" style="display:none"></span>
     <span id="sc-c" style="display:none"></span>
     <span id="sc-a" style="display:none"></span>
+    <span id="hs-d" style="display:none"></span>
+    <span id="hs-v" style="display:none"></span>
+    <span id="hs-c" style="display:none"></span>
+    <span id="hs-h" style="display:none"></span>
     <div id="date-nav" class="date-nav"></div>
     <div id="onboarding-banner" style="display:none;background:linear-gradient(135deg,var(--hero-bg),var(--hero-bg2));border-radius:14px;padding:1.25rem;margin-bottom:1rem;color:#fff">
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem">¡Bienvenidos al viaje! 🎉</div>
@@ -1134,6 +1137,7 @@ const TVL=[{i:'ER',n:'Eugenia',fn:'Eugenia Romero',a:'av1'},{i:'JN',n:'Juan Jos�
 const FN={ER:'Eugenia Romero',JN:'Juan José Noguera',VS:'Valeria Secchi',GG:'Gustavo García'};
 const AV={ER:'av1',JN:'av2',VS:'av3',GG:'av4'};
 const CL={amsterdam:'Países Bajos',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'};
+const TIPO_COLOR={vuelo:'#007AFF',hotel:'#34C759',actividad:'#FF9500',restaurante:'#FF2D55',traslado:'#8E8E93',otro:'#AF52DE'};
 const TIPO_ICO={vuelo:'✈',hotel:'🏨',actividad:'🎯',restaurante:'🍽',traslado:'🚕',otro:'📌'};
 const TIPO_CLS={vuelo:'etype-vuelo',hotel:'etype-hotel',actividad:'etype-actividad',restaurante:'etype-restaurante',traslado:'etype-traslado',otro:'etype-otro'};
 
@@ -2084,17 +2088,15 @@ function routeConnector(ev1, ev2){
 }
 
 window.renderDays=async()=>{
-  const todayISO = new Date().toISOString().slice(0,10);
+  const todayISO=new Date().toISOString().slice(0,10);
   const wrap=document.getElementById('days-wrap');
   if(!DAYS.length){
-    wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:13px;margin-bottom:12px">El itinerario está vacío</div><button class="ibtn" style="color:var(--accent);border-color:var(--accent)" onclick="openNewDay()">+ Agregar primer día</button></div>';
+    wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px">El itinerario está vacío</div>';
     const ob=document.getElementById('onboarding-banner');
-    if(ob&&!TRIP_ID) ob.style.display='block';
+    if(ob&&!TRIP_ID)ob.style.display='block';
     return;
   }
   const ob=document.getElementById('onboarding-banner');if(ob)ob.style.display='none';
-
-  // Weather promises (non-blocking)
   const weatherPromises={};
   DAYS.forEach(d=>{
     if(d.city!=='transito'&&d.fecha){
@@ -2103,36 +2105,31 @@ window.renderDays=async()=>{
         weatherPromises[d._id]=getWeather(d.city,isoDate);
     }
   });
-
   const dayNames=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-
-  wrap.innerHTML = DAYS.map(d=>{
-    const evsSorted = sortEvents(d.events||[]);
-    const dateDisp = d.fecha ? fmtDateDisplay(d.fecha) : (d.date||'');
-    const parts = dateDisp.split(' ');
-    const dayName = d.fecha ? dayNames[new Date(d.fecha+'T12:00:00').getDay()] : '';
-    const isToday = d.fecha === todayISO;
-
-    // Events HTML — Apple row style
-    const evRows = evsSorted.length === 0
-      ? `<div style="padding:12px 14px;color:var(--muted);font-size:13px">Sin eventos aún</div>`
-      : evsSorted.map((ev,j)=>{
-          const realIdx = ev._origIdx!==undefined ? ev._origIdx : j;
-          const tipo = ev.tipo||'otro';
-          const dotColor = TIPO_COLOR[tipo]||'#8E8E93';
-          const titulo = ev.titulo||ev.tt||'Sin título';
-          const hora = fmtTimeDisplay(ev.hora||ev.t||'');
-          const x = ev.extras||{};
-          // subtitle per type
+  const rows=DAYS.map(d=>{
+    const evsSorted=sortEvents(d.events||[]);
+    const dateDisp=d.fecha?fmtDateDisplay(d.fecha):(d.date||'');
+    const parts=dateDisp.split(' ');
+    const dayName=d.fecha?dayNames[new Date(d.fecha+'T12:00:00').getDay()]:'';
+    const isToday=d.fecha===todayISO;
+    const evRows=evsSorted.length===0
+      ?`<div style="padding:11px 14px;color:var(--muted);font-size:13px">Sin eventos aún</div>`
+      :evsSorted.map((ev,j)=>{
+          const realIdx=ev._origIdx!==undefined?ev._origIdx:j;
+          const tipo=ev.tipo||'otro';
+          const dotColor=TIPO_COLOR[tipo]||'#8E8E93';
+          const titulo=ev.titulo||ev.tt||'Sin título';
+          const hora=fmtTimeDisplay(ev.hora||ev.t||'');
+          const x=ev.extras||{};
           let sub='';
-          if(tipo==='vuelo'&&x.origen&&x.destino) sub=`${x.origen.split('—')[0].trim()} → ${x.destino.split('—')[0].trim()}${x.pnr?' · '+x.pnr:''}`;
-          else if(tipo==='hotel') sub=`Check-in${x.cinHora?' '+x.cinHora:''}${x.noch?' · '+x.noch:''}`;
-          else if(tipo==='traslado'&&x.medio) sub=`${x.medio}${x.duracion?' · '+x.duracion:''}`;
-          else if(tipo==='actividad'&&x.lugar) sub=x.lugar;
-          else if(tipo==='restaurante'&&x.nombre) sub=x.nombre;
-          const pagoSi = ev.pago==='si';
-          const pagoNo = ev.pago==='no';
-          return `<div class="ev-row" onclick="openEditEv('${d._id}',${realIdx})" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:.5px solid rgba(60,60,67,.1);cursor:pointer">
+          if(tipo==='vuelo'&&x.origen&&x.destino)sub=`${x.origen.split('—')[0].trim()} → ${x.destino.split('—')[0].trim()}${x.pnr?' · '+x.pnr:''}`;
+          else if(tipo==='hotel')sub=`Check-in${x.cinHora?' '+x.cinHora:''}${x.noch?' · '+x.noch:''}`;
+          else if(tipo==='traslado'&&x.medio)sub=`${x.medio}${x.duracion?' · '+x.duracion:''}`;
+          else if(tipo==='actividad'&&x.lugar)sub=x.lugar;
+          else if(tipo==='restaurante'&&(x.nombre||x.dir))sub=x.nombre||x.dir;
+          const pagoSi=ev.pago==='si';
+          const pagoNo=ev.pago==='no';
+          return `<div style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:.5px solid rgba(60,60,67,.1);cursor:pointer" onclick="openEditEv('${d._id}',${realIdx})">
             <div style="width:10px;height:10px;border-radius:50%;background:${dotColor};flex-shrink:0"></div>
             <div style="flex:1;min-width:0">
               <div style="font-size:15px;font-weight:500;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${titulo}</div>
@@ -2146,35 +2143,19 @@ window.renderDays=async()=>{
             </div>
           </div>`;
         }).join('');
-
-    return `<div class="day-card" id="day-card-${d._id}" data-day-id="${d._id}" style="background:#fff;border-radius:12px;margin-bottom:0;overflow:hidden">
-      <div style="display:flex;align-items:baseline;gap:8px;padding:10px 16px 6px;cursor:pointer" onclick="togDay('${d._id}')">
-        <span style="font-size:12px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">${dayName} ${parts[0]||''}</span>
-        <span style="font-size:16px;font-weight:600;color:#000;letter-spacing:-.1px;flex:1">${d.label||''}</span>
-        ${EM?`<button class="ibtn" style="font-size:11px;padding:3px 8px" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:''}
-      </div>
-      <div class="day-body${document.getElementById('db'+d._id)?.classList.contains('open')?' open':''}" id="db${d._id}" style="border-top:.5px solid rgba(60,60,67,.08)">
-        ${evRows}
-        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--accent);font-size:14px;cursor:pointer" onclick="openNewEv('${d._id}')">
-          <span style="font-size:17px;font-weight:300;line-height:1">+</span>
-          <span>Agregar evento</span>
-        </div>
-      </div>
+    const dayLabel=`<span style="font-size:12px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap${isToday?';color:var(--accent)':''}">${dayName} ${parts[0]||''}</span>`;
+    const addBtn=`<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--accent);font-size:14px;cursor:pointer" onclick="openNewEv('${d._id}')"><span style="font-size:17px;font-weight:300;line-height:1">+</span><span>Agregar evento</span></div>`;
+    const editBtn=EM?`<button class="ibtn" style="font-size:11px;padding:3px 8px;margin-left:4px" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:'';
+    return `<div class="day-card" id="day-card-${d._id}" data-day-id="${d._id}">
+      <div style="display:flex;align-items:baseline;gap:8px;padding:10px 16px 6px;cursor:pointer" onclick="togDay('${d._id}')">${dayLabel}<span style="font-size:16px;font-weight:600;color:#000;letter-spacing:-.1px;flex:1">${d.label||''}</span>${editBtn}<span id="wc-${d._id}"></span></div>
+      <div class="day-body" id="db${d._id}" style="border-top:.5px solid rgba(60,60,67,.08)">${evRows}${addBtn}</div>
     </div>`;
-  }).join('<div style="height:.5px;background:rgba(60,60,67,.08);margin:0 16px"></div>');
-
-  // Wrap in container with bg
-  wrap.innerHTML = `<div style="background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px">${wrap.innerHTML}</div>`;
-
+  });
+  wrap.innerHTML=`<div style="background:#fff;border-radius:12px;overflow:hidden">${rows.join('<div style="height:.5px;background:rgba(60,60,67,.08);margin:0 16px"></div>')}</div>`;
   autoOpenToday();
   renderDateNav();
-
   for(const [dayId,promise] of Object.entries(weatherPromises)){
-    promise.then(w=>{
-      if(!w) return;
-      const el=document.getElementById('wc-'+dayId);
-      if(el) el.innerHTML=`<span class="weather-chip-day">${w.ico} ${w.tmax}° / ${w.tmin}°</span>`;
-    }).catch(()=>{});
+    promise.then(w=>{if(!w)return;const el=document.getElementById('wc-'+dayId);if(el)el.innerHTML=`<span class="weather-chip-day">${w.ico} ${w.tmax}°/${w.tmin}°</span>`;}).catch(()=>{});
   }
 };
 window.toggleHotel=id=>{
@@ -2188,62 +2169,43 @@ window.toggleHotel=id=>{
 
 window.renderHotels=()=>{
   const wrap=document.getElementById('htl-wrap');
-  if(!HOTELS.length){
-    wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:13px;margin-bottom:12px">Sin alojamientos aún</div><button class="ibtn" style="color:var(--accent);border-color:var(--accent)" onclick="openNewHotel()">+ Agregar hotel</button></div>';
-    return;
-  }
-  wrap.innerHTML = HOTELS.map(h=>{
-    const cinDisp = h.cinFecha ? fmtDateDisplay(h.cinFecha)+(h.cinHora?' · '+h.cinHora:'') : (h.cin||'—');
-    const coutDisp = h.coutFecha ? fmtDateDisplay(h.coutFecha)+(h.coutHora?' · '+h.coutHora:'') : (h.cout||'—');
-    const cityLabel = (h.city||'').split('·')[0].split(',')[0].trim();
-    const plat = h.plat||'';
-    const conf = h.conf||'';
-    const reservaVal = [plat,conf?'#'+conf:''].filter(Boolean).join(' · ') || '—';
-    const pagoSi = h.pago==='si';
-    const pagoNo = h.pago==='no';
-    const noch = h.noch||'';
-    const monto = h.monto ? `${h.moneda||'USD'} ${h.monto}${noch?' · '+noch:''}` : (noch||'');
-    return `
-    <div style="padding:0 16px;margin-bottom:2px">
+  if(!HOTELS.length){wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px">Sin alojamientos aún</div>';return;}
+  wrap.innerHTML=HOTELS.map(h=>{
+    const cinDisp=h.cinFecha?fmtDateDisplay(h.cinFecha)+(h.cinHora?' · '+h.cinHora:''):(h.cin||'—');
+    const coutDisp=h.coutFecha?fmtDateDisplay(h.coutFecha)+(h.coutHora?' · '+h.coutHora:''):(h.cout||'—');
+    const cityLabel=(h.city||'').split('·')[0].split(',')[0].trim();
+    const plat=h.plat||'';
+    const conf=h.conf||'';
+    const reservaVal=[plat,conf?'#'+conf:''].filter(Boolean).join(' · ')||'';
+    const pagoSi=h.pago==='si';
+    const pagoNo=h.pago==='no';
+    const noch=h.noch||'';
+    const monto=h.monto?`${h.moneda||'USD'} ${h.monto}${noch?' · '+noch:''}`:(noch||'');
+    return `<div style="padding:0 16px;margin-bottom:2px">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px">
         <span style="font-size:13px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.06em">${cityLabel}</span>
-        <span style="font-size:12px;color:rgba(60,60,67,.4)">${cinDisp!=='—'?cinDisp:''}</span>
+        <div style="display:flex;gap:8px">
+          <button class="ibtn" style="font-size:11px;padding:3px 8px;border-color:rgba(60,60,67,.15)" onclick="openEditHotel('${h._id}')">⋯</button>
+        </div>
       </div>
       <div style="background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px">
         <div style="padding:14px 14px 10px;border-bottom:.5px solid rgba(60,60,67,.08)">
           <div style="font-size:16px;font-weight:600;color:#000;margin-bottom:2px">${h.name}</div>
           <div style="font-size:12px;color:rgba(60,60,67,.5)">${h.city||''}</div>
         </div>
-        <div>
+        <div style="padding:4px 0">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:.5px solid rgba(60,60,67,.06)">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="width:8px;height:8px;border-radius:2px;background:#34C759;flex-shrink:0"></div>
-              <span style="font-size:13px;color:rgba(60,60,67,.6)">Check-in</span>
-            </div>
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#34C759;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-in</span></div>
             <span style="font-size:13px;font-weight:500;color:#000">${cinDisp}</span>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:.5px solid rgba(60,60,67,.06)">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="width:8px;height:8px;border-radius:2px;background:#FF3B30;flex-shrink:0"></div>
-              <span style="font-size:13px;color:rgba(60,60,67,.6)">Check-out</span>
-            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px${reservaVal?';border-bottom:.5px solid rgba(60,60,67,.06)':''}">
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#FF3B30;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-out</span></div>
             <span style="font-size:13px;font-weight:500;color:#000">${coutDisp}</span>
           </div>
-          ${reservaVal!=='—'?`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="width:8px;height:8px;border-radius:2px;background:#8E8E93;flex-shrink:0"></div>
-              <span style="font-size:13px;color:rgba(60,60,67,.6)">Reserva</span>
-            </div>
-            <span style="font-size:13px;font-weight:500;color:#000">${reservaVal}</span>
-          </div>`:''}
+          ${reservaVal?`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#8E8E93;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Reserva</span></div><span style="font-size:13px;font-weight:500;color:#000">${reservaVal}</span></div>`:''}
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(60,60,67,.03);border-top:.5px solid rgba(60,60,67,.06)">
-          <div style="display:flex;align-items:center;gap:8px">
-            ${pagoSi?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(52,199,89,.15);color:#1A7A35">Confirmado</span>`:''}
-            ${pagoNo?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(255,149,0,.15);color:#A05000">Pendiente pago</span>`:''}
-            ${!pagoSi&&!pagoNo?`<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(60,60,67,.08);color:rgba(60,60,67,.6)">Sin estado</span>`:''}
-            <button class="ibtn" style="font-size:11px;padding:3px 8px;border-color:rgba(60,60,67,.15)" onclick="openEditHotel('${h._id}')">⋯</button>
-          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;${pagoSi?'background:rgba(52,199,89,.15);color:#1A7A35':pagoNo?'background:rgba(255,149,0,.15);color:#A05000':'background:rgba(60,60,67,.08);color:rgba(60,60,67,.5)'}">${pagoSi?'Confirmado':pagoNo?'Pendiente pago':'Sin estado'}</span>
           ${monto?`<span style="font-size:13px;font-weight:600;color:#000">${monto}</span>`:''}
         </div>
       </div>
