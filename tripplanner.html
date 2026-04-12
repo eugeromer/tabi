@@ -103,7 +103,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 
 /* EVENT CARDS */
 .ecard{background:var(--card);border:none;border-radius:0;margin:0;overflow:hidden;border-bottom:0.5px solid var(--border-s)}
-.ecard-hd{display:flex;gap:10px;align-items:center;padding:.7rem .9rem}
+.ecard-hd{display:flex;gap:10px;align-items:center;padding:10px 14px}
 .ecard-opts-btn{width:28px;height:28px;border-radius:6px;border:none;background:rgba(60,60,67,.06);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);flex-shrink:0;transition:background .15s}
 .ecard-opts-btn:hover{background:var(--accent-light);color:var(--accent)}
 .etype-icon{width:10px;height:10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0;flex-shrink:0}
@@ -459,7 +459,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .day-date-badge.today-badge .ddb-num{color:var(--success)}
 .day-date-badge.today-badge .ddb-day{color:var(--success)}
 .day-info{flex:1;min-width:0}
-.day-info strong{font-size:17px;font-weight:700;display:block;color:var(--ink);line-height:1.3}
+.day-info strong{font-size:15px;font-weight:600;display:block;color:#000;line-height:1.3}
 .day-info .day-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px}
 
 /* CONTRAST IMPROVEMENTS */
@@ -486,9 +486,6 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .mas-item{padding:10px 16px;font-size:15px;font-weight:500;color:#000;border-radius:8px;cursor:pointer;white-space:nowrap}
 .mas-item:hover,.mas-item:active{background:rgba(60,60,67,.06)}
 .mas-item-blue{color:#007AFF}
-
-.day-card{background:transparent !important;border:none !important;border-radius:0 !important;margin-bottom:0 !important}
-.day-body{border-top:.5px solid rgba(60,60,67,.08) !important}
 </style>
 </head>
 <body data-theme="amsterdam">
@@ -836,7 +833,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
   </nav>
 </div>
 <div id="mas-overlay" onclick="closeMasMenu()" style="display:none;position:fixed;inset:0;z-index:199"></div>
-<div id="mas-dropdown" style="display:none;position:fixed;z-index:200;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);min-width:180px;padding:6px;border:0.5px solid rgba(60,60,67,.12)">
+<div id="mas-dropdown" style="display:none;position:fixed;z-index:200;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.15);min-width:180px;padding:6px;border:0.5px solid rgba(60,60,67,.12)">
   <div class="mas-item" onclick="showTabMas('ck','Checklist')">Checklist</div>
   <div class="mas-item" onclick="showTabMas('nt','Notas')">Notas</div>
   <div class="mas-item" onclick="showTabMas('ft','Fotos')">Fotos</div>
@@ -848,14 +845,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 
 <main class="main">
   <section id="tab-it" class="section active">
-    <span id="sc-d" style="display:none"></span>
-    <span id="sc-v" style="display:none"></span>
-    <span id="sc-c" style="display:none"></span>
-    <span id="sc-a" style="display:none"></span>
-    <span id="hs-d" style="display:none"></span>
-    <span id="hs-v" style="display:none"></span>
-    <span id="hs-c" style="display:none"></span>
-    <span id="hs-h" style="display:none"></span>
+    <span id="sc-d" style="display:none"></span><span id="sc-v" style="display:none"></span><span id="sc-c" style="display:none"></span><span id="sc-a" style="display:none"></span><span id="hs-d" style="display:none"></span><span id="hs-v" style="display:none"></span><span id="hs-c" style="display:none"></span><span id="hs-h" style="display:none"></span>
     <div id="date-nav" class="date-nav"></div>
     <div id="onboarding-banner" style="display:none;background:linear-gradient(135deg,var(--hero-bg),var(--hero-bg2));border-radius:14px;padding:1.25rem;margin-bottom:1rem;color:#fff">
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem">¡Bienvenidos al viaje! 🎉</div>
@@ -1571,28 +1561,9 @@ window.om=id=>{
 };
 
 window.resetMasTab=()=>{const t=document.getElementById('main-tab-mas');if(t)t.textContent='Más ▾';};
-window.toggleMasMenu=(e,el)=>{
-  e.stopPropagation();
-  const d=document.getElementById('mas-dropdown');
-  const o=document.getElementById('mas-overlay');
-  if(d.style.display==='block'){closeMasMenu();return;}
-  const r=el.getBoundingClientRect();
-  d.style.top=(r.bottom+6)+'px';
-  d.style.left=Math.max(8,Math.min(r.left,window.innerWidth-200))+'px';
-  d.style.display='block';o.style.display='block';
-};
-window.closeMasMenu=()=>{
-  document.getElementById('mas-dropdown').style.display='none';
-  document.getElementById('mas-overlay').style.display='none';
-};
-window.showTabMas=(n,label)=>{
-  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');
-  const t=document.getElementById('main-tab-mas');
-  if(t){t.classList.add('active');t.textContent=label+' ▾';}
-  closeMasMenu();
-};
+window.toggleMasMenu=(e,el)=>{e.stopPropagation();const d=document.getElementById('mas-dropdown');const o=document.getElementById('mas-overlay');if(d.style.display==='block'){closeMasMenu();return;}const r=el.getBoundingClientRect();d.style.top=(r.bottom+6)+'px';d.style.left=Math.max(8,Math.min(r.left,window.innerWidth-200))+'px';d.style.display='block';o.style.display='block';};
+window.closeMasMenu=()=>{document.getElementById('mas-dropdown').style.display='none';document.getElementById('mas-overlay').style.display='none';};
+window.showTabMas=(n,label)=>{document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');const t=document.getElementById('main-tab-mas');if(t){t.classList.add('active');t.textContent=label+' ▾';}closeMasMenu();};
 window.showTab=(n,el)=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');};
 window.toggleEdit=el=>{
   if(USER_ROLE==='viewer'){
@@ -2090,76 +2061,60 @@ function routeConnector(ev1, ev2){
 window.renderDays=async()=>{
   const todayISO=new Date().toISOString().slice(0,10);
   const wrap=document.getElementById('days-wrap');
-  if(!DAYS.length){
-    wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px">El itinerario está vacío</div>';
-    const ob=document.getElementById('onboarding-banner');
-    if(ob&&!TRIP_ID)ob.style.display='block';
-    return;
-  }
+  if(!DAYS.length){wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px">El itinerario está vacío</div>';const ob=document.getElementById('onboarding-banner');if(ob&&!TRIP_ID)ob.style.display='block';return;}
   const ob=document.getElementById('onboarding-banner');if(ob)ob.style.display='none';
-  const weatherPromises={};
-  DAYS.forEach(d=>{
-    if(d.city!=='transito'&&d.fecha){
-      const isoDate=fmtDateISO(d.fecha)||d.fecha;
-      if(isoDate&&isoDate.match(/^\d{4}-\d{2}-\d{2}$/))
-        weatherPromises[d._id]=getWeather(d.city,isoDate);
-    }
-  });
-  const dayNames=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const weatherP={};
+  DAYS.forEach(d=>{if(d.city!=='transito'&&d.fecha){const iso=fmtDateISO(d.fecha)||d.fecha;if(iso&&iso.match(/^\d{4}-\d{2}-\d{2}$/))weatherP[d._id]=getWeather(d.city,iso);}});
+  const DN=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
   const rows=DAYS.map(d=>{
-    const evsSorted=sortEvents(d.events||[]);
-    const dateDisp=d.fecha?fmtDateDisplay(d.fecha):(d.date||'');
-    const parts=dateDisp.split(' ');
-    const dayName=d.fecha?dayNames[new Date(d.fecha+'T12:00:00').getDay()]:'';
+    const evs=sortEvents(d.events||[]);
+    const dp=d.fecha?fmtDateDisplay(d.fecha):(d.date||'');
+    const parts=dp.split(' ');
+    const dn=d.fecha?DN[new Date(d.fecha+'T12:00:00').getDay()]:'';
     const isToday=d.fecha===todayISO;
-    const evRows=evsSorted.length===0
-      ?`<div style="padding:11px 14px;color:var(--muted);font-size:13px">Sin eventos aún</div>`
-      :evsSorted.map((ev,j)=>{
-          const realIdx=ev._origIdx!==undefined?ev._origIdx:j;
-          const tipo=ev.tipo||'otro';
-          const dotColor=TIPO_COLOR[tipo]||'#8E8E93';
-          const titulo=ev.titulo||ev.tt||'Sin título';
-          const hora=fmtTimeDisplay(ev.hora||ev.t||'');
-          const x=ev.extras||{};
-          let sub='';
-          if(tipo==='vuelo'&&x.origen&&x.destino)sub=`${x.origen.split('—')[0].trim()} → ${x.destino.split('—')[0].trim()}${x.pnr?' · '+x.pnr:''}`;
-          else if(tipo==='hotel')sub=`Check-in${x.cinHora?' '+x.cinHora:''}${x.noch?' · '+x.noch:''}`;
-          else if(tipo==='traslado'&&x.medio)sub=`${x.medio}${x.duracion?' · '+x.duracion:''}`;
-          else if(tipo==='actividad'&&x.lugar)sub=x.lugar;
-          else if(tipo==='restaurante'&&(x.nombre||x.dir))sub=x.nombre||x.dir;
-          const pagoSi=ev.pago==='si';
-          const pagoNo=ev.pago==='no';
-          return `<div style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:.5px solid rgba(60,60,67,.1);cursor:pointer" onclick="openEditEv('${d._id}',${realIdx})">
-            <div style="width:10px;height:10px;border-radius:50%;background:${dotColor};flex-shrink:0"></div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:15px;font-weight:500;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${titulo}</div>
-              ${sub?`<div style="font-size:12px;color:rgba(60,60,67,.5);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>`:''}
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-              ${hora?`<span style="font-size:12px;font-weight:500;color:rgba(60,60,67,.4)">${hora}</span>`:''}
-              ${pagoSi?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:rgba(52,199,89,.15);color:#1A7A35">Pago</span>`:''}
-              ${pagoNo?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:rgba(255,149,0,.15);color:#A05000">Pendiente</span>`:''}
-              <span style="color:#C7C7CC;font-size:13px">›</span>
-            </div>
-          </div>`;
-        }).join('');
-    const dayLabel=`<span style="font-size:12px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap${isToday?';color:var(--accent)':''}">${dayName} ${parts[0]||''}</span>`;
+    const evHtml=evs.length===0
+      ?`<div style="padding:10px 14px;color:var(--muted);font-size:13px">Sin eventos aún</div>`
+      :evs.map((ev,j)=>{
+        const ri=ev._origIdx!==undefined?ev._origIdx:j;
+        const tipo=ev.tipo||'otro';
+        const dc=TIPO_COLOR[tipo]||'#8E8E93';
+        const tit=ev.titulo||ev.tt||'Sin título';
+        const hora=fmtTimeDisplay(ev.hora||ev.t||'');
+        const x=ev.extras||{};
+        let sub='';
+        if(tipo==='vuelo'&&x.origen&&x.destino)sub=`${x.origen.split('—')[0].trim()} → ${x.destino.split('—')[0].trim()}${x.pnr?' · '+x.pnr:''}`;
+        else if(tipo==='hotel')sub=`Check-in${x.cinHora?' '+x.cinHora:''}${x.noch?' · '+x.noch:''}`;
+        else if(tipo==='traslado'&&x.medio)sub=`${x.medio}${x.duracion?' · '+x.duracion:''}`;
+        else if(tipo==='actividad'&&x.lugar)sub=x.lugar;
+        else if(tipo==='restaurante'&&(x.nombre||x.dir))sub=x.nombre||x.dir;
+        const si=ev.pago==='si',no=ev.pago==='no';
+        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:.5px solid rgba(60,60,67,.1);cursor:pointer" onclick="openEditEv('${d._id}',${ri})">
+          <div style="width:10px;height:10px;border-radius:50%;background:${dc};flex-shrink:0"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;font-weight:500;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tit}</div>
+            ${sub?`<div style="font-size:12px;color:rgba(60,60,67,.5);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>`:''}
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+            ${hora?`<span style="font-size:12px;font-weight:500;color:rgba(60,60,67,.4)">${hora}</span>`:''}
+            ${si?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:rgba(52,199,89,.15);color:#1A7A35">Pago</span>`:''}
+            ${no?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:rgba(255,149,0,.15);color:#A05000">Pendiente</span>`:''}
+            <span style="color:#C7C7CC;font-size:13px">›</span>
+          </div>
+        </div>`;
+      }).join('');
     const addBtn=`<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--accent);font-size:14px;cursor:pointer" onclick="openNewEv('${d._id}')"><span style="font-size:17px;font-weight:300;line-height:1">+</span><span>Agregar evento</span></div>`;
-    const editBtn=EM?`<button class="ibtn" style="font-size:11px;padding:3px 8px;margin-left:4px" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:'';
+    const editBtn=EM?`<button class="ibtn" style="font-size:11px;padding:2px 7px;margin-left:4px;flex-shrink:0" onclick="event.stopPropagation();openEditDay('${d._id}')">✏</button>`:'';
+    const dateLabel=`<span style="font-size:12px;font-weight:600;color:${isToday?'var(--accent)':'rgba(60,60,67,.4)'};text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">${dn} ${parts[0]||''}</span>`;
     return `<div class="day-card" id="day-card-${d._id}" data-day-id="${d._id}">
-      <div style="display:flex;align-items:center;gap:8px;padding:10px 16px 6px;cursor:pointer" onclick="togDay('${d._id}')">
-        <div style="flex:1;display:flex;align-items:baseline;gap:8px">${dayLabel}<span style="font-size:16px;font-weight:600;color:#000;letter-spacing:-.1px;flex:1">${d.label||''}</span>${editBtn}<span id="wc-${d._id}"></span></div>
-        <span id="ch${d._id}" style="color:#C7C7CC;font-size:11px;transition:transform .2s;display:inline-block">›</span>
-      </div>
-      <div class="day-body" id="db${d._id}" style="border-top:.5px solid rgba(60,60,67,.08)">${evRows}${addBtn}</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 14px 8px;cursor:pointer" onclick="togDay('${d._id}')">${dateLabel}<span style="font-size:16px;font-weight:600;color:#000;letter-spacing:-.1px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.label||''}</span>${editBtn}<span id="ch${d._id}" style="color:#C7C7CC;font-size:12px;transition:transform .2s;display:inline-block;flex-shrink:0">›</span><span id="wc-${d._id}"></span></div>
+      <div class="day-body" id="db${d._id}">${evHtml}${addBtn}</div>
     </div>`;
   });
-  wrap.innerHTML=`<div style="background:#fff;border-radius:12px;overflow:hidden">${rows.join('<div style="height:.5px;background:rgba(60,60,67,.08);margin:0 16px"></div>')}</div>`;
+  const divider='<div style="height:.5px;background:rgba(60,60,67,.08);margin:0 14px"></div>';
+  wrap.innerHTML=`<div style="background:#fff;border-radius:12px;overflow:hidden">${rows.join(divider)}</div>`;
   autoOpenToday();
   renderDateNav();
-  for(const [dayId,promise] of Object.entries(weatherPromises)){
-    promise.then(w=>{if(!w)return;const el=document.getElementById('wc-'+dayId);if(el)el.innerHTML=`<span class="weather-chip-day">${w.ico} ${w.tmax}°/${w.tmin}°</span>`;}).catch(()=>{});
-  }
+  for(const [id,p] of Object.entries(weatherP)){p.then(w=>{if(!w)return;const el=document.getElementById('wc-'+id);if(el)el.innerHTML=`<span class="weather-chip-day" style="margin-left:6px">${w.ico} ${w.tmax}°/${w.tmin}°</span>`;}).catch(()=>{});}
 };
 window.toggleHotel=id=>{
   const body=document.getElementById('hb-'+id);
@@ -2174,41 +2129,36 @@ window.renderHotels=()=>{
   const wrap=document.getElementById('htl-wrap');
   if(!HOTELS.length){wrap.innerHTML='<div style="text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px">Sin alojamientos aún</div>';return;}
   wrap.innerHTML=HOTELS.map(h=>{
-    const cinDisp=h.cinFecha?fmtDateDisplay(h.cinFecha)+(h.cinHora?' · '+h.cinHora:''):(h.cin||'—');
-    const coutDisp=h.coutFecha?fmtDateDisplay(h.coutFecha)+(h.coutHora?' · '+h.coutHora:''):(h.cout||'—');
-    const cityLabel=(h.city||'').split('·')[0].split(',')[0].trim();
-    const plat=h.plat||'';
-    const conf=h.conf||'';
-    const reservaVal=[plat,conf?'#'+conf:''].filter(Boolean).join(' · ')||'';
-    const pagoSi=h.pago==='si';
-    const pagoNo=h.pago==='no';
+    const cin=h.cinFecha?fmtDateDisplay(h.cinFecha)+(h.cinHora?' · '+h.cinHora:''):(h.cin||'—');
+    const cout=h.coutFecha?fmtDateDisplay(h.coutFecha)+(h.coutHora?' · '+h.coutHora:''):(h.cout||'—');
+    const city=(h.city||'').split('·')[0].split(',')[0].trim();
+    const reserva=[h.plat||'',h.conf?'#'+h.conf:''].filter(Boolean).join(' · ')||'';
+    const si=h.pago==='si',no=h.pago==='no';
     const noch=h.noch||'';
     const monto=h.monto?`${h.moneda||'USD'} ${h.monto}${noch?' · '+noch:''}`:(noch||'');
-    return `<div style="padding:0 16px;margin-bottom:2px">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px">
-        <span style="font-size:13px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.06em">${cityLabel}</span>
-        <div style="display:flex;gap:8px">
-          <button class="ibtn" style="font-size:11px;padding:3px 8px;border-color:rgba(60,60,67,.15)" onclick="openEditHotel('${h._id}')">⋯</button>
-        </div>
+    return `<div style="padding:0 0 2px">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px">
+        <span style="font-size:12px;font-weight:600;color:rgba(60,60,67,.4);text-transform:uppercase;letter-spacing:.06em">${city}</span>
+        <button class="ibtn" style="font-size:11px;padding:2px 8px;border-color:rgba(60,60,67,.15)" onclick="openEditHotel('${h._id}')">⋯</button>
       </div>
-      <div style="background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px">
-        <div style="padding:14px 14px 10px;border-bottom:.5px solid rgba(60,60,67,.08)">
-          <div style="font-size:16px;font-weight:600;color:#000;margin-bottom:2px">${h.name}</div>
+      <div style="background:#fff;border-radius:12px;overflow:hidden;margin:0 0 8px">
+        <div style="padding:12px 14px 10px;border-bottom:.5px solid rgba(60,60,67,.08)">
+          <div style="font-size:15px;font-weight:600;color:#000;margin-bottom:2px">${h.name}</div>
           <div style="font-size:12px;color:rgba(60,60,67,.5)">${h.city||''}</div>
         </div>
-        <div style="padding:4px 0">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:.5px solid rgba(60,60,67,.06)">
-            <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#34C759;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-in</span></div>
-            <span style="font-size:13px;font-weight:500;color:#000">${cinDisp}</span>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 14px;border-bottom:.5px solid rgba(60,60,67,.06)">
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:2px;background:#34C759;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-in</span></div>
+            <span style="font-size:13px;font-weight:500;color:#000">${cin}</span>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px${reservaVal?';border-bottom:.5px solid rgba(60,60,67,.06)':''}">
-            <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#FF3B30;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-out</span></div>
-            <span style="font-size:13px;font-weight:500;color:#000">${coutDisp}</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 14px${reserva?';border-bottom:.5px solid rgba(60,60,67,.06)':''}">
+            <div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:2px;background:#FF3B30;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Check-out</span></div>
+            <span style="font-size:13px;font-weight:500;color:#000">${cout}</span>
           </div>
-          ${reservaVal?`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:2px;background:#8E8E93;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Reserva</span></div><span style="font-size:13px;font-weight:500;color:#000">${reservaVal}</span></div>`:''}
+          ${reserva?`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 14px"><div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:2px;background:#8E8E93;flex-shrink:0"></div><span style="font-size:13px;color:rgba(60,60,67,.6)">Reserva</span></div><span style="font-size:13px;font-weight:500;color:#000">${reserva}</span></div>`:''}
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(60,60,67,.03);border-top:.5px solid rgba(60,60,67,.06)">
-          <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;${pagoSi?'background:rgba(52,199,89,.15);color:#1A7A35':pagoNo?'background:rgba(255,149,0,.15);color:#A05000':'background:rgba(60,60,67,.08);color:rgba(60,60,67,.5)'}">${pagoSi?'Confirmado':pagoNo?'Pendiente pago':'Sin estado'}</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:rgba(60,60,67,.03);border-top:.5px solid rgba(60,60,67,.06)">
+          <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;${si?'background:rgba(52,199,89,.15);color:#1A7A35':no?'background:rgba(255,149,0,.15);color:#A05000':'background:rgba(60,60,67,.08);color:rgba(60,60,67,.5)'}">${si?'Confirmado':no?'Pendiente pago':'Sin estado'}</span>
           ${monto?`<span style="font-size:13px;font-weight:600;color:#000">${monto}</span>`:''}
         </div>
       </div>
