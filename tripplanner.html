@@ -1675,11 +1675,21 @@ window.selPhotoP=(i,a,n,el)=>{PAP={i,a,n};document.querySelectorAll('#photo-pbtn
 window.togDay=id=>{
   const body=document.getElementById('db'+id);
   const chev=document.getElementById('ch'+id);
-  body.classList.toggle('open');
-  chev.classList.toggle('open');
+  const isOpen=body.classList.contains('open');
+  // Close all other open cards (accordion)
+  document.querySelectorAll('.day-body.open').forEach(b=>{
+    if(b.id!=='db'+id){
+      b.classList.remove('open');
+      const c=document.getElementById('ch'+b.id.slice(2));
+      if(c)c.classList.remove('open');
+    }
+  });
+  // Toggle this card
+  body.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
   const origId=id.replace(/_exp\d+$/,'');
   const d=DAYS.find(x=>x._id===origId);
-  if(d&&d.city&&d.city!=='transito'&&body.classList.contains('open')){
+  if(d&&d.city&&d.city!=='transito'&&!isOpen){
     const b=document.querySelector(`[data-t="${d.city}"]`);
     if(b)window.setTheme(d.city,b);
   }
@@ -3439,9 +3449,16 @@ window.jumpToDay = function jumpToDay(id){
   }
   const el = document.getElementById('day-card-'+id);
   if(!el) return;
-  // Open if closed
+  // Close all other open cards, open this one
+  document.querySelectorAll('.day-body.open').forEach(b=>{
+    if(b.id!=='db'+id){
+      b.classList.remove('open');
+      const c=document.getElementById('ch'+b.id.slice(2));
+      if(c)c.classList.remove('open');
+    }
+  });
   const body = document.getElementById('db'+id);
-  if(body && !body.classList.contains('open')){
+  if(body){
     body.classList.add('open');
     const chev = document.getElementById('ch'+id);
     if(chev) chev.classList.add('open');
