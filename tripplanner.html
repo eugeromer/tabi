@@ -421,10 +421,11 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .subtipo-btn span{display:block;font-size:18px;margin-bottom:3px}
 
 /* RESUMEN / TRAVEL BOOK */
-.resumen-hero{background:#0D2B4E;color:#fff;border-radius:16px;padding:2rem;margin-bottom:1.25rem;text-align:center;position:relative;overflow:hidden}
-.resumen-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--hero-s1),var(--hero-s2),var(--hero-s3))}
-.resumen-hero h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
-.resumen-hero p{font-size:14px;color:rgba(255,255,255,.6)}
+.resumen-hero{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1.75rem;margin-bottom:1.25rem;overflow:hidden;position:relative;}
+.resumen-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--success),var(--warn));}
+.resumen-hero::after{display:none}
+.resumen-hero h2{font-size:1.5rem;font-weight:700;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;margin-bottom:.3rem}
+.resumen-hero p{font-size:14px;color:var(--muted)}
 .counter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
 .counter-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem;text-align:center}
 .counter-card .ico{font-size:28px;margin-bottom:6px}
@@ -434,7 +435,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .export-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
 .export-btn{padding:12px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--ink2)}
 .export-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
-.export-btn.primary{background:#0D2B4E;color:#fff;border-color:#0D2B4E}
+.export-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .export-btn.primary:hover{opacity:.85}
 
 /* SKELETON LOADER */
@@ -927,7 +928,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
       <p id="rs-sub">Verano 2026 · ER · JN · VS · GG</p>
     </div>
     <div class="counter-grid" id="rs-counters"></div>
-    <div style="font-size:14px;font-weight:700;color:var(--stat);margin-bottom:8px">📍 Mapa del viaje</div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">📍 Mapa del viaje</div>
     <div class="map-container" id="rs-map"></div>
     <div class="export-btns">
       <button class="export-btn primary" onclick="exportTravelBook()">📖 Exportar Travel Book (HTML)</button>
@@ -936,7 +937,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 
     <!-- INSTAGRAM STORY GENERATOR -->
     <div style="margin-top:1.5rem">
-      <div style="font-size:16px;font-weight:700;color:var(--stat);margin-bottom:4px">📱 Generar Story para Instagram</div>
+      <div style="font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px">📱 Generar Story para Instagram</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">Creá una imagen 1080×1920px lista para subir a tu historia.</div>
 
       <!-- Story type -->
@@ -983,7 +984,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
         <p id="story-no-photos" style="font-size:13px;color:var(--muted);padding:8px 0">No hay fotos cargadas aún. Subí fotos en la pestaña 📸 Fotos.</p>
       </div>
 
-      <button onclick="generateStory()" style="width:100%;padding:13px;background:linear-gradient(135deg,#0D2B4E,#1B6CA8);color:#fff;border:none;border-radius:10px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:1rem">
+      <button onclick="generateStory()" style="width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Lato',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:1rem">
         ✨ Generar Story
       </button>
 
@@ -994,7 +995,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
           <canvas id="story-canvas" style="width:100%;border-radius:14px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.15)" onclick="downloadStory()"></canvas>
           <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:12px;font-weight:700;padding:6px 16px;border-radius:20px;pointer-events:none;white-space:nowrap">⬇ Tocar para descargar</div>
         </div>
-        <button onclick="downloadStory()" style="width:100%;max-width:280px;display:block;margin:10px auto 0;padding:10px;background:#0D2B4E;color:#fff;border:none;border-radius:9px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer">⬇ Descargar PNG</button>
+        <button onclick="downloadStory()" style="width:100%;max-width:280px;display:block;margin:10px auto 0;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer">⬇ Descargar PNG</button>
       </div>
     </div>
 

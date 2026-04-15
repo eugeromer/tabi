@@ -9,7 +9,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Trip Planner">
 <meta name="theme-color" content="#0D2B4E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -67,19 +71,19 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 .auth-footer{text-align:center;margin-top:1.5rem;font-size:13px;color:rgba(255,255,255,.4)}
 
 /* ── TRIPS DASHBOARD ── */
-#trips-screen{display:none;min-height:100vh;background:#EEF3F8}
-.trips-header{background:var(--bg);color:#fff;padding:env(safe-area-inset-top,0) 0 0}
+#trips-screen{display:none;min-height:100vh;background:#F2F2F7}
+.trips-header{background:#fff;border-bottom:0.5px solid rgba(60,60,67,.12);padding:env(safe-area-inset-top,0) 0 0}
 .trips-header-inner{max-width:860px;margin:0 auto;padding:1.5rem 1.5rem 1rem;display:flex;align-items:center;justify-content:space-between}
-.trips-brand{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#fff}
-.trips-brand em{font-style:italic;font-weight:400;color:rgba(255,255,255,.6)}
-.user-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:5px 12px 5px 5px;cursor:pointer}
-.user-av{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+.trips-brand{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:1.4rem;font-weight:700;color:#000}
+.trips-brand em{font-style:italic;font-weight:300;color:rgba(60,60,67,.45)}
+.user-btn{display:flex;align-items:center;gap:8px;background:rgba(0,122,255,.08);border:1px solid rgba(0,122,255,.15);border-radius:30px;padding:5px 12px 5px 5px;cursor:pointer}
+.user-av{width:30px;height:30px;border-radius:50%;background:#007AFF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
 .user-av img{width:100%;height:100%;object-fit:cover}
-.user-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
+.user-name{font-size:13px;font-weight:600;color:#007AFF}
 .trips-main{max-width:860px;margin:0 auto;padding:1.5rem}
-.trips-section-title{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:10px}
-.trip-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.trip-card:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(13,43,78,.12)}
+.trips-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(60,60,67,.6);font-weight:700;margin-bottom:10px}
+.trip-card{background:#fff;border:1.5px solid rgba(60,60,67,.12);border-radius:16px;overflow:hidden;margin-bottom:12px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.trip-card:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(60,60,67,.10)}
 .trip-card:active{transform:translateY(0)}
 .trip-banner{height:90px;display:flex;align-items:flex-end;padding:12px 16px;position:relative}
 .trip-banner-amsterdam{background:linear-gradient(135deg,#0D2B4E,#1B6CA8)}
@@ -92,20 +96,20 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 .trip-banner p{font-size:12px;color:rgba(255,255,255,.65);position:relative;z-index:1;margin-top:1px}
 .trip-body{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .trip-meta{display:flex;gap:8px;flex-wrap:wrap}
-.trip-chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;background:var(--sand);color:var(--muted);border:1px solid var(--border)}
-.trip-chip.active{background:#E5F4EB;color:var(--success);border-color:#A0CCB0}
-.trip-chip.upcoming{background:#FFF3E0;color:#8B4500;border-color:#E0B870}
-.trip-chip.viewer{background:#F0EDF8;color:#3A0870;border-color:#C0A8E0}
+.trip-chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;background:#F2F2F7;color:rgba(60,60,67,.6);border:1px solid rgba(60,60,67,.12)}
+.trip-chip.active{background:rgba(52,199,89,.1);color:#1A7A35;border-color:rgba(52,199,89,.3)}
+.trip-chip.upcoming{background:rgba(255,149,0,.1);color:#C47200;border-color:rgba(255,149,0,.3)}
+.trip-chip.viewer{background:rgba(175,82,222,.1);color:#7B2FA8;border-color:rgba(175,82,222,.3)}
 /* TRIP SUMMARY BAR */
-.trip-summary{display:flex;gap:12px;padding:8px 16px 10px;border-top:1px solid var(--border-s);flex-wrap:wrap}
+.trip-summary{display:flex;gap:12px;padding:8px 16px 10px;border-top:1px solid rgba(60,60,67,.08);flex-wrap:wrap}
 .trip-stat{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700}
-.trip-stat.warn{color:#8B4500}
-.trip-stat.ok{color:#1A6B3A}
-.trip-stat.neutral{color:var(--muted)}
+.trip-stat.warn{color:#C47200}
+.trip-stat.ok{color:#1A7A35}
+.trip-stat.neutral{color:rgba(60,60,67,.6)}
 .role-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.05em}
-.role-owner{background:#E5F4EB;color:#1A6B3A;border:1px solid #A0CCB0}
-.role-editor{background:#D5E8F5;color:#0D3A60;border:1px solid #90BCDA}
-.role-viewer{background:#F0EDF8;color:#3A0870;border:1px solid #C0A8E0}
+.role-owner{background:rgba(52,199,89,.1);color:#1A7A35;border:1px solid rgba(52,199,89,.3)}
+.role-editor{background:rgba(0,122,255,.08);color:#0055CC;border:1px solid rgba(0,122,255,.2)}
+.role-viewer{background:rgba(175,82,222,.1);color:#7B2FA8;border:1px solid rgba(175,82,222,.3)}
 
 /* TRIP OPTIONS MENU */
 .trip-options-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:var(--sand);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .15s;color:var(--muted)}
@@ -155,14 +159,14 @@ input,select,textarea{-webkit-appearance:none;appearance:none}
 .trip-av:first-child{margin-left:0}
 
 /* NEW TRIP CARD */
-.new-trip-card{background:var(--card);border:2px dashed var(--border);border-radius:16px;padding:1.5rem;text-align:center;cursor:pointer;transition:background .15s,border-color .15s;margin-bottom:20px}
-.new-trip-card:hover{background:var(--accent-light);border-color:var(--accent)}
+.new-trip-card{background:#fff;border:2px dashed rgba(0,122,255,.3);border-radius:16px;padding:1.5rem;text-align:center;cursor:pointer;transition:background .15s,border-color .15s;margin-bottom:20px}
+.new-trip-card:hover{background:rgba(0,122,255,.08);border-color:rgba(0,122,255,.5)}
 .new-trip-icon{font-size:2rem;margin-bottom:8px}
-.new-trip-card h3{font-size:16px;font-weight:700;color:var(--accent);margin-bottom:4px}
-.new-trip-card p{font-size:13px;color:var(--muted)}
+.new-trip-card h3{font-size:16px;font-weight:600;color:#007AFF;margin-bottom:4px}
+.new-trip-card p{font-size:13px;color:rgba(60,60,67,.6)}
 
 /* JOINED TRIPS */
-.invite-banner{background:linear-gradient(135deg,#1A3F6B,#0A3D62);border-radius:14px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.invite-banner{background:linear-gradient(135deg,#007AFF,#0055CC);border-radius:14px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
 .invite-banner p{font-size:14px;font-weight:700;color:#fff;flex:1}
 .invite-banner small{font-size:12px;color:rgba(255,255,255,.6);display:block;margin-top:2px}
 .invite-accept{padding:7px 16px;background:#fff;border:none;border-radius:8px;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap}
