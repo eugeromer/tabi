@@ -1041,6 +1041,10 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 </main>
 
 <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, updateDoc, orderBy, query, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 // ── PWA VERSION CHECK — incrementá APP_VERSION con cada deploy ──
 const APP_VERSION = '1.0.4';
 if (window.navigator.standalone) {
@@ -1050,10 +1054,6 @@ if (window.navigator.standalone) {
     window.location.reload(true);
   }
 }
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, updateDoc, orderBy, query, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const app = initializeApp({
   apiKey:"AIzaSyD9TVjeoxeOGCDYaxY6Kx_mXUOn6Cs7g0A",
