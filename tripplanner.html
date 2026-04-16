@@ -17,7 +17,7 @@
 <meta http-equiv="Expires" content="0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -68,7 +68,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .tbtn[data-t="turquia"]{background:rgba(0,131,143,.6);color:#A0EEF5}
 .hero-stats{display:none}
 .hstat p:first-child{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:2px;font-weight:700}
-.hstat p:last-child{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700}
+.hstat p:last-child{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:1.8rem;font-weight:700}
 .ebanner{background:#FFF8E7;border-bottom:2px solid #E8A020;padding:.6rem 2rem;font-size:14px;font-weight:700;color:#7A4A00;text-align:center;display:none}
 .ebanner.show{display:block}
 .nav-wrap{background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:none;padding:6px 14px 0}
@@ -83,7 +83,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.75rem}
 .scard{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-align:center}
 .scard p:first-child{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px;font-weight:700}
-.scard p:last-child{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--stat)}
+.scard p:last-child{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:1.9rem;font-weight:700;color:var(--stat)}
 
 /* WEATHER CHIP */
 .weather-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);margin-left:8px;vertical-align:middle}
@@ -238,7 +238,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 @keyframes slideUp{from{transform:translateY(100%);opacity:.5}to{transform:translateY(0);opacity:1}}
 .mbox-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1rem;display:block}
 @media(min-width:641px){.mbg{align-items:center;padding:1rem}.mbox{border-radius:20px;border-bottom:2px solid var(--border)}.mbox-handle{display:none}}
-.mbox h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;color:var(--stat)}
+.mbox h3{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:20px;font-weight:700;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;color:var(--stat)}
 .mbox h3 button{background:none;border:none;cursor:pointer;font-size:24px;color:var(--muted);line-height:1}
 .frow{margin-bottom:12px}
 .frow label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:4px;font-weight:700}
@@ -399,7 +399,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .gasto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .gasto-card{background:var(--sand);border-radius:12px;padding:12px 14px;border:1px solid var(--border-s)}
 .gasto-card label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:4px;font-weight:700}
-.gasto-card p{font-size:1.4rem;font-family:'Playfair Display',serif;font-weight:700;color:var(--ink)}
+.gasto-card p{font-size:1.4rem;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-weight:700;color:var(--ink)}
 .gasto-card p small{font-size:11px;font-family:'Lato',sans-serif;color:var(--muted);font-weight:400}
 .gasto-section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:1.25rem 0 6px;}
 .gasto-by-cat{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem 1rem 0;margin-bottom:10px}
@@ -411,7 +411,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .gasto-person-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:8px}
 .gasto-person-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .gasto-person-hd strong{font-size:15px;font-weight:600;color:var(--ink)}
-.gasto-person-hd span{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--stat);margin-left:auto}
+.gasto-person-hd span{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:1.3rem;font-weight:700;color:var(--stat);margin-left:auto}
 .gasto-person-items{font-size:13px;color:var(--muted)}
 .gasto-refresh{width:100%;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:var(--accent-light);color:var(--accent);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:6px}
 .badge-moneda{font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--sand);color:var(--muted);border:1px solid var(--border-s);margin-left:4px}
@@ -432,7 +432,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
 .counter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
 .counter-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem;text-align:center}
 .counter-card .ico{font-size:28px;margin-bottom:6px}
-.counter-card .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--stat);display:block}
+.counter-card .num{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;font-size:2rem;font-weight:700;color:var(--stat);display:block}
 .counter-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
 .map-container{background:var(--card);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;height:320px}
 .export-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
@@ -908,7 +908,7 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
     <span id="sc-d" style="display:none"></span><span id="sc-v" style="display:none"></span><span id="sc-c" style="display:none"></span><span id="sc-a" style="display:none"></span><span id="hs-d" style="display:none"></span><span id="hs-v" style="display:none"></span><span id="hs-c" style="display:none"></span><span id="hs-h" style="display:none"></span>
     <div id="date-nav" class="date-nav"></div>
     <div id="onboarding-banner" style="display:none;background:linear-gradient(135deg,#0D2B4E,#1B5E8E);border-radius:14px;padding:1.25rem;margin-bottom:1rem;color:#fff">
-      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem">¡Bienvenidos al viaje! 🎉</div>
+      <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">¡Bienvenidos al viaje! 🎉</div>
       <div style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:1rem;line-height:1.6">Empezá cargando el primer día. Podés agregar vuelos, hoteles, traslados y actividades.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button onclick="document.getElementById('onboarding-banner').style.display='none';openNewDay()" style="padding:8px 16px;background:#fff;color:var(--hero-bg);border:none;border-radius:8px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;cursor:pointer">+ Agregar primer día</button>
@@ -1057,7 +1057,7 @@ import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, u
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ── PWA VERSION CHECK — incrementá APP_VERSION con cada deploy ──
-const APP_VERSION = '1.0.4';
+const APP_VERSION = '1.1.0';
 if (window.navigator.standalone) {
   const lastVersion = localStorage.getItem('app-version');
   if (lastVersion !== APP_VERSION) {
@@ -1634,7 +1634,7 @@ function initListeners(){
     saveCache('avatars',AVATARS);
     renderTvl();renderNotesPbtns();renderPhotoPbtns();renderProfiles();
   });
-  setSS('ok','🌍 Sincronizado en tiempo real');
+  setSS('ok','Sincronizado en tiempo real');
   if(USER_ROLE==='viewer'){
     document.getElementById('stxt').innerHTML='👁 Solo lectura';
     document.getElementById('sdot').style.background='#FF9800';
@@ -2775,9 +2775,25 @@ function renderResumen(){
   HOTELS.forEach(h => { if(h.city) citySet.add(h.city.split('·')[0].trim()); });
   evs.filter(e=>e.tipo==='hotel'&&e.extras?.ciudad).forEach(e=>citySet.add(e.extras.ciudad.trim()));
 
+  // Unique countries
+  const paisSet = new Set(
+    DAYS.map(d => d.city==='amsterdam'?'nl':d.city==='grecia'?'gr':d.city==='turquia'?'tr':null)
+        .filter(Boolean)
+  );
+
+  // Unique lugares from actividades (extras.lugar field)
+  const lugarSet = new Set(
+    DAYS.flatMap(d=>(d.events||[])
+      .filter(e=>e.tipo==='actividad'&&e.extras?.lugar)
+      .map(e=>e.extras.lugar)
+    )
+  );
+
+  console.log('[Resumen] países:', paisSet.size, 'ciudades:', citySet.size, 'lugares únicos:', lugarSet.size, 'actividades:', actividades.length);
+
   const counters = [
-    {ico:'🌍',num:3,lbl:'Países'},
-    {ico:'🏙',num:citySet.size||10,lbl:'Ciudades'},
+    {ico:'🌍',num:paisSet.size||3,lbl:'Países'},
+    {ico:'🏙',num:citySet.size,lbl:'Ciudades'},
     {ico:'🏨',num:HOTELS.length,lbl:'Hoteles'},
     {ico:'🏖',num:counts.playa||0,lbl:'Playas'},
     {ico:'🏘',num:counts.pueblo||0,lbl:'Pueblos'},
