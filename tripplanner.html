@@ -835,34 +835,45 @@ input,select,textarea{-webkit-appearance:none;appearance:none;border-radius:9px}
     <span id="hero-dest" style="display:none"></span>
     <span id="hero-title" style="display:none"></span>
 
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(60,60,67,.38);margin-bottom:10px">
+      Vacaciones en Europa
+    </div>
 
-      <!-- IZQUIERDA -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+
       <div style="flex:1;min-width:0">
-        <div style="font-size:32px;font-weight:700;color:#000;letter-spacing:-.8px;line-height:1;margin-bottom:12px">Verano 2026</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
           <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(0,122,255,.1);color:#004DB3">Países Bajos</span>
           <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(52,199,89,.1);color:#1A7A35">Grecia</span>
           <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(175,82,222,.1);color:#7B2FA8">Turquía</span>
         </div>
-        <p class="hero-sub" style="margin-bottom:10px" id="hero-sub-txt">21 jun → 15 jul · 22 días · 4 viajeros</p>
-        <div class="travelers" style="margin-top:6px" id="tvl-list"></div>
+
+        <div style="font-size:32px;font-weight:700;color:#000;letter-spacing:-.8px;line-height:1;margin-bottom:10px">
+          Verano 2026
+        </div>
+
+        <p class="hero-sub" id="hero-sub-txt" style="margin-bottom:16px">
+          21 jun → 15 jul · 22 días · 4 viajeros
+        </p>
+
+        <div class="travelers" id="tvl-list"></div>
+
       </div>
 
-      <!-- DERECHA — countdown -->
-      <div style="flex-shrink:0;display:flex;gap:5px;align-items:flex-start;margin-top:4px" id="countdown-wrap">
-        <div style="background:#fff;border-radius:10px;padding:7px 9px;text-align:center;border:0.5px solid rgba(60,60,67,.08);min-width:36px">
-          <div style="font-size:20px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-dias">—</div>
+      <div style="flex-shrink:0;display:flex;gap:4px;align-items:flex-start;margin-top:2px" id="countdown-wrap">
+        <div style="background:#fff;border-radius:10px;padding:6px 8px;text-align:center;border:.5px solid rgba(60,60,67,.08);min-width:36px">
+          <div style="font-size:19px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-dias">—</div>
           <div style="font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(60,60,67,.4);margin-top:2px">días</div>
         </div>
-        <div style="font-size:18px;font-weight:300;color:rgba(60,60,67,.25);padding-top:8px">:</div>
-        <div style="background:#fff;border-radius:10px;padding:7px 9px;text-align:center;border:0.5px solid rgba(60,60,67,.08);min-width:36px">
-          <div style="font-size:20px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-horas">—</div>
+        <div style="font-size:15px;font-weight:300;color:rgba(60,60,67,.2);padding-top:6px">:</div>
+        <div style="background:#fff;border-radius:10px;padding:6px 8px;text-align:center;border:.5px solid rgba(60,60,67,.08);min-width:36px">
+          <div style="font-size:19px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-horas">—</div>
           <div style="font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(60,60,67,.4);margin-top:2px">hs</div>
         </div>
-        <div style="font-size:18px;font-weight:300;color:rgba(60,60,67,.25);padding-top:8px">:</div>
-        <div style="background:#fff;border-radius:10px;padding:7px 9px;text-align:center;border:0.5px solid rgba(60,60,67,.08);min-width:36px">
-          <div style="font-size:20px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-mins">—</div>
+        <div style="font-size:15px;font-weight:300;color:rgba(60,60,67,.2);padding-top:6px">:</div>
+        <div style="background:#fff;border-radius:10px;padding:6px 8px;text-align:center;border:.5px solid rgba(60,60,67,.08);min-width:36px">
+          <div style="font-size:19px;font-weight:700;color:#000;line-height:1;letter-spacing:-.5px" id="cd-mins">—</div>
           <div style="font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(60,60,67,.4);margin-top:2px">min</div>
         </div>
       </div>
@@ -3560,6 +3571,7 @@ function updateCountdown(){
 }
 updateCountdown();
 setInterval(updateCountdown,30000);
+
 </script>
 </body>
 </html>
