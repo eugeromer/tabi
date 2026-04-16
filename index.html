@@ -805,7 +805,7 @@ window.openTrip = (tripId) => {
   // Store trip context and redirect to the main app
   try{ sessionStorage.setItem('tp_tripId', tripId); }catch(e){}
   // Navigate to trip planner app passing tripId as hash
-  window.location.href = `tripplanner.html#${tripId}`;
+  window.location.href = `app.html#${tripId}`;
 };
 
 // ── NEW TRIP ──────────────────────────────────────────────
