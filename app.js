@@ -728,7 +728,6 @@ window.savDay=async()=>{
 window.delDay=async()=>{const idx=document.getElementById('d-idx').value;if(idx&&confirm('¿Eliminar este día y todos sus eventos? Esta acción no se puede deshacer.')){await deleteDoc(dref('days',idx));cm('m-day');showToast('Día eliminado');}};
 
 // ── HOTELS ────────────────────────────────────────────────
-let HOTEL_PAGO_STATE='no';
 window.openNewHotel=()=>{
   document.getElementById('m-hotel-t').textContent='Nuevo alojamiento';
   document.getElementById('ht-idx').value='';
@@ -769,6 +768,8 @@ window.savHotel=async()=>{
   const cc=c.includes('amster')?'p-amsterdam':c.includes('santa')||c.includes('aten')||c.includes('mykon')||c.includes('naxo')||c.includes('koufo')||c.includes('paros')||c.includes('milos')||c.includes('grecia')?'p-grecia':c.includes('estam')||c.includes('turq')||c.includes('capado')?'p-turquia':'p-transito';
   const cinF=document.getElementById('ht-cin-fecha').value;const cinH=document.getElementById('ht-cin-hora').value;
   const coutF=document.getElementById('ht-cout-fecha').value;const coutH=document.getElementById('ht-cout-hora').value;
+  // Validate checkout is after checkin
+  if(cinF && coutF && new Date(coutF) <= new Date(cinF)){showFieldError('ht-cout-fecha','El check-out debe ser posterior al check-in');return;}
   // Calc nights
   let noch='';
   if(cinF&&coutF){const d1=new Date(cinF);const d2=new Date(coutF);const diff=Math.round((d2-d1)/(1000*60*60*24));noch=diff>0?`${diff} noche${diff>1?'s':''}`:'1 noche';}
@@ -816,7 +817,7 @@ window.handlePhotos=async event=>{
 };
 async function compressImg(dataUrl,maxPx,q){return new Promise(res=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>maxPx||h>maxPx){if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}else{w=Math.round(w*maxPx/h);h=maxPx;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',q));};img.src=dataUrl;});}
 window.delPhoto=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(dref('photos',id));};
-window.openViewer=(data,cap)=>{document.getElementById('vimg').src=data;document.getElementById('vcap').textContent=cap;document.getElementById('vbg').classList.add('open');};
+window.openViewer=(data,cap)=>{const vimg=document.getElementById('vimg');vimg.src=data;vimg.alt=cap||'Foto del viaje';document.getElementById('vcap').textContent=cap;document.getElementById('vbg').classList.add('open');};
 window.closeViewer=()=>document.getElementById('vbg').classList.remove('open');
 
 // ── PROFILES ──────────────────────────────────────────────
@@ -838,13 +839,6 @@ function getProfile(tvlItem){
   return {};
 }
 
-// Get the best key to save a profile under
-function getProfileSaveKey(tvlItem){
-  // If UID looks like a real Firebase UID (>10 chars), use it
-  if(tvlItem.i && tvlItem.i.length > 5) return tvlItem.i;
-  return tvlItem.i;
-}
-
 window.openEditProfile = key => {
   const tvlList = window.TVL_OVERRIDE || TVL;
   const tvlItem = tvlList.find(t => t.i === key) || {i:key, fn:key, n:key};
@@ -862,7 +856,7 @@ window.savProfile = async () => {
   const key = document.getElementById('prof-key').value;
   const tvlList = window.TVL_OVERRIDE || TVL;
   const tvlItem = tvlList.find(t => t.i === key) || {i:key};
-  const saveKey = getProfileSaveKey(tvlItem);
+  const saveKey = tvlItem.i;
   const data = {
     comida: document.getElementById('prof-comida').value,
     shopping: document.getElementById('prof-shopping').value,
@@ -990,53 +984,6 @@ window.toggleEcard = id => {
   body.style.display = open ? 'none' : 'block';
   if(chev) chev.style.transform = open ? '' : 'rotate(180deg)';
 };
-
-function renderEventCard(ev,dayId,j){
-  const tipo=ev.tipo||'otro';
-  const ico=TIPO_ICO[tipo]||'📌';
-  const cls=TIPO_CLS[tipo]||'etype-otro';
-  const titulo=ev.titulo||ev.tt||'Sin título';
-  const hora=fmtTimeDisplay(ev.hora||ev.t||'');
-  const fechaDisp=ev.fecha?fmtDateDisplay(ev.fecha):'';
-  const x=ev.extras||{};
-  const cid=ecardId(dayId,j);
-
-  // ── 1 LINE KEY INFO per type
-  let keyInfo='';
-  if(tipo==='vuelo'&&x.origen&&x.destino) keyInfo=`${escapeHtml(x.origen.split('—')[0].trim())} → ${escapeHtml(x.destino.split('—')[0].trim())}${x.pnr?' · '+escapeHtml(x.pnr):''}`;
-  else if(tipo==='hotel'&&(x.nombre||x.ciudad)) keyInfo=`${escapeHtml(x.nombre||'')}${x.cinHora?' · Check-in '+escapeHtml(x.cinHora):''}${x.conf?' · '+escapeHtml(x.conf):''}`;
-  else if(tipo==='traslado'&&x.medio) keyInfo=`${escapeHtml(x.medio)}${x.duracion?' · '+escapeHtml(x.duracion):''}${x.origen?' · '+escapeHtml(x.origen.split('—')[0]):''} → ${escapeHtml((x.destino||'').split('—')[0])}`;
-  else if(tipo==='restaurante') keyInfo=`${escapeHtml(x.nombre||x.dir||'')}${x.cocina?' · '+escapeHtml(x.cocina):''}${x.reserva?' · '+escapeHtml(x.reserva):''}`;
-  else if(tipo==='actividad') keyInfo=`${escapeHtml(x.lugar||'')}${x.precio?' · '+escapeHtml(x.precio):''}`;
-  else if(tipo==='otro') keyInfo=escapeHtml(x.lugar||x.notas?.slice(0,60)||'');
-
-  const details = buildDetails(ev);
-  const actionBtns = buildActionBtns(ev);
-  const hasDetails = details || actionBtns;
-
-  return `
-  <div class="ecard">
-    <div class="ecard-hd" onclick="${hasDetails?`toggleEcard('${cid}')`:''}" style="${hasDetails?'cursor:pointer':''}">
-      <div class="etype-icon ${cls}">${ico}</div>
-      <div class="ecard-main">
-        <div class="ecard-title">
-          ${hora?`<span class="ecard-time">${hora}</span>`:''}
-          <span style="font-size:16px;font-weight:700">${escapeHtml(titulo)}</span>
-          ${ev.pago==='no'?pagoBadge(ev.pago):''}
-        </div>
-        ${keyInfo?`<div class="ecard-sub" style="font-size:13px;margin-top:3px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${keyInfo}</div>`:''}
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:4px">
-        <button class="ecard-opts-btn" onclick="event.stopPropagation();openEditEv('${dayId}',${j})">⋯</button>
-        ${hasDetails?`<span id="ecc-${cid}" style="color:var(--muted);font-size:12px;transition:transform .2s;display:inline-block">▾</span>`:''}
-      </div>
-    </div>
-    <div id="ecb-${cid}" style="display:none">
-      ${details?`<div class="edetails">${details}</div>`:''}
-      ${actionBtns}
-    </div>
-  </div>`;
-}
 
 // Route connector between consecutive events with addresses
 function routeConnector(ev1, ev2){
@@ -1296,9 +1243,10 @@ window.calcCostoPP = () => {
   const el = document.getElementById('costo-pp');
   if(!monto || parts.length === 0){ el.classList.remove('show'); el.textContent=''; return; }
   const pp = monto / parts.length;
-  const names = {ER:'Eugenia',JN:'Juan José',VS:'Valeria',GG:'Gustavo'};
+  const tvlList = window.TVL_OVERRIDE || TVL;
+  const nameMap = Object.fromEntries(tvlList.map(t => [t.i, t.n]));
   el.classList.add('show');
-  el.textContent = `${formatMoney(pp, moneda)} por persona (${parts.map(p=>names[p]).join(', ')})`;
+  el.textContent = `${formatMoney(pp, moneda)} por persona (${parts.map(p=>nameMap[p]||p).join(', ')})`;
 };
 
 // Reset participantes to all selected
@@ -1369,24 +1317,23 @@ window.openNewEv = dayId => {
 // ── GASTOS RENDER ─────────────────────────────────────────
 const TIPO_LABELS = {vuelo:'✈ Vuelos',hotel:'🏨 Hoteles',actividad:'🎯 Actividades',restaurante:'🍽 Comida',traslado:'🚕 Traslados',otro:'📌 Otros'};
 const CITY_LABELS = {amsterdam:'🇳🇱 Países Bajos',grecia:'🇬🇷 Grecia',turquia:'🇹🇷 Turquía',transito:'Tránsito'};
-const NAMES = {ER:'Eugenia',JN:'Juan José',VS:'Valeria',GG:'Gustavo'};
-const AV_CLASS = {ER:'av1',JN:'av2',VS:'av3',GG:'av4'};
-
 window.calcGastos = async () => {
   await loadExchangeRates();
+  const tvl = window.TVL_OVERRIDE || TVL;
+  const tvlKeys = tvl.map(t => t.i);
   const allEvents = DAYS.flatMap(d => (d.events||[]).map(e=>({...e, _city:d.city, _dayLabel:d.label})));
   const eventsWithPrice = allEvents.filter(e=>e.monto>0);
 
   // Totals by category (in USD)
   const byCat = {};
   const byCity = {};
-  const byPerson = {ER:0,JN:0,VS:0,GG:0};
-  const byPersonItems = {ER:[],JN:[],VS:[],GG:[]};
+  const byPerson = Object.fromEntries(tvlKeys.map(k=>[k,0]));
+  const byPersonItems = Object.fromEntries(tvlKeys.map(k=>[k,[]]));
   let grandTotal = 0;
 
   eventsWithPrice.forEach(ev => {
     const usd = toUSD(ev.monto, ev.moneda||'EUR');
-    const parts = ev.participantes?.length > 0 ? ev.participantes : ['ER','JN','VS','GG'];
+    const parts = ev.participantes?.length > 0 ? ev.participantes : tvlKeys;
     const ppUSD = usd / parts.length;
 
     // By category
@@ -1421,7 +1368,7 @@ window.calcGastos = async () => {
     <h3>💰 Resumen total del viaje</h3>
     <div class="gasto-grid">
       <div class="gasto-card"><label>Total del grupo</label><p>${fmt(grandTotal)} <small>USD</small></p></div>
-      <div class="gasto-card"><label>Promedio por persona</label><p>${fmt(grandTotal/4)} <small>USD</small></p></div>
+      <div class="gasto-card"><label>Promedio por persona</label><p>${fmt(grandTotal/tvl.length)} <small>USD</small></p></div>
       <div class="gasto-card"><label>Eventos con precio</label><p>${eventsWithPrice.length} <small>de ${allEvents.length}</small></p></div>
       <div class="gasto-card"><label>Tipo de cambio</label><p style="font-size:0.9rem">€1 = $${(EXCHANGE_RATES.EUR).toFixed(2)}</p></div>
     </div>
@@ -1453,13 +1400,14 @@ window.calcGastos = async () => {
   // By person
   html += `<div class="gasto-section-lbl">Por viajero</div>`;
   html += `<div class="gasto-by-cat"><h4>Por viajero</h4>`;
-  ['ER','JN','VS','GG'].forEach(p => {
-    const total = byPerson[p];
-    const items = byPersonItems[p];
+  tvl.forEach(t => {
+    const p = t.i;
+    const total = byPerson[p] || 0;
+    const items = byPersonItems[p] || [];
     html += `<div class="gasto-person-card">
       <div class="gasto-person-hd">
         ${avHtml(p,'',32)}
-        <strong>${FN[p]}</strong>
+        <strong>${escapeHtml(t.fn)}</strong>
         <span>${fmt(total)}</span>
       </div>
       <div class="gasto-person-items">
@@ -1480,9 +1428,6 @@ window.calcGastos = async () => {
 
   document.getElementById('gastos-wrap').innerHTML = html;
 };
-
-// Add precio display to renderEventCard - patch
-const _origRenderEventCard = renderEventCard;
 
 // ── SUBTIPO ACTIVIDAD ─────────────────────────────────────
 let EVSUBTIPO = 'actividad';
@@ -1573,20 +1518,6 @@ window.savEv = async () => {
   cm('m-ev');
 };
 
-// Update renderEventCard to show subtipo icon
-const _origRenderEC = renderEventCard;
-window.renderEventCard = (ev, dayId, j) => {
-  // Override tipo icon for actividad with subtipo
-  if(ev.tipo === 'actividad' && ev.extras?.subtipo && ev.extras.subtipo !== 'actividad'){
-    const origTipo = ev.tipo;
-    const patchedEv = {...ev, _subtipoIco: SUBTIPO_ICO[ev.extras.subtipo]||'🎯'};
-    // We'll use the original but swap icon in the result
-    const html = _origRenderEC(ev, dayId, j);
-    return html.replace('class="etype-icon etype-actividad">🎯', `class="etype-icon etype-actividad">${SUBTIPO_ICO[ev.extras.subtipo]||'🎯'}`);
-  }
-  return _origRenderEC(ev, dayId, j);
-};
-
 // ── RESUMEN / TRAVEL BOOK ─────────────────────────────────
 let mapInstance = null;
 
@@ -1629,7 +1560,6 @@ function renderResumen(){
     )
   );
 
-  console.log('[Resumen] países:', paisSet.size, 'ciudades:', citySet.size, 'lugares únicos:', lugarSet.size, 'actividades:', actividades.length);
 
   const counters = [
     {ico:'🌍',num:paisSet.size||3,lbl:'Países'},
@@ -1697,11 +1627,16 @@ const CITY_LATLNG = {
 };
 
 function buildMap(el){
-  if(mapInstance){ mapInstance.remove(); mapInstance=null; }
-  mapInstance = L.map(el).setView([39,22],5);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'© OpenStreetMap',maxZoom:18
-  }).addTo(mapInstance);
+  // If map already mounted, just refresh markers instead of destroying/recreating
+  if(mapInstance && mapInstance._container){
+    mapInstance.eachLayer(l => { if(l instanceof L.Marker || l instanceof L.CircleMarker || l instanceof L.Polyline) l.remove(); });
+  } else {
+    if(mapInstance){ try{ mapInstance.remove(); }catch(e){} mapInstance=null; }
+    mapInstance = L.map(el).setView([39,22],5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'© OpenStreetMap',maxZoom:18
+    }).addTo(mapInstance);
+  }
 
   const evs = getAllEvents();
   const points = [];

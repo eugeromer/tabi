@@ -24,11 +24,10 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // Only cache assets from the same origin — never Firebase, CDN, or API calls
+  if (!e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request).then(r => {
-      const cache = caches.open(CACHE_NAME);
-      cache.then(c => c.put(e.request, r.clone()));
-      return r;
-    })).catch(() => caches.match('/tabi/index.html'))
+    caches.match(e.request).then(cached => cached || fetch(e.request))
+      .catch(() => caches.match('/tabi/index.html'))
   );
 });
