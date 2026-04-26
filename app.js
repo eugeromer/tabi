@@ -270,29 +270,6 @@ window.setTheme=(t,el)=>{
 };
 try{const s=localStorage.getItem('tp_theme');if(s){const b=document.querySelector(`[data-t="${s}"]`);if(b)setTheme(s,b);}}catch(e){}
 
-// ── WEATHER ───────────────────────────────────────────────
-async function getWeather(city, dateStr){
-  // dateStr format: "2026-06-22"
-  const coords=CITY_COORDS[city];
-  if(!coords||!coords.lat||!dateStr||!dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return null;
-  const key=`${city}_${dateStr}`;
-  if(WEATHER_CACHE[key]) return WEATHER_CACHE[key];
-  try{
-    const url=`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&timezone=auto&start_date=${dateStr}&end_date=${dateStr}`;
-    const r=await fetch(url);
-    const d=await r.json();
-    if(!d.daily||!d.daily.temperature_2m_max||!d.daily.temperature_2m_max[0]) return null;
-    const wc=d.daily.weathercode[0];
-    const tmax=Math.round(d.daily.temperature_2m_max[0]);
-    const tmin=Math.round(d.daily.temperature_2m_min[0]);
-    const rain=d.daily.precipitation_probability_max[0];
-    const ico=wc<=1?'☀️':wc<=3?'⛅':wc<=48?'🌫':wc<=67?'🌧':wc<=77?'🌨':wc<=82?'🌧':wc<=99?'⛈':'☀️';
-    const result={ico,tmax,tmin,rain};
-    WEATHER_CACHE[key]=result;
-    return result;
-  }catch(e){return null;}
-}
-
 function fmtDateISO(dateStr){
   // Convert "22 jun" or "2026-06-22" to ISO "2026-06-22"
   if(!dateStr) return null;
