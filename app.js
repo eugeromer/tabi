@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, updateDoc, orderBy, query, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, addDoc, updateDoc, orderBy, query, getDocs, getDoc, limit, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ── SECURITY: HTML escape helper — use on ALL Firestore strings in innerHTML ──
@@ -154,12 +154,26 @@ let EM=false,EVTIPO='vuelo',PAGADO='na',HOTEL_PAGO='na';
 let AP={i:'ER',a:'av1',n:'Eugenia Romero'};
 let PAP={i:'ER',a:'av1',n:'Eugenia Romero'};
 let DAYS=[],HOTELS=[],CHECKLIST={},CHECKS={},NOTES=[],PHOTOS=[],PROFILES={},AVATARS={};
+let ACTIVITY=[];
+let CURRENT_USER_UID=null;
 let WEATHER_CACHE={};
 
 const TVL=[{i:'ER',n:'Eugenia',fn:'Eugenia Romero',a:'av1'},{i:'JN',n:'Juan José',fn:'Juan José Noguera',a:'av2'},{i:'VS',n:'Valeria',fn:'Valeria Secchi',a:'av3'},{i:'GG',n:'Gustavo',fn:'Gustavo García',a:'av4'}];
 let FN={};TVL.forEach(t=>FN[t.i]=t.fn||t.n);
 let AV={};TVL.forEach((t,i)=>AV[t.i]='av'+(i+1));
 let TRIP_DEPARTURE=new Date('2026-06-21T00:00:00');
+
+function logActivity(accion,tipo,nombre_item){
+  const tvl=window.TVL_OVERRIDE||TVL;
+  const yo=tvl.find(t=>t.uid===CURRENT_USER_UID)||tvl[0];
+  addDoc(col('activity'),{
+    uid:CURRENT_USER_UID,
+    initials:yo?.i||'?',
+    nombre:yo?.n||'Alguien',
+    accion,tipo,nombre_item,
+    ts:Date.now()
+  }).catch(()=>{});
+}
 const CL={amsterdam:'Países Bajos',grecia:'Grecia',turquia:'Turquía',transito:'Tránsito'};
 const TIPO_COLOR={vuelo:'#2563EB',hotel:'#7C3AED',actividad:'#059669',restaurante:'#DC2626',traslado:'#D97706',otro:'#64748B'};
 const TIPO_LABEL={vuelo:'Vuelo',hotel:'Hotel',actividad:'Actividad',restaurante:'Restaurante',traslado:'Traslado',otro:'Otro'};
@@ -462,6 +476,12 @@ function ensureListeners(tab){
       updateMasBadge();
     });
   }
+  if(tab==='ac'&&!_UNSUB.activity){
+    _UNSUB.activity=onSnapshot(query(col('activity'),orderBy('ts','desc'),limit(30)),s=>{
+      ACTIVITY=s.docs.map(d=>({_id:d.id,...d.data()}));
+      if(document.getElementById('feed-activity'))renderActivity();
+    });
+  }
 }
 
 function initListeners(){
@@ -497,6 +517,7 @@ await new Promise((resolve) => {
     if (!user) {
       window.location.href = 'index.html';
     } else {
+      CURRENT_USER_UID = user.uid;
       resolve(user);
     }
   });
@@ -768,6 +789,7 @@ window.savEv=async()=>{
     await updateDoc(dref('days',di),{events:sorted});
     cm('m-ev');
     showToast('Evento guardado');
+    logActivity(ei!==''?'editó':'agregó','evento',titulo);
   }catch(e){
     console.error(e);
     showToast('⚠ Error al guardar el evento');
@@ -776,7 +798,7 @@ window.savEv=async()=>{
 window.delEv=async()=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
   if(!confirm('¿Eliminar este evento? Esta acción no se puede deshacer.'))return;
-  const di=document.getElementById('ev-di').value;const ei=parseInt(document.getElementById('ev-ei').value);const d=DAYS.find(x=>x._id===di);if(!d)return;const evs=[...(d.events||[])];evs.splice(ei,1);await updateDoc(dref('days',di),{events:evs});cm('m-ev');showToast('Evento eliminado');
+  const di=document.getElementById('ev-di').value;const ei=parseInt(document.getElementById('ev-ei').value);const d=DAYS.find(x=>x._id===di);if(!d)return;const evs=[...(d.events||[])];const _titulo=evs[ei]?.titulo||'evento';evs.splice(ei,1);await updateDoc(dref('days',di),{events:evs});cm('m-ev');showToast('Evento eliminado');logActivity('eliminó','evento',_titulo);
 };
 
 // ── DAYS ──────────────────────────────────────────────────
@@ -794,6 +816,7 @@ window.savDay=async()=>{
     if(idx)await setDoc(dref('days',idx),o);else await addDoc(col('days'),o);
     cm('m-day');
     showToast('Día guardado');
+    logActivity(idx?'editó':'agregó','día',label);
   }catch(e){
     console.error(e);
     showToast('⚠ Error al guardar el día');
@@ -870,12 +893,13 @@ window.savHotel=async()=>{
     if(idx)await setDoc(dref('hotels',idx),o);else await addDoc(col('hotels'),o);
     cm('m-hotel');
     showToast('Alojamiento guardado');
+    logActivity(idx?'editó':'agregó','hotel',o.name);
   }catch(e){
     console.error(e);
     showToast('⚠ Error al guardar el alojamiento');
   }
 };
-window.delHotel=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const idx=document.getElementById('ht-idx').value;if(idx&&confirm('¿Eliminar este alojamiento? Esta acción no se puede deshacer.')){await deleteDoc(dref('hotels',idx));cm('m-hotel');showToast('Alojamiento eliminado');}};
+window.delHotel=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const idx=document.getElementById('ht-idx').value;if(idx&&confirm('¿Eliminar este alojamiento? Esta acción no se puede deshacer.')){const _hname=HOTELS.find(x=>x._id===idx)?.name||'hotel';await deleteDoc(dref('hotels',idx));cm('m-hotel');showToast('Alojamiento eliminado');logActivity('eliminó','hotel',_hname);}};
 
 // ── CHECKLIST ─────────────────────────────────────────────
 window.openNewChk=gk=>{document.getElementById('m-chk-t').textContent='Nueva tarea · '+gk;document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value='';document.getElementById('ck-txt').value='';document.getElementById('b-ckdel').style.display='none';om('m-chk');};
@@ -885,14 +909,14 @@ window.delChk=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no 
 window.toggleChk=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}await setDoc(dref('checks',id),{done:!CHECKS[id]});};
 
 // ── NOTES ─────────────────────────────────────────────────
-window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;try{await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';}catch(e){console.error(e);showToast('⚠ Error al guardar la nota');}};
+window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;try{await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';logActivity('agregó','nota',txt.slice(0,30));}catch(e){console.error(e);showToast('⚠ Error al guardar la nota');}};
 window.delNote=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}if(confirm('¿Eliminar nota?'))await deleteDoc(dref('notes',id));};
 
 // ── PHOTOS ────────────────────────────────────────────────
 window.handlePhotos=async event=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
   const files=[...event.target.files];const caption=document.getElementById('photo-caption').value.trim();const prog=document.getElementById('upload-prog');prog.style.display='block';
-  for(let i=0;i<files.length;i++){prog.textContent=`Subiendo ${i+1} de ${files.length}...`;try{const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(files[i]);});let c=await compressImg(dataUrl,600,.65);if(c.length>900000)c=await compressImg(dataUrl,400,.55);await addDoc(col('photos'),{data:c,caption,person:PAP.i,personAv:PAP.a,personName:PAP.n,ts:Date.now(),date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});}catch(e){console.error(e);}}
+  for(let i=0;i<files.length;i++){prog.textContent=`Subiendo ${i+1} de ${files.length}...`;try{const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(files[i]);});let c=await compressImg(dataUrl,600,.65);if(c.length>900000)c=await compressImg(dataUrl,400,.55);await addDoc(col('photos'),{data:c,caption,person:PAP.i,personAv:PAP.a,personName:PAP.n,ts:Date.now(),date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});logActivity('agregó','foto',caption||files[i].name);}catch(e){console.error(e);}}
   prog.style.display='none';document.getElementById('photo-caption').value='';event.target.value='';
 };
 async function compressImg(dataUrl,maxPx,q){return new Promise(res=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>maxPx||h>maxPx){if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}else{w=Math.round(w*maxPx/h);h=maxPx;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',q));};img.src=dataUrl;});}
@@ -2466,6 +2490,45 @@ function showToast(msg='Guardado'){
   clearTimeout(_toastTimer);
   _toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
 }
+
+// ── ACTIVITY FEED ────────────────────────────────────────
+function renderActivity(){
+  const el=document.getElementById('feed-activity');if(!el)return;
+  if(!ACTIVITY.length){
+    el.innerHTML=`<div style="text-align:center;padding:32px 16px;color:rgba(60,60,67,.4);font-size:14px">No hay actividad reciente</div>`;
+    return;
+  }
+  const iconos={evento:'📅',hotel:'🏨',nota:'📝',foto:'📷',tarea:'✅','día':'🗓'};
+  const tvl=window.TVL_OVERRIDE||TVL;
+  el.innerHTML=ACTIVITY.map(a=>{
+    const ago=timeAgo(a.ts);
+    const idx=tvl.findIndex(t=>t.i===a.initials);
+    const avNum=idx>=0?idx+1:1;
+    const esYo=a.uid===CURRENT_USER_UID;
+    return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 16px;border-bottom:.5px solid rgba(60,60,67,.08)">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--av${avNum},#8E8E93);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${escapeHtml(a.initials)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;color:#000;line-height:1.4">
+          <strong>${esYo?'Vos':escapeHtml(a.nombre)}</strong> ${escapeHtml(a.accion)} ${iconos[a.tipo]||'•'} <span style="color:rgba(60,60,67,.7)">${escapeHtml(a.nombre_item||'')}</span>
+        </div>
+        <div style="font-size:11px;color:rgba(60,60,67,.4);margin-top:2px">${escapeHtml(a.tipo)} · ${ago}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.clearOldActivity=async()=>{
+  if(!confirm('¿Limpiar actividad de más de 7 días?'))return;
+  const cutoff=Date.now()-(7*24*60*60*1000);
+  const old=ACTIVITY.filter(a=>a.ts<cutoff);
+  if(!old.length){showToast('No hay actividad antigua');return;}
+  try{
+    const batch=writeBatch(db);
+    old.forEach(a=>batch.delete(dref('activity',a._id)));
+    await batch.commit();
+    showToast(`${old.length} registros eliminados`);
+  }catch(e){console.error(e);showToast('⚠ Error al limpiar');}
+};
 
 // ── LISTENER CLEANUP ─────────────────────────────────────
 window.addEventListener('beforeunload',()=>{

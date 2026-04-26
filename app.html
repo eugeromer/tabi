@@ -441,6 +441,7 @@
   <div class="mas-item" onclick="showTabMas('ft','Fotos')">Fotos</div>
   <div class="mas-item" onclick="showTabMas('pr','Perfiles')">Perfiles</div>
   <div class="mas-item" onclick="showTabMas('rs','Resumen');initResumen()">Resumen</div>
+  <div class="mas-item" onclick="showTabMas('ac','Actividad')">🔔 Actividad</div>
   <div style="border-top:.5px solid rgba(60,60,67,.1);margin:4px 0"></div>
   <div class="mas-item mas-item-blue" id="etab" onclick="toggleEdit(this);closeMasMenu()">Editar</div>
 </div>
@@ -506,6 +507,18 @@
     <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;font-weight:500">Tocá la foto para cambiarla. Completá tu perfil para que el grupo te conozca mejor.</p>
     <div id="profiles-wrap"><div class="loading">Cargando perfiles...</div></div>
   </section>
+  <section id="tab-ac" class="section">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(60,60,67,.45);padding:16px 16px 8px">Actividad reciente</div>
+    <div style="background:#fff;border-radius:12px;margin:0 14px;overflow:hidden">
+      <div id="feed-activity">
+        <div style="text-align:center;padding:32px 16px;color:rgba(60,60,67,.4);font-size:14px">Cargando actividad...</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:12px">
+      <button onclick="clearOldActivity()" style="font-size:12px;color:rgba(60,60,67,.4);background:none;border:none;cursor:pointer">Limpiar actividad antigua</button>
+    </div>
+  </section>
+
   <section id="tab-gs" class="section">
     <button class="gasto-refresh" onclick="calcGastos()">🔄 Actualizar resumen de gastos</button>
     <div id="gastos-wrap"><div class="loading">Tocá "Actualizar" para calcular los gastos del viaje.</div></div>
