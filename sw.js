@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tabi-v1';
+const CACHE_NAME = 'tabi-v1.1.0';
 const ASSETS = [
   '/tabi/app.html',
   '/tabi/index.html',

@@ -14,6 +14,8 @@ function escapeHtml(str) {
 }
 
 // ── PWA VERSION CHECK — incrementá APP_VERSION con cada deploy ──
+// IMPORTANTE: Al incrementar APP_VERSION, actualizar también CACHE_NAME en sw.js.
+// APP_VERSION = '1.1.0' → CACHE_NAME = 'tabi-v1.1.0'
 const APP_VERSION = '1.1.0';
 if (window.navigator.standalone) {
   const lastVersion = localStorage.getItem('app-version');
@@ -166,6 +168,7 @@ let AV={};TVL.forEach((t,i)=>AV[t.i]='av'+(i+1));
 let TRIP_DEPARTURE=new Date('2026-06-21T00:00:00');
 
 function logActivity(accion,tipo,nombre_item){
+  if(!TRIP_ID) return;
   const tvl=window.TVL_OVERRIDE||TVL;
   const yo=tvl.find(t=>t.uid===CURRENT_USER_UID)||tvl[0];
   addDoc(col('activity'),{
@@ -187,13 +190,71 @@ const DEST_LABEL={amsterdam:'Países Bajos',grecia:'Grecia',turquia:'Turquía',t
 const PAGO_COLOR={si:'#059669',no:'#D97706',na:null};
 let CURRENT_DAY_IDX=0;
 
-// CITY COORDS para clima
+// CITY COORDS para clima (batching por ciudad)
 const CITY_COORDS={
-  amsterdam:{lat:52.37,lon:4.89},
-  grecia:{lat:37.97,lon:23.73},
-  turquia:{lat:41.01,lon:28.97},
-  transito:{lat:null,lon:null}
+  amsterdam:[52.37,4.89],
+  atenas:[37.97,23.72],
+  athens:[37.97,23.72],
+  mykonos:[37.44,25.35],
+  naxos:[37.10,25.37],
+  paros:[37.08,25.15],
+  koufonisia:[36.93,25.60],
+  milos:[36.72,24.44],
+  santorini:[36.39,25.46],
+  estambul:[41.01,28.95],
+  istanbul:[41.01,28.95],
+  capadocia:[38.64,34.83],
+  cappadocia:[38.64,34.83],
+  grecia:[37.97,23.72],
+  turquia:[41.01,28.95],
+  transito:null
 };
+
+function _wIco(wc){return wc<=1?'☀️':wc<=3?'⛅':wc<=48?'🌫':wc<=67?'🌧':wc<=77?'🌨':wc<=82?'🌧':wc<=99?'⛈':'☀️';}
+
+async function fetchWeatherRange(city,dates){
+  if(!city||!dates.length) return;
+  const coords=CITY_COORDS[city.toLowerCase().trim()];
+  if(!coords) return;
+  if(dates.every(d=>WEATHER_CACHE[city+'_'+d])) return;
+  const minDate=dates.reduce((a,b)=>a<b?a:b);
+  const maxDate=dates.reduce((a,b)=>a>b?a:b);
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto&start_date=${minDate}&end_date=${maxDate}`;
+    const res=await fetch(url);
+    const data=await res.json();
+    if(data.daily?.time){
+      data.daily.time.forEach((date,i)=>{
+        const wc=data.daily.weathercode[i];
+        WEATHER_CACHE[city+'_'+date]={
+          ico:_wIco(wc),
+          tmax:Math.round(data.daily.temperature_2m_max[i]),
+          tmin:Math.round(data.daily.temperature_2m_min[i]),
+          rain:data.daily.precipitation_sum[i]
+        };
+      });
+    }
+  }catch(e){console.warn('Weather fetch error:',e);}
+}
+
+async function prefetchAllWeather(){
+  if(!DAYS.length) return;
+  const byCiudad={};
+  DAYS.forEach(d=>{
+    if(!d.city||!d.fecha) return;
+    if(!byCiudad[d.city]) byCiudad[d.city]=[];
+    if(d.fecha.match(/^\d{4}-\d{2}-\d{2}$/)) byCiudad[d.city].push(d.fecha);
+  });
+  await Promise.all(Object.entries(byCiudad).map(([city,dates])=>fetchWeatherRange(city,dates)));
+}
+
+async function getWeather(city,dateStr){
+  if(!city||!dateStr||!dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return null;
+  const key=city+'_'+dateStr;
+  if(WEATHER_CACHE[key]) return WEATHER_CACHE[key];
+  await fetchWeatherRange(city,[dateStr]);
+  return WEATHER_CACHE[key]||null;
+}
 
 // TEMA
 const TM={
@@ -491,6 +552,7 @@ function initListeners(){
     DAYS=s.docs.map(d=>({...d.data(),_id:d.id}));
     saveCache('days',DAYS);
     renderDays();updateStats();autoTheme();
+    prefetchAllWeather();
   });
   _UNSUB.avatars=onSnapshot(col('avatars'),s=>{
     AVATARS={};s.docs.forEach(d=>AVATARS[d.id]=d.data().data);
@@ -771,6 +833,7 @@ function collectExtras(){
 
 window.savEv=async()=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
+  if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}
   const titulo=document.getElementById('ev-titulo').value.trim();
   if(!titulo){showFieldError('ev-titulo','El título es obligatorio');return;}
   const di=document.getElementById('ev-di').value;const ei=document.getElementById('ev-ei').value;
@@ -782,6 +845,7 @@ window.savEv=async()=>{
   const extras=collectExtras();
   if(EVTIPO==='actividad')extras.subtipo=EVSUBTIPO;
   const docLink=document.getElementById('ev-doc-link')?.value.trim()||null;
+  if(docLink&&!docLink.startsWith('http')){showToast('⚠ El link debe empezar con https://','error');return;}
   const o={tipo:EVTIPO,hora:document.getElementById('ev-hora').value||'',fecha:document.getElementById('ev-fecha').value||'',titulo,pago:PAGADO,extras,monto,moneda,participantes,docLink,_lastEdit:{user:_editorI,ts:Date.now()}};
   const d=DAYS.find(x=>x._id===di);if(!d)return;
   const evs=[...(d.events||[])];
@@ -812,6 +876,7 @@ window.openNewDay=()=>{document.getElementById('m-day-t').textContent='Nuevo dí
 window.openEditDay=id=>{const d=DAYS.find(x=>x._id===id);if(!d)return;document.getElementById('m-day-t').textContent='Editar día';document.getElementById('d-idx').value=id;document.getElementById('d-label').value=d.label;document.getElementById('d-fecha').value=d.fecha||'';document.getElementById('d-city').value=d.city;document.getElementById('b-ddel').style.display='inline-block';om('m-day');};
 window.savDay=async()=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
+  if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}
   const label=document.getElementById('d-label').value.trim();
   if(!label){showFieldError('d-label','El título del día es obligatorio');return;}
   const idx=document.getElementById('d-idx').value;
@@ -869,6 +934,7 @@ window.openEditHotel=id=>{
 };
 window.savHotel=async()=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
+  if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}
   const name=document.getElementById('ht-name').value.trim();
   if(!name){showFieldError('ht-name','El nombre del hotel es obligatorio');return;}
   const idx=document.getElementById('ht-idx').value;
@@ -918,24 +984,25 @@ window.delHotel=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — n
 // ── CHECKLIST ─────────────────────────────────────────────
 window.openNewChk=gk=>{document.getElementById('m-chk-t').textContent='Nueva tarea · '+gk;document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value='';document.getElementById('ck-txt').value='';document.getElementById('b-ckdel').style.display='none';om('m-chk');};
 window.openEditChk=(gk,id)=>{const item=(CHECKLIST[gk]||[]).find(x=>x._id===id||x.id===id);if(!item)return;document.getElementById('m-chk-t').textContent='Editar tarea';document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value=item._id||item.id;document.getElementById('ck-txt').value=item.text;document.getElementById('b-ckdel').style.display='inline-block';om('m-chk');};
-window.savChk=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const gk=document.getElementById('ck-gk').value;const idx=document.getElementById('ck-idx').value;const txt=document.getElementById('ck-txt').value.trim();if(!txt){showFieldError('ck-txt','La descripción es obligatoria');return;}const _btn=document.querySelector('#m-chk .bsav');if(_btn){_btn.disabled=true;_btn.textContent='Guardando...';}try{if(idx)await updateDoc(dref('checklist',idx),{text:txt});else await setDoc(dref('checklist','c'+Date.now()),{id:'c'+Date.now(),group:gk,text:txt,order:100+Date.now()%1000});cm('m-chk');showToast('Tarea guardada','success');}catch(e){console.error(e);showToast('⚠ Error al guardar la tarea','error');}finally{if(_btn){_btn.disabled=false;_btn.textContent='Guardar';}}};
+window.savChk=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}const gk=document.getElementById('ck-gk').value;const idx=document.getElementById('ck-idx').value;const txt=document.getElementById('ck-txt').value.trim();if(!txt){showFieldError('ck-txt','La descripción es obligatoria');return;}const _btn=document.querySelector('#m-chk .bsav');if(_btn){_btn.disabled=true;_btn.textContent='Guardando...';}try{if(idx)await updateDoc(dref('checklist',idx),{text:txt});else await setDoc(dref('checklist','c'+Date.now()),{id:'c'+Date.now(),group:gk,text:txt,order:100+Date.now()%1000});cm('m-chk');showToast('Tarea guardada','success');}catch(e){console.error(e);showToast('⚠ Error al guardar la tarea','error');}finally{if(_btn){_btn.disabled=false;_btn.textContent='Guardar';}}};
 window.delChk=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const idx=document.getElementById('ck-idx').value;if(idx&&confirm('¿Eliminar esta tarea? Esta acción no se puede deshacer.')){await deleteDoc(dref('checklist',idx));cm('m-chk');showToast('Tarea eliminada');}};
 window.toggleChk=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}await setDoc(dref('checks',id),{done:!CHECKS[id]});};
 
 // ── NOTES ─────────────────────────────────────────────────
-window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;try{await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';logActivity('agregó','nota',txt.slice(0,30));}catch(e){console.error(e);showToast('⚠ Error al guardar la nota');}};
+window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;try{await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';logActivity('agregó','nota',txt.slice(0,30));}catch(e){console.error(e);showToast('⚠ Error al guardar la nota');}};
 window.delNote=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}if(confirm('¿Eliminar nota?'))await deleteDoc(dref('notes',id));};
 
 // ── PHOTOS ────────────────────────────────────────────────
 window.handlePhotos=async event=>{
   if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}
+  if(!TRIP_ID){showToast('⚠ Error: viaje no identificado','error');return;}
   const files=[...event.target.files];const caption=document.getElementById('photo-caption').value.trim();const prog=document.getElementById('upload-prog');prog.style.display='block';
   for(let i=0;i<files.length;i++){prog.textContent=`Subiendo ${i+1} de ${files.length}...`;try{const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(files[i]);});let c=await compressImg(dataUrl,600,.65);if(c.length>900000)c=await compressImg(dataUrl,400,.55);await addDoc(col('photos'),{data:c,caption,person:PAP.i,personAv:PAP.a,personName:PAP.n,ts:Date.now(),date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});logActivity('agregó','foto',caption||files[i].name);}catch(e){console.error(e);}}
   prog.style.display='none';document.getElementById('photo-caption').value='';event.target.value='';
 };
 async function compressImg(dataUrl,maxPx,q){return new Promise(res=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>maxPx||h>maxPx){if(w>h){h=Math.round(h*maxPx/w);w=maxPx;}else{w=Math.round(w*maxPx/h);h=maxPx;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',q));};img.src=dataUrl;});}
 window.delPhoto=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}if(confirm('¿Eliminar?'))await deleteDoc(dref('photos',id));};
-window.openViewer=(data,cap)=>{const vimg=document.getElementById('vimg');vimg.src=data;vimg.alt=cap||'Foto del viaje';document.getElementById('vcap').textContent=cap;document.getElementById('vbg').classList.add('open');};
+window.openViewer=(data,cap)=>{if(!data) return;const vimg=document.getElementById('vimg');vimg.src=data;vimg.alt=cap||'Foto del viaje';document.getElementById('vcap').textContent=cap;document.getElementById('vbg').classList.add('open');};
 window.closeViewer=()=>document.getElementById('vbg').classList.remove('open');
 
 // ── PROFILES ──────────────────────────────────────────────
