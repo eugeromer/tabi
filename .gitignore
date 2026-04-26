@@ -1,2 +1,8 @@
 serviceAccount.json
 node_modules/
+audit-days.mjs
+audit-days-rest.js
+AUDIT-DAYS-CONSOLE.js
+fix-days.mjs
+package.json
+package-lock.json
