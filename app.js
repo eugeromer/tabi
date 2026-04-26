@@ -626,6 +626,12 @@ window.openNewEv=dayId=>{
   selTipo('vuelo',document.querySelector('[data-tipo="vuelo"]'));
   setPago('na');
   document.getElementById('b-edel').style.display='none';
+  document.getElementById('ev-monto').value='';
+  document.getElementById('ev-moneda').value='EUR';
+  resetParticipantes();
+  document.getElementById('costo-pp').classList.remove('show');
+  document.getElementById('costo-pp').textContent='';
+  resetSubtipo();
   om('m-ev');
 };
 
@@ -668,6 +674,11 @@ window.openEditEv=(dayId,ei)=>{
   }
   setPago(ev.pago||'na');
   document.getElementById('b-edel').style.display='inline-block';
+  document.getElementById('ev-monto').value=ev.monto||'';
+  document.getElementById('ev-moneda').value=ev.moneda||'EUR';
+  setParticipantes(ev.participantes||[]);
+  calcCostoPP();
+  if(tipo==='actividad')setSubtipo(ev.extras?.subtipo||'actividad');
   om('m-ev');
 };
 
@@ -701,17 +712,26 @@ window.savEv=async()=>{
   const titulo=document.getElementById('ev-titulo').value.trim();
   if(!titulo){showFieldError('ev-titulo','El título es obligatorio');return;}
   const di=document.getElementById('ev-di').value;const ei=document.getElementById('ev-ei').value;
+  const monto=parseFloat(document.getElementById('ev-monto').value)||0;
+  const moneda=document.getElementById('ev-moneda').value;
+  const participantes=getParticipantes();
   const _tvlMe=TVL.find(t=>t.uid===getAuth().currentUser?.uid);
   const _editorI=_tvlMe?.i||(getAuth().currentUser?.email||'?')[0].toUpperCase();
-  const o={tipo:EVTIPO,hora:document.getElementById('ev-hora').value||'',fecha:document.getElementById('ev-fecha').value||'',titulo:titulo,pago:PAGADO,extras:collectExtras(),_lastEdit:{user:_editorI,ts:Date.now()}};
+  const extras=collectExtras();
+  if(EVTIPO==='actividad')extras.subtipo=EVSUBTIPO;
+  const o={tipo:EVTIPO,hora:document.getElementById('ev-hora').value||'',fecha:document.getElementById('ev-fecha').value||'',titulo,pago:PAGADO,extras,monto,moneda,participantes,_lastEdit:{user:_editorI,ts:Date.now()}};
   const d=DAYS.find(x=>x._id===di);if(!d)return;
   const evs=[...(d.events||[])];
   if(ei!=='')evs[parseInt(ei)]=o;else evs.push(o);
-  // SORT BY TIME
   const sorted=sortEvents(evs);
-  await updateDoc(dref('days',di),{events:sorted});
-  cm('m-ev');
-  showToast('Evento guardado');
+  try{
+    await updateDoc(dref('days',di),{events:sorted});
+    cm('m-ev');
+    showToast('Evento guardado');
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Error al guardar el evento');
+  }
 };
 window.delEv=async()=>{
   if(!confirm('¿Eliminar este evento? Esta acción no se puede deshacer.'))return;
@@ -728,9 +748,14 @@ window.savDay=async()=>{
   const fechaISO=document.getElementById('d-fecha').value;
   const dateDisp=fechaISO?fmtDateDisplay(fechaISO):(document.getElementById('d-fecha').value||'');
   const o={date:dateDisp||'—',fecha:fechaISO||'',label,city:document.getElementById('d-city').value,order:idx?(DAYS.find(x=>x._id===idx)?.order||99):DAYS.length+1,events:idx?(DAYS.find(x=>x._id===idx)?.events||[]):[]};
-  if(idx)await setDoc(dref('days',idx),o);else await addDoc(col('days'),o);
-  cm('m-day');
-  showToast('Día guardado');
+  try{
+    if(idx)await setDoc(dref('days',idx),o);else await addDoc(col('days'),o);
+    cm('m-day');
+    showToast('Día guardado');
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Error al guardar el día');
+  }
 };
 window.delDay=async()=>{const idx=document.getElementById('d-idx').value;if(idx&&confirm('¿Eliminar este día y todos sus eventos? Esta acción no se puede deshacer.')){await deleteDoc(dref('days',idx));cm('m-day');showToast('Día eliminado');}};
 
@@ -798,21 +823,26 @@ window.savHotel=async()=>{
     pago:HOTEL_PAGO,
     order:idx?(HOTELS.find(x=>x._id===idx)?.order||99):HOTELS.length+1
   };
-  if(idx)await setDoc(dref('hotels',idx),o);else await addDoc(col('hotels'),o);
-  cm('m-hotel');
-  showToast('Alojamiento guardado');
+  try{
+    if(idx)await setDoc(dref('hotels',idx),o);else await addDoc(col('hotels'),o);
+    cm('m-hotel');
+    showToast('Alojamiento guardado');
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Error al guardar el alojamiento');
+  }
 };
 window.delHotel=async()=>{const idx=document.getElementById('ht-idx').value;if(idx&&confirm('¿Eliminar este alojamiento? Esta acción no se puede deshacer.')){await deleteDoc(dref('hotels',idx));cm('m-hotel');showToast('Alojamiento eliminado');}};
 
 // ── CHECKLIST ─────────────────────────────────────────────
 window.openNewChk=gk=>{document.getElementById('m-chk-t').textContent='Nueva tarea · '+gk;document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value='';document.getElementById('ck-txt').value='';document.getElementById('b-ckdel').style.display='none';om('m-chk');};
 window.openEditChk=(gk,id)=>{const item=(CHECKLIST[gk]||[]).find(x=>x._id===id||x.id===id);if(!item)return;document.getElementById('m-chk-t').textContent='Editar tarea';document.getElementById('ck-gk').value=gk;document.getElementById('ck-idx').value=item._id||item.id;document.getElementById('ck-txt').value=item.text;document.getElementById('b-ckdel').style.display='inline-block';om('m-chk');};
-window.savChk=async()=>{const gk=document.getElementById('ck-gk').value;const idx=document.getElementById('ck-idx').value;const txt=document.getElementById('ck-txt').value.trim();if(!txt){showFieldError('ck-txt','La descripción es obligatoria');return;}if(idx)await updateDoc(dref('checklist',idx),{text:txt});else await setDoc(dref('checklist','c'+Date.now()),{id:'c'+Date.now(),group:gk,text:txt,order:100+Date.now()%1000});cm('m-chk');showToast('Tarea guardada');};
+window.savChk=async()=>{const gk=document.getElementById('ck-gk').value;const idx=document.getElementById('ck-idx').value;const txt=document.getElementById('ck-txt').value.trim();if(!txt){showFieldError('ck-txt','La descripción es obligatoria');return;}try{if(idx)await updateDoc(dref('checklist',idx),{text:txt});else await setDoc(dref('checklist','c'+Date.now()),{id:'c'+Date.now(),group:gk,text:txt,order:100+Date.now()%1000});cm('m-chk');showToast('Tarea guardada');}catch(e){console.error(e);showToast('⚠ Error al guardar la tarea');}};
 window.delChk=async()=>{const idx=document.getElementById('ck-idx').value;if(idx&&confirm('¿Eliminar esta tarea? Esta acción no se puede deshacer.')){await deleteDoc(dref('checklist',idx));cm('m-chk');showToast('Tarea eliminada');}};
 window.toggleChk=async id=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}await setDoc(dref('checks',id),{done:!CHECKS[id]});};
 
 // ── NOTES ─────────────────────────────────────────────────
-window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';};
+window.addNote=async()=>{if(USER_ROLE==='viewer'){showToast('Solo lectura — no tenés permisos para editar');return;}const inp=document.getElementById('n-inp');const txt=inp.value.trim();if(!txt)return;try{await addDoc(col('notes'),{person:AP.i,personAv:AP.a,personName:AP.n,text:txt,date:new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ts:Date.now()});inp.value='';}catch(e){console.error(e);showToast('⚠ Error al guardar la nota');}};
 window.delNote=async id=>{if(confirm('¿Eliminar nota?'))await deleteDoc(dref('notes',id));};
 
 // ── PHOTOS ────────────────────────────────────────────────
@@ -872,9 +902,14 @@ window.savProfile = async () => {
     nota: document.getElementById('prof-nota').value,
     _name: tvlItem.fn || key, // store name for lookup
   };
-  await setDoc(dref('profiles', saveKey), data);
-  cm('m-profile');
-  showToast('Perfil actualizado');
+  try{
+    await setDoc(dref('profiles', saveKey), data);
+    cm('m-profile');
+    showToast('Perfil actualizado');
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Error al guardar el perfil');
+  }
 };
 
 // ── RENDERS ───────────────────────────────────────────────
@@ -1321,59 +1356,6 @@ function setParticipantes(arr){
   });
 }
 
-// ── SAVE EV - update to include precio ───────────────────
-// Patch savEv to include precio fields
-const _origSavEv = window.savEv;
-window.savEv = async () => {
-  const di = document.getElementById('ev-di').value;
-  const ei = document.getElementById('ev-ei').value;
-  const monto = parseFloat(document.getElementById('ev-monto').value) || 0;
-  const moneda = document.getElementById('ev-moneda').value;
-  const participantes = getParticipantes();
-
-  // Build extras
-  const extras = collectExtras();
-  const o = {
-    tipo: EVTIPO,
-    hora: document.getElementById('ev-hora').value||'',
-    fecha: document.getElementById('ev-fecha').value||'',
-    titulo: document.getElementById('ev-titulo').value||'Sin título',
-    pago: PAGADO,
-    extras,
-    monto, moneda, participantes
-  };
-  const d = DAYS.find(x=>x._id===di); if(!d) return;
-  const evs = [...(d.events||[])];
-  if(ei!=='') evs[parseInt(ei)] = o; else evs.push(o);
-  const sorted = sortEvents(evs);
-  await updateDoc(dref('days',di), {events:sorted});
-  cm('m-ev');
-};
-
-// ── OPEN EDIT EV - restore precio ────────────────────────
-const _origOpenEditEv = window.openEditEv;
-window.openEditEv = (dayId, ei) => {
-  _origOpenEditEv(dayId, ei);
-  // Restore precio fields
-  const d = DAYS.find(x=>x._id===dayId); if(!d) return;
-  const ev = d.events[ei];
-  document.getElementById('ev-monto').value = ev.monto||'';
-  document.getElementById('ev-moneda').value = ev.moneda||'EUR';
-  setParticipantes(ev.participantes||[]);
-  calcCostoPP();
-};
-
-// ── OPEN NEW EV - reset precio ────────────────────────────
-const _origOpenNewEv = window.openNewEv;
-window.openNewEv = dayId => {
-  _origOpenNewEv(dayId);
-  document.getElementById('ev-monto').value = '';
-  document.getElementById('ev-moneda').value = 'EUR';
-  resetParticipantes();
-  document.getElementById('costo-pp').classList.remove('show');
-  document.getElementById('costo-pp').textContent = '';
-};
-
 // ── GASTOS RENDER ─────────────────────────────────────────
 const TIPO_LABELS = {vuelo:'✈ Vuelos',hotel:'🏨 Hoteles',actividad:'🎯 Actividades',restaurante:'🍽 Comida',traslado:'🚕 Traslados',otro:'📌 Otros'};
 const CITY_LABELS = {amsterdam:'🇳🇱 Países Bajos',grecia:'🇬🇷 Grecia',turquia:'🇹🇷 Turquía',transito:'Tránsito'};
@@ -1549,63 +1531,6 @@ function setSubtipo(s){
   });
 }
 
-// Patch openNewEv to reset subtipo
-const _origOpenNewEv2 = window.openNewEv;
-window.openNewEv = dayId => {
-  _origOpenNewEv2(dayId);
-  resetSubtipo();
-};
-
-// Patch openEditEv to restore subtipo
-const _origOpenEditEv2 = window.openEditEv;
-window.openEditEv = (dayId, ei) => {
-  _origOpenEditEv2(dayId, ei);
-  const d = DAYS.find(x=>x._id===dayId); if(!d) return;
-  const ev = d.events[ei];
-  if(ev.tipo === 'actividad') setSubtipo(ev.extras?.subtipo || 'actividad');
-};
-
-// Patch savEv to include subtipo
-const _origSavEv2 = window.savEv;
-window.savEv = async () => {
-  // Add subtipo to extras before saving
-  const tipo = EVTIPO;
-  await _origSavEv2();
-  // Already saved — but we need subtipo in extras
-  // Re-patch: intercept collectExtras for actividad
-};
-
-// Actually override collectExtras to include subtipo
-const _origCollectExtras = collectExtras;
-window._patchedCollectExtras = () => {
-  const x = collectExtras();
-  if(EVTIPO === 'actividad') x.subtipo = EVSUBTIPO;
-  return x;
-};
-
-// Override savEv completely to use patched collectExtras
-window.savEv = async () => {
-  const di = document.getElementById('ev-di').value;
-  const ei = document.getElementById('ev-ei').value;
-  const monto = parseFloat(document.getElementById('ev-monto').value) || 0;
-  const moneda = document.getElementById('ev-moneda').value;
-  const participantes = getParticipantes();
-  const extras = window._patchedCollectExtras();
-  const o = {
-    tipo: EVTIPO,
-    hora: document.getElementById('ev-hora').value||'',
-    fecha: document.getElementById('ev-fecha').value||'',
-    titulo: document.getElementById('ev-titulo').value||'Sin título',
-    pago: PAGADO,
-    extras, monto, moneda, participantes
-  };
-  const d = DAYS.find(x=>x._id===di); if(!d) return;
-  const evs = [...(d.events||[])];
-  if(ei!=='') evs[parseInt(ei)] = o; else evs.push(o);
-  const sorted = sortEvents(evs);
-  await updateDoc(dref('days',di), {events:sorted});
-  cm('m-ev');
-};
 
 // ── RESUMEN / TRAVEL BOOK ─────────────────────────────────
 let mapInstance = null;
