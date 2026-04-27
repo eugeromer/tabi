@@ -32,6 +32,11 @@ seed-*.mjs
 *-rest.js
 gen-icon.js
 logo-preview.html
+diagnostic.mjs
+verify-final.mjs
+
+# Claude Code
+.claude/
 
 # Build outputs
 dist/
