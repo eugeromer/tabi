@@ -1253,12 +1253,15 @@ window.showDay=(idx)=>{
   CURRENT_DAY_IDX=idx;
   // Update date nav active state
   const allDays=getDisplayDays();
+  let activeBtn=null;
   document.querySelectorAll('.date-btn').forEach((btn,i)=>{
     const isActive=i===idx;
     btn.classList.toggle('active',isActive);
     const ciudad=(allDays[i]||{}).city||(allDays[i]||{}).ciudad||'transito';
     btn.style.background=isActive?(DEST_COLOR[ciudad]||'#9C876E'):'transparent';
+    if(isActive)activeBtn=btn;
   });
+  if(activeBtn)activeBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   renderCurrentDay();
   // Scroll content to top
   const main=document.querySelector('.main');
