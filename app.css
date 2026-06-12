@@ -21,3 +21,36 @@
 .section.active{padding-bottom:90px}
 /* Date nav wrapper — override old .date-nav top offset */
 .date-nav{top:0!important}
+
+/* ── Desktop (PC) refinements · solo ≥1025px, mobile intacto ── */
+@media (min-width:1025px){
+  /* Hero: contenido centrado y alineado con la columna principal */
+  .hero{padding:30px max(48px,calc((100vw - 980px)/2)) 38px}
+  #hero-title{font-size:44px!important;letter-spacing:-1px!important}
+  .hero-sub,#hero-sub{font-size:14px!important}
+  .dest-chip{font-size:12px;padding:5px 14px}
+  .traveler-names{font-size:13px;margin-left:12px}
+  .av{width:32px;height:32px;font-size:10px}
+  .cd-pill{min-width:42px;padding:7px 9px}
+
+  /* Columna principal alineada con el hero */
+  .main{max-width:980px;padding:1.75rem 48px 120px}
+  .nav{max-width:none}
+
+  /* Timeline de días más cómoda */
+  .date-nav{padding:14px 0 0}
+  .date-pill{width:54px;min-width:54px}
+  .date-pill-date{font-size:22px}
+  .date-pill-day{font-size:10px}
+
+  /* Tarjetas con hover sutil */
+  .day-card{border:1px solid var(--border-s);transition:box-shadow .15s ease}
+  .day-card:hover{box-shadow:0 4px 18px rgba(60,30,10,.07)}
+
+  /* Nav inferior: pildora flotante centrada estilo desktop */
+  .nav-wrap{left:50%;right:auto;bottom:18px;transform:translateX(-50%);width:auto;border-top:none;border:1px solid rgba(60,30,10,.12);border-radius:99px;box-shadow:0 10px 30px rgba(40,20,5,.18);padding:5px 8px;background:rgba(252,248,240,.94)}
+  .nav{gap:2px}
+  .ntab{flex-direction:row;gap:7px;padding:10px 18px;font-size:13px;border-radius:99px;flex:none}
+  .ntab.active{background:var(--accent-light)}
+  .ntab-icon{width:18px;height:18px}
+}
