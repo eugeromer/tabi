@@ -339,6 +339,14 @@ function sortEvents(events){
     return ka.localeCompare(kb);
   });
 }
+// Within a single day all events share the date, so order by time only.
+// (Events with a blank/mismatched fecha must not be pushed to the end.)
+function sortEventsByHora(events){
+  return events.map((e,i)=>({...e,_origIdx:i})).sort((a,b)=>{
+    const ta=a.hora||'99:99';const tb=b.hora||'99:99';
+    return ta.localeCompare(tb);
+  });
+}
 
 function fmtTimeDisplay(hora){
   if(!hora) return '';
@@ -1232,7 +1240,7 @@ window.renderCurrentDay=()=>{
   const wrap=document.getElementById('days-wrap');
   if(!wrap)return;
 
-  const evs=sortEvents(d.events||[]);
+  const evs=sortEventsByHora(d.events||[]);
   const _dt=getDateObjFromDay(d);
   const ciudad=d.city||d.ciudad||'transito';
   const destCol=DEST_COLOR[ciudad]||'#9C876E';
@@ -2131,7 +2139,7 @@ async function drawStoryDia(ctx, dayIdx, style, photoData){
   await drawGradientBg(ctx, style, photoData);
   const d = DAYS[dayIdx];
   if(!d) return;
-  const evs = sortEvents(d.events||[]);
+  const evs = sortEventsByHora(d.events||[]);
   const tc = '#ffffff';
   const muted = 'rgba(255,255,255,0.65)';
 
